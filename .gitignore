@@ -2,6 +2,7 @@ models/
 tests/
 venv/
 actions/__pycache__/
+rasa/
 
 app.py
 actions/actions.py
