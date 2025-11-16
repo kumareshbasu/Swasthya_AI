@@ -1,0 +1,168 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - thank_you
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_symptoms
+  - ask_preventive_measures
+  - general_health_query
+  - general_health_info_option
+  - back_to_main_menu
+  - exit_chat_option
+
+entities:
+  - disease
+
+slots:
+  lang:
+    type: text
+    influence_conversation: false
+    initial_value: en
+    # --- CORRECTED SOLUTION FOR SLOT MAPPINGS ---
+    # When a slot is set purely by a custom action and not via NLU entities,
+    # you can use 'type: custom' with an empty list of actual mappings,
+    # or sometimes more explicitly 'type: from_trigger' if it's from an event.
+    # For a slot like 'lang' that's set by an action from metadata, 'type: custom' with an empty list is generally fine.
+    mappings:
+      # This mapping tells Rasa that the slot is not filled directly from NLU
+      # but rather by other means (e.g., custom actions, API calls).
+      # The important thing is that the 'mappings' key itself is present
+      # and contains a valid (even if empty) list for 'custom' type.
+      - type: custom
+
+responses:
+  # --- Base (fallback / default) utterances (English) ---
+  utter_greet:
+    - text: "Hey! How are you?"
+  utter_you_are_welcome:
+    - text: "You're welcome!"
+  utter_goodbye:
+    - text: "Bye"
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa and Gemini."
+  utter_ai_assistant_welcome:
+    - text: "Welcome to the AI Health Assistant! What health-related information are you looking for?"
+  utter_default_fallback:
+    - text: "I'm sorry, I couldn't quite understand that. Could you please rephrase or choose from the menu?"
+  utter_did_that_help:
+    - text: "Did that help you?"
+  utter_happy:
+    - text: "Great, carry on!"
+  utter_good:
+    - text: "Great, I'll keep helping you!"
+  utter_cheer_up:
+    - text: "Here is something to cheer you up:"
+  utter_happy_path:
+    - text: "I am happy to help you."
+  utter_greet_en:
+    - text: "Hey! How are you?"
+  utter_greet_hi:
+    - text: "नमस्ते! आप कैसे हैं?"
+  utter_greet_bn:
+    - text: "নমস্কার! আপনি কেমন আছেন?"
+  utter_greet_or:
+    - text: "ନମସ୍କାର! ଆପଣ କେମିତି ଅଛନ୍ତି?"
+
+  utter_you_are_welcome_en:
+    - text: "You're welcome!"
+  utter_you_are_welcome_hi:
+    - text: "आपका स्वागत है!"
+  utter_you_are_welcome_bn:
+    - text: "আপনাকে স্বাগতম!"
+  utter_you_are_welcome_or:
+    - text: "ଆପଣଙ୍କୁ ସ୍ୱାଗତ!"
+
+  utter_goodbye_en:
+    - text: "Bye"
+  utter_goodbye_hi:
+    - text: "अलविदा"
+  utter_goodbye_bn:
+    - text: "বিদায়"
+  utter_goodbye_or:
+    - text: "ବିଦାୟ"
+
+  utter_iamabot_en:
+    - text: "I am a bot, powered by Rasa and Gemini."
+  utter_iamabot_hi:
+    - text: "मैं एक बॉट हूँ, जिसे रासा और जेमिनी द्वारा संचालित किया जाता है।"
+  utter_iamabot_bn:
+    - text: "আমি একটি বট, রাসা এবং জেমিনি দ্বারা চালিত।"
+  utter_iamabot_or:
+    - text: "ମୁଁ ଏକ ବଟ୍, ରାସା ଏବଂ ଜେମିନି ଦ୍ୱାରା ପରିଚାଳିତ।"
+
+  utter_ai_assistant_welcome_en:
+    - text: "Welcome to the AI Health Assistant! What health-related information are you looking for?"
+  utter_ai_assistant_welcome_hi:
+    - text: "AI स्वास्थ्य सहायक में आपका स्वागत है! आप किस स्वास्थ्य संबंधी जानकारी की तलाश में हैं?"
+  utter_ai_assistant_welcome_bn:
+    - text: "AI স্বাস্থ্য সহায়ক-এ আপনাকে স্বাগতম! আপনি কোন স্বাস্থ্য বিষয়ক তথ্য খুঁজছেন?"
+  utter_ai_assistant_welcome_or:
+    - text: "AI ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକକୁ ସ୍ୱାଗତ! ଆପଣ କେଉଁ ସ୍ୱାସ୍ଥ୍ୟ ସମ୍ବନ୍ଧୀୟ ସୂଚନା ଖୋଜୁଛନ୍ତି?"
+
+  utter_default_fallback_en:
+    - text: "I'm sorry, I couldn't quite understand that. Could you please rephrase or choose from the menu?"
+  utter_default_fallback_hi:
+    - text: "मुझे क्षमा करें, मैं यह समझ नहीं पाया। क्या आप इसे दोबारा कह सकते हैं या मेनू से चुन सकते हैं?"
+  utter_default_fallback_bn:
+    - text: "আমি দুঃখিত, আমি ঠিক বুঝতে পারিনি। আপনি কি দয়া করে অন্যভাবে বলতে পারবেন বা মেনু থেকে নির্বাচন করবেন?"
+  utter_default_fallback_or:
+    - text: "ମୁଁ ଦୁଃଖିତ, ମୁଁ ଏହା ବୁଝିପାରିଲି ନାହିଁ। ଆପଣ ଦୟାକରି ଏହାକୁ ପୁନରାବୃତ୍ତି କରିପାରିବେ କିମ୍ବା ମେନୁରୁ ବାଛିପାରିବେ?"
+
+  utter_did_that_help_en:
+    - text: "Did that help you?"
+  utter_did_that_help_hi:
+    - text: "क्या इससे आपको मदद मिली?"
+  utter_did_that_help_bn:
+    - text: "এটা কি আপনাকে সাহায্য করেছে?"
+  utter_did_that_help_or:
+    - text: "ଏହା ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କଲା କି?"
+
+  utter_happy_en:
+    - text: "Great, carry on!"
+  utter_happy_hi:
+    - text: "बढ़िया, जारी रखें!"
+  utter_happy_bn:
+    - text: "দারুণ, চালিয়ে যান!"
+  utter_happy_or:
+    - text: "ଉତ୍ତମ, ଜାରି ରଖନ୍ତୁ!"
+
+  utter_good_en:
+    - text: "Great, I'll keep helping you!"
+  utter_good_hi:
+    - text: "बढ़िया, मैं आपकी मदद करता रहूंगा!"
+  utter_good_bn:
+    - text: "দারুণ, আমি আপনাকে সাহায্য করতে থাকব!"
+  utter_good_or:
+    - text: "ଉତ୍ତମ, ମୁଁ ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରିବା ଜାରି ରଖିବି!"
+
+  utter_cheer_up_en:
+    - text: "Here is something to cheer you up:"
+  utter_cheer_up_hi:
+    - text: "आपको खुश करने के लिए यह रहा:"
+  utter_cheer_up_bn:
+    - text: "আপনাকে খুশি করার জন্য এই নিন:"
+  utter_cheer_up_or:
+    - text: "ଆପଣଙ୍କୁ ଖୁସି କରିବା ପାଇଁ ଏହା ରହିଲା:"
+
+  utter_happy_path_en:
+    - text: "I am happy to help you."
+  utter_happy_path_hi:
+    - text: "मुझे आपकी मदद करके खुशी हुई।"
+  utter_happy_path_bn:
+    - text: "আপনাকে সাহায্য করে আমি আনন্দিত।"
+  utter_happy_path_or:
+    - text: "ମୁଁ ଆପଣଙ୍କୁ ସାହାଯ୍ୟ କରି ଖୁସି।"
+
+actions:
+  - action_ask_gemini
+  - action_set_language_slot
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

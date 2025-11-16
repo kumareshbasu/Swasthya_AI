@@ -1,0 +1,1191 @@
+# nlu.yml
+version: "3.1"
+
+nlu:
+  # ---------------------------------------------------------------------------------------------
+  # --- ENGLISH Intents ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hello there
+      - good morning
+      - good evening
+      - hey
+      - let's chat
+      - start
+      - hola
+      - hi bot
+      - hey bot
+      - hi there
+      - hey there
+      - greetings
+      - howdy
+      - hiya
+      - yo
+      - sup
+      - hi everyone
+      - hey everyone
+      - good to see you
+      - nice to meet you
+      - how's it going
+      - what's up
+
+  - intent: goodbye
+    examples: |
+      - goodbye
+      - bye
+      - see you around
+      - see ya
+      - take care
+      - stop
+      - quit
+
+  - intent: thank_you
+    examples: |
+      - thanks
+      - thank you
+      - thanks a lot
+      - thank you very much
+      - many thanks
+      - thanks a ton
+      - thank you so much
+      - thx
+      - ty
+      - appreciate it
+      - that was helpful
+      - cheers
+      - ok thanks
+      - thank you for your help
+      - got it, thanks
+      - much appreciated
+      - thanks for the info
+      - thanks for your assistance
+      - thanks for your support
+      - thanks for the help
+      - thanks for your time
+      - thank you for your time
+      - thank you for the information
+      - thank you for the assistance
+      - thank you for the support
+      - thank you for your help today
+
+  - intent: affirm
+    examples: |
+      - yes
+      - indeed
+      - of course
+      - that's correct
+      - true
+      - right
+      - absolutely
+      - certainly
+      - definitely
+      - sure
+      - affirmative
+      - yeah
+
+  - intent: deny
+    examples: |
+      - no
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not at all
+      - not really
+      - nope
+
+  - intent: mood_great
+    examples: |
+      - perfect
+      - good
+      - great
+      - amazing
+      - feeling good
+      - wonderful
+      - I am feeling very good
+      - I am happy
+
+  - intent: mood_unhappy
+    examples: |
+      - my day was horrible
+      - I am sad
+      - I don't feel so good
+      - I am unhappy
+      - bad
+      - very bad
+      - awful
+      - terrible
+      - not so good
+      - not good
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+      - are you a robot?
+      - what are you?
+
+  - intent: ask_symptoms
+    examples: |
+      - What are the symptoms of [Meniere's Disease](disease)?
+      - Tell me about [Malaria](disease) symptoms.
+      - How do I know if I have [Typhoid](disease)?
+      - Symptoms of [Chickenpox](disease)
+      - What are the signs of [COVID-19](disease)?
+      - I want to know the symptoms for [Flu](disease).
+      - Can you list symptoms of [Common Cold](disease)?
+      - What are symptoms of [tuberculosis](disease)?
+      - Explain symptoms of [hepatitis](disease).
+      - What are the symptoms of [asthma](disease)?
+      - Symptoms of [arthritis](disease).
+      - How to identify [depression](disease)?
+      - What are the symptoms of [anxiety](disease)?
+      - Signs of [hypertension](disease).
+      - Symptoms of [allergy](disease).
+      - What are the symptoms of [migraine](disease)?
+      - Symptoms of [eczema](disease).
+      - How to recognize [insomnia](disease)?
+      - What are the symptoms of [obesity](disease)?
+      - Symptoms of [osteoporosis](disease).
+      - How to identify [psoriasis](disease)?
+      - What are the symptoms of [stroke](disease)?
+      - Symptoms of [ulcer](disease).
+      - How to recognize [varicose veins](disease)?
+      - What are the symptoms of [bronchitis](disease)?
+      - Symptoms of [cancer](disease).
+      - How to identify [dementia](disease)?
+      - What are the symptoms of [fibromyalgia](disease)?
+      - Symptoms of [gout](disease).
+      - How to recognize [lupus](disease)?
+      - What are the symptoms of [pneumonia](disease)?
+      - Symptoms of [sinusitis](disease).
+      - How to identify [tinnitus](disease)?
+      - What are the symptoms of [ulcerative colitis](disease)?
+      - Symptoms of [whooping cough](disease).
+      - How to recognize [zika virus](disease)?
+      - What are the symptoms of [dengue fever](disease)?
+      - Symptoms of [ebola](disease).
+      - How to identify [lyme disease](disease)?
+      - What are the symptoms of [chikungunya](disease)?
+      - Symptoms of [yellow fever](disease).
+      - How to recognize [rabies](disease)?
+      - What are the symptoms of [cholera](disease)?
+      - Symptoms of [typhus](disease).
+      - How to identify [leprosy](disease)?
+      - What are the symptoms of [anthrax](disease)?
+      - Symptoms of [botulism](disease).
+      - How to recognize [tuberculosis](disease)?
+      - What are the symptoms of [measles](disease)?
+      - Symptoms of [mumps](disease).
+      - How to identify [rubella](disease)?
+      - What are the symptoms of [pertussis](disease)?
+      - Symptoms of [hepatitis B](disease).
+      - How to recognize [hepatitis C](disease)?
+      - What are the symptoms of [HIV/AIDS](disease)?
+      - Symptoms of [syphilis](disease).
+      - How to identify [gonorrhea](disease)?
+      - What are the symptoms of [chlamydia](disease)?
+      - Symptoms of [herpes](disease).
+      - How to recognize [trichomoniasis](disease)?
+      - What are the symptoms of [bacterial vaginosis](disease)?
+      - Symptoms of [candidiasis](disease).
+      - How to identify [pelvic inflammatory disease](disease)?
+
+  - intent: ask_preventive_measures
+    examples: |
+      - How can I prevent [Dengue](disease)?
+      - What are the preventive measures for [Malaria](disease)?
+      - How to avoid [COVID-19](disease)?
+      - Prevention for [Cholera](disease).
+      - Steps to prevent [measles](disease).
+      - What should I do to prevent [diarrhea](disease)?
+      - How to avoid getting [pneumonia](disease)?
+      - Preventive steps for [heart disease](disease).
+      - How can I prevent [stroke](disease)?
+      - What are the preventive measures for [diabetes](disease)?
+      - How to avoid [hypertension](disease)?
+      - Prevention for [cancer](disease).
+      - Steps to prevent [obesity](disease)?
+      - What should I do to prevent [depression](disease)?
+      - How to avoid getting [anxiety](disease)?
+      - Preventive steps for [arthritis](disease).
+      - How can I prevent [asthma](disease)?
+      - What are the preventive measures for [allergy](disease)?
+      - How to avoid [migraine](disease)?
+      - Prevention for [eczema](disease).
+      - Steps to prevent [insomnia](disease).
+      - What should I do to prevent [osteoporosis](disease)?
+      - How to avoid getting [psoriasis](disease)?
+      - Preventive steps for [ulcer](disease).
+      - How can I prevent [bronchitis](disease)?
+      - What are the preventive measures for [tuberculosis](disease)?
+      - How to avoid [sinusitis](disease)?
+      - Prevention for [tinnitus](disease).
+      - Steps to prevent [ulcerative colitis](disease).
+      - What should I do to prevent [whooping cough](disease)?
+      - How to avoid getting [zika virus](disease)?
+      - Preventive steps for [ebola](disease).
+      - How can I prevent [lyme disease](disease)?
+      - What are the preventive measures for [chikungunya](disease)?
+      - How to avoid [yellow fever](disease)?
+      - Prevention for [rabies](disease).
+      - Steps to prevent [typhus](disease).
+      - What should I do to prevent [leprosy](disease)?
+      - How to avoid getting [anthrax](disease)?
+      - Preventive steps for [botulism](disease)?
+      - How can I prevent [hepatitis B](disease)?
+      - What are the preventive measures for [hepatitis C](disease)?
+      - How to avoid [HIV/AIDS](disease)?
+      - Prevention for [syphilis](disease).
+      - Steps to prevent [gonorrhea](disease).
+      - What should I do to prevent [chlamydia](disease)?
+      - How to avoid getting [herpes](disease)?
+      - Preventive steps for [trichomoniasis](disease).
+      - How can I prevent [bacterial vaginosis](disease)?
+
+  - intent: general_health_query
+    examples: |
+      - Tell me about [Dengue](disease).
+      - What do I need to know about [Meniere's Disease](disease)?
+      - Information on [Malaria](disease).
+      - What is [Typhoid](disease)?
+      - Explain [Chickenpox](disease).
+      - [COVID-19](disease) info.
+      - I need details about [Flu](disease).
+      - Can you tell me about [diabetes](disease)?
+      - What is [high blood pressure](disease)?
+      - Give me information on [heart disease](disease).
+      - What do I need to know about [cancer](disease)?
+      - Tell me about [asthma](disease).
+      - Information on [arthritis](disease).
+      - What is [depression](disease)?
+      - Explain [anxiety](disease).
+      - [hypertension](disease) info.
+      - I need details about [allergy](disease).
+      - Can you tell me about [migraine](disease)?
+      - What is [eczema](disease)?
+      - Give me information on [insomnia](disease).
+      - What do I need to know about [obesity](disease)?
+      - Tell me about [osteoporosis](disease).
+      - Information on [psoriasis](disease).
+      - What is [stroke](disease)?
+      - Explain [ulcer](disease).
+      - [bronchitis](disease) info.
+      - I need details about [cancer](disease).
+      - Can you tell me about [dementia](disease)?
+
+  - intent: general_health_info_option
+    examples: |
+      - 1
+      - general health info
+      - chat with ai
+      - health info
+      - talk to ai
+
+  - intent: back_to_main_menu
+    examples: |
+      - back
+      - main menu
+      - return to main menu
+      - go back
+      - menu
+
+  - intent: exit_chat_option
+    examples: |
+      - 5
+      - exit chat
+      - quit chat
+      - exit
+
+  # ---------------------------------------------------------------------------------------------
+  # --- HINDI & HINGLISH Intents ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: greet
+    examples: |
+      - नमस्ते
+      - नमस्कार
+      - राम राम
+      - हेल्लो
+      - कैसे हो
+      - hello
+      - hi
+      - namaste
+      - kaisa hai
+      - hey bot
+      - shuru karo
+      - chalo baat karte hain
+      - good morning
+      - good evening
+
+  - intent: goodbye
+    examples: |
+      - अलविदा
+      - बाय
+      - फिर मिलेंगे
+      - अपना ध्यान रखना
+      - बंद करो
+      - chalo bye
+      - theek hai bye
+      - fir milenge
+      - take care
+      - stop karo
+
+  - intent: thank_you
+    examples: |
+      - धन्यवाद
+      - शुक्रिया
+      - बहुत बहुत धन्यवाद
+      - यह मददगार था
+      - thanks
+      - thank you
+      - bahut shukriya
+      - helpful tha
+      - thx
+      - ty
+      - good info
+      - jankari ke liye dhanyawad
+      - aapki madad ke liye shukriya
+
+  - intent: affirm
+    examples: |
+      - हाँ
+      - बिलकुल
+      - सही है
+      - हाँ जी
+      - ठीक है
+      - yes
+      - haan
+      - bilkul
+      - theek hai
+      - sahi hai
+
+  - intent: deny
+    examples: |
+      - नहीं
+      - कभी नहीं
+      - मुझे नहीं लगता
+      - ना
+      - nahi
+      - no
+      - kabhi nahi
+      - aisa nahi hai
+
+  - intent: mood_great
+    examples: |
+      - बहुत अच्छा
+      - बढ़िया
+      - शानदार
+      - मस्त
+      - अच्छा लग रहा है
+      - I am good
+      - sab theek hai
+      - bahut khush hoon
+      - mast hoon
+
+  - intent: mood_unhappy
+    examples: |
+      - मेरा दिन खराब था
+      - मैं दुखी हूँ
+      - मुझे अच्छा नहीं लग रहा
+      - मैं उदास हूँ
+      - खराब
+      - बहुत खराब
+      - not good
+      - mood kharab hai
+      - accha nahi lag raha
+
+  - intent: bot_challenge
+    examples: |
+      - क्या तुम बॉट हो?
+      - क्या तुम इंसान हो?
+      - क्या मैं एक बॉट से बात कर रहा हूँ?
+      - तुम कौन हो?
+      - are you a bot?
+      - tum bot ho kya?
+      - human ho?
+
+  - intent: ask_symptoms
+    examples: |
+      - [मलेरिया](disease) के लक्षण क्या हैं?
+      - [डेंगू](disease) के लक्षण बताओ।
+      - [बुखार](disease) के लक्षण क्या होते हैं?
+      - [COVID-19](disease) के लक्षण क्या हैं?
+      - मुझे [खांसी](disease) के लक्षण जानने हैं।
+      - [तपेदिक](disease) के लक्षण क्या हैं?
+      - [हेपेटाइटिस](disease) के लक्षण बताओ।
+      - [अस्थमा](disease) के लक्षण क्या होते हैं?
+      - [मधुमेह](disease) के लक्षण क्या हैं?
+      - [हृदय रोग](disease) के लक्षण क्या हैं?
+      - [थायराइड](disease) के लक्षण क्या होते हैं?
+      - [हाई ब्लड प्रेशर](disease) के लक्षण क्या हैं?
+      - [डिप्रेशन](disease) के लक्षण क्या हैं?
+      - [एंग्जायटी](disease) के लक्षण बताओ।
+      - [हाइपरटेंशन](disease) के लक्षण क्या होते हैं
+      - [एलर्जी](disease) के लक्षण क्या हैं?
+      - [माइग्रेन](disease) के लक्षण क्या हैं?
+      - [एक्जिमा](disease) के लक्षण बताओ।
+      - [अनिद्रा](disease) के लक्षण क्या होते हैं?
+      - [मोटापा](disease) के लक्षण क्या हैं?
+      - [ऑस्टियोपोरोसिस](disease) के लक्षण क्या हैं?
+      - [सोरायसिस](disease) के लक्षण बताओ।
+      - [स्ट्रोक](disease) के लक्षण क्या होते हैं?
+      - [अल्सर](disease) के लक्षण क्या हैं?
+      - [ब्रोंकाइटिस](disease) के लक्षण बताओ।
+      - [कैंसर](disease) के लक्षण क्या होते हैं?
+      - [डिमेंशिया](disease) के लक्षण क्या होते हैं?
+      - [फाइब्रोमायल्जिया](disease) के लक्षण बताओ।
+      - [गाउट](disease) के लक्षण क्या होते हैं?
+      - [लुपस](disease) के लक्षण क्या होते हैं?
+      - [न्यूमोनिया](disease) के लक्षण बताओ।
+      - [साइनसाइटिस](disease) के लक्षण क्या होते हैं?
+      - [टिनिटस](disease) के लक्षण क्या होते हैं?
+      - [अल्सरेटिव कोलाइटिस](disease) के लक्षण क्या होते हैं?
+      - [हूपिंग कफ](disease) के लक्षण क्या होते हैं?
+      - [ज़िका वायरस](disease) के लक्षण क्या हैं?
+      - [एबोला](disease) के लक्षण बताओ।
+      - [लाइम डिजीज](disease) के लक्षण क्या होते हैं?
+      - [चिकनगुनिया](disease) के लक्षण क्या हैं?
+      - [येलो फीवर](disease) के लक्षण बताओ।
+      - [रेबीज](disease) के लक्षण क्या होते हैं?
+      - [हैजा](disease) के लक्षण क्या हैं?
+      - [टायफस](disease) के लक्षण बताओ।
+      - [कोढ़](disease) के लक्षण क्या होते हैं?
+      - [एंथ्रेक्स](disease) के लक्षण क्या हैं?
+      - [बोटुलिज्म](disease) के लक्षण बताओ।
+      - [तपेदिक](disease) के लक्षण क्या होते हैं?
+      - [खसरा](disease) के लक्षण क्या हैं?
+      - [मम्प्स](disease) के लक्षण बताओ।
+      - [रूबेला](disease) के लक्षण क्या होते हैं?
+      - [पर्टुसिस](disease) के लक्षण क्या हैं?
+      - [हेपेटाइटिस बी](disease) के लक्षण बताओ।
+      - [हेपेटाइटिस सी](disease) के लक्षण क्या होते हैं?
+      - [HIV/AIDS](disease) के लक्षण बताओ।
+      - [सिफलिस](disease) के लक्षण क्या होते हैं?
+      - [गोनोरिया](disease) के लक्षण बताओ।
+      - [क्लैमाइडिया](disease) के लक्षण क्या हैं?
+      - [हर्पीस](disease) के लक्षण बताओ।
+      - [ट्राइकोमोनियासिस](disease) के लक्षण क्या हैं?
+      - [बैक्टीरियल वेजिनोसिस](disease) के लक्षण बताओ।
+      - [कैंडिडिआसिस](disease) के लक्षण क्या हैं?
+      - [पेल्विक इंफ्लेमेटरी डिज जीज](disease) के लक्षण बताओ।
+      - [Dengue](disease) ke symptoms kya hain?
+      - [Malaria](disease) ke kya lakshan hote hain?
+      - [COVID-19](disease) ke symptoms batao.
+      - [Flu](disease) ke lakshan.
+      - [Common Cold](disease) ke signs.
+      - [Tuberculosis](disease) ke symptoms kya hain?
+      - [Hepatitis](disease) ke lakshan batao.
+      - [Asthma](disease) ke kya lakshan hote hain?
+      - [Diabetes](disease) ke symptoms kya hain?
+      - [Heart Disease](disease) ke lakshan.
+      - [Thyroid](disease) ke symptoms kya hain?
+      - [High Blood Pressure](disease) ke lakshan.
+      - [Depression](disease) ke symptoms batao.
+      - [Anxiety](disease) ke lakshan.
+      - [Hypertension](disease) ke kya lakshan hote hain?
+      - [Allergy](disease) ke symptoms kya hain?
+      - [Migraine](disease) ke lakshan.
+      - [Eczema](disease) ke symptoms batao.
+      - [Insomnia](disease) ke lakshan.
+      - [Obesity](disease) ke symptoms kya hain?
+      - [Osteoporosis](disease) ke lakshan.
+      - [Psoriasis](disease) ke symptoms batao.
+      - [Stroke](disease) ke lakshan.
+      - [Ulcer](disease) ke symptoms kya hain?
+      - [Bronchitis](disease) ke lakshan.
+      - [Pneumonia](disease) ke symptoms kya hain?
+      - [Typhoid](disease) ke symptoms kya hain?
+      - [Cancer](disease) ke kya kya lakshan hote hain?
+      - [Diabetes](disease) ke symptoms batao.
+      - [TB](disease) ke lakshan.
+      - [Hepatitis](disease) ke signs.
+      - [Asthma](disease) ke symptoms kya hain?
+
+  - intent: ask_preventive_measures
+    examples: |
+      - [डेंगू](disease) से कैसे बचें?
+      - [मलेरिया](disease) की रोकथाम के उपाय क्या हैं?
+      - [COVID-19](disease) से कैसे बचा जाए?
+      - [हैजा](disease) से बचने के तरीके।
+      - [खसरा](disease) से बचाव के उपाय।
+      - [डायबिटीज](disease) से कैसे बचें?
+      - [न्यूमोनिया](disease) से बचने के तरीके।
+      - [हृदय रोग](disease) से बचाव के उपाय क्या हैं?
+      - [स्ट्रोक](disease) से कैसे बचें?
+      - [मधुमेह](disease) से बचने के तरीके।
+      - [हाइपरटेंशन](disease) से कैसे बचें?
+      - [कैंसर](disease) से बचाव के उपाय क्या हैं?
+      - [मोटापा](disease) से कैसे बचें?
+      - [डिप्रेशन](disease) से बचने के तरीके।
+      - [एंग्जायटी](disease) से कैसे बचें?
+      - [गठिया](disease) से बचने के तरीके।
+      - [अस्थमा](disease) से कैसे बचें?
+      - [एलर्जी](disease) से बचाव के उपाय क्या हैं?
+      - [माइग्रेन](disease) से कैसे बचें?
+      - [एक्जिमा](disease) से बचने के तरीके।
+      - [अनिद्रा](disease) से कैसे बचें?
+      - [ऑस्टियोपोरोसिस](disease) से बचने के तरीके।
+      - [सोरायसिस](disease) से कैसे बचें?
+      - [अल्सर](disease) से बचने के तरीके।
+      - [ब्रोंकाइटिस](disease) से कैसे बचें?
+      - [तपेदिक](disease) से बचने के तरीके।
+      - [साइनसाइटिस](disease) से कैसे बचें?
+      - [टिनिटस](disease) से बचने के तरीके।
+      - [अल्सरेटिव कोलाइटिस](disease) से कैसे बचें?
+      - [हूपिंग कफ](disease) से बचने के तरीके।
+      - [ज़िका वायरस](disease) से कैसे बचें?
+      - [एबोला](disease) से बचने के तरीके।
+      - [लाइम डिजीज](disease) से कैसे बचें?
+      - [चिकनगुनिया](disease) से बचने के तरीके।
+      - [येलो फीवर](disease) से कैसे बचें?
+      - [रेबीज](disease) से बचने के तरीके।
+      - [टायफस](disease) से कैसे बचें?
+      - [कोढ़](disease) से बचने के तरीके।
+      - [एंथ्रेक्स](disease) से कैसे बचें?
+      - [बोटुलिज्म](disease) से बचने के तरीके।
+      - [हेपेटाइटिस बी](disease) से कैसे बचें?
+      - [हेपेटाइटिस सी](disease) से बचने के तरीके।
+      - [HIV/AIDS](disease) से कैसे बचें?
+      - [सिफलिस](disease) से बचने के तरीके।
+      - [गोनोरिया](disease) से कैसे बचें?
+      - [क्लैमाइडिया](disease) से बचने के तरीके।
+      - [हर्पीस](disease) से कैसे बचें?
+      - [ट्राइकोमोनियासिस](disease) से बचने के तरीके।
+      - [बैक्टीरियल वेजिनोसिस](disease) से कैसे बचें?
+      - [कैंडिडिआसिस](disease) से बचने के तरीके।
+      - [पेल्विक इंफ्लेमेटरी डिज जीज](disease) से कैसे बचें?
+      - [Malaria](disease) se kaise bachen?
+      - [Dengue](disease) se bachav ke upay kya hain?
+      - [COVID-19](disease) se kaise bacha jaaye?
+      - [Cholera](disease) se bachne ke tareeke.
+      - [Measles](disease) se bachav ke upay.
+      - [Diarrhea](disease) se kaise bachen?
+      - [Pneumonia](disease) se bachne ke tareeke.
+      - [Stroke](disease) se kaise bachen?
+      - [Diabetes](disease) se bachne ke tareeke.
+      - [Hypertension](disease) se kaise bachen?
+      - [Cancer](disease) se bachne ke tareeke.
+      - [Obesity](disease) se kaise bachen?
+      - [Depression](disease) se bachne ke tareeke.
+      - [Heart disease](disease) se bachne ke tips.
+      - [Typhoid](disease) se kaise bachein?
+      - [Asthma](disease) ke liye kya karein?
+      - [BP](disease) control kaise karein?
+
+  - intent: general_health_query
+    examples: |
+      - [मलेरिया](disease) के बारे में बताओ।
+      - [डेंगू](disease) की जानकारी दो।
+      - [बुखार](disease) क्या है?
+      - [COVID-19](disease) के बारे में बताओ।
+      - मुझे [खांसी](disease) के बारे में जानना है।
+      - [तपेदिक](disease) क्या है?
+      - [हेपेटाइटिस](disease) के बारे में बताओ।
+      - [अस्थमा](disease) क्या है?
+      - मुझे [मधुमेह](disease) के बारे में जानना है।
+      - [हृदय रोग](disease) क्या है?
+      - [गठिया](disease) के बारे में बताओ। 
+      - [अस्थमा](disease) के बारे में बताओ।
+      - मुझे [डायबिटीज](disease) के बारे में जानना है।
+      - [हाई ब्लड प्रेशर](disease) क्या है?
+      - [हृदय रोग](disease) के बारे में बताओ।
+      - मुझे [कैंसर](disease) के बारे में जानना है।
+      - [डिप्रेशन](disease) क्या है?
+      - [एंग्जायटी](disease) के बारे में बताओ।
+      - मुझे [हाइपरटेंशन](disease) के बारे में जानना है।
+      - [एलर्जी](disease) क्या है?
+      - [माइग्रेन](disease) के बारे में बताओ।
+      - मुझे [एक्जिमा](disease) के बारे में जानना है।
+      - [अनिद्रा](disease) क्या है?
+      - [मोटापा](disease) के बारे में बताओ।
+      - मुझे [ऑस्टियोपोरोसिस](disease) के बारे में जानना है।
+      - [सोरायसिस](disease) क्या है?
+      - [स्ट्रोक](disease) के बारे में बताओ।
+      - मुझे [अल्सर](disease) के बारे में जानना है।
+      - [ब्रोंकाइटिस](disease) क्या है?
+      - [न्यूमोनिया](disease) के बारे में बताओ।
+      - मुझे [टायफाइड](disease) के बारे में जानना है।
+      - [कैंसर](disease) क्या है?
+      - [डिमेंशिया](disease) के बारे में बताओ।
+      - मुझे [फाइब्रोमायल्जिया](disease) के बारे में जानना है।
+      - [गाउट](disease) क्या है?
+      - [लुपस](disease) के बारे में बताओ।
+      - मुझे [न्यूमोनिया](disease) के बारे में जानना है।
+      - [साइनसाइटिस](disease) क्या है?
+      - [टिनिटस](disease) के बारे में बताओ।
+      - मुझे [अल्सरेटिव कोलाइटिस](disease) के बारे में जानना है।
+      - [हूपिंग कफ](disease) क्या है?
+      - [ज़िका वायरस](disease) के बारे में बताओ।
+      - मुझे [एबोला](disease) के बारे में जानना है।
+      - [लाइम डिजीज](disease) क्या है?
+      - [चिकनगुनिया](disease) के बारे में बताओ।
+      - मुझे [येलो फीवर](disease) के बारे में जानना है।
+      - [रेबीज](disease) क्या है?
+      - [हैजा](disease) के बारे में बताओ।
+      - मुझे [टायफस](disease) के बारे में जानना है।
+      - [कोढ़](disease) क्या है?
+      - [एंथ्रेक्स](disease) के बारे में बताओ।
+      - मुझे [बोटुलिज्म](disease) के बारे में जानना है।
+      - [तपेदिक](disease) क्या है?
+      - [खसरा](disease) के बारे में बताओ।
+      - मुझे [मम्प्स](disease) के बारे में जानना है।
+      - [रूबेला](disease) क्या है?
+      - [पर्टुसिस](disease) के बारे में बताओ।
+      - मुझे [हेपेटाइटिस बी](disease) के बारे में जानना है।
+      - [हेपेटाइटिस सी](disease) क्या है?
+      - [HIV/AIDS](disease) के बारे में बताओ।
+      - मुझे [मधुमेह](disease) के बारे में जानना है।
+      - मुझे [कैंसर](disease) के बारे में जानना है।
+      - [Heart disease](disease) kya hai?
+      - [Thyroid](disease) ke baare mein jankari.
+      - [Obesity](disease) ke baare mein jankari.
+      - [Depression](disease) ke baare mein jankari.
+      - [Anxiety](disease) kya hai?
+      - [Hypertension](disease) ke baare mein jankari.
+      - [Allergy](disease) ke baare mein jankari.
+      - [Migraine](disease) kya hai?
+      - [Eczema](disease) ke baare mein jankari.
+      - [Insomnia](disease) ke baare mein jankari.
+      - [Osteoporosis](disease) kya hai?
+      - [Psoriasis](disease) ke baare mein jankari.
+      - [Stroke](disease) kya hai?
+      - [Ulcer](disease) ke baare mein jankari.
+      - [Bronchitis](disease) ke baare mein jankari.
+      - [Cancer](disease) kya hai?
+      - [Dementia](disease) ke baare mein jankari.
+      - [Gout](disease) ke baare mein jankari.
+      - [Lupus](disease) kya hai?
+      - [Pneumonia](disease) ke baare mein jankari.
+      - [Sinusitis](disease) ke baare mein jankari.
+      - [Tinnitus](disease) kya hai?
+      - [Ulcerative colitis](disease) ke baare mein jankari.
+      - [Whooping cough](disease) ke baare mein jankari.
+      - [Zika virus](disease) kya hai?
+      - [Dengue fever](disease) ke baare mein jankari.
+      - [Ebola](disease) ke baare mein jankari.
+      - [Lyme disease](disease) kya hai?
+      - [Chikungunya](disease) ke baare mein jankari.
+      - [Yellow fever](disease) ke baare mein jankari.
+      - [Rabies](disease) kya hai?
+      - [Cholera](disease) ke baare mein jankari.
+      - [Typhus](disease) ke baare mein jankari.
+      - [Leprosy](disease) kya hai?
+      - [Anthrax](disease) ke baare mein jankari.
+      - [Botulism](disease) ke baare mein jankari.
+      - [Tuberculosis](disease) kya hai?
+      - [Measles](disease) ke baare mein jankari.
+      - [Mumps](disease) ke baare mein jankari.
+      - [Rubella](disease) kya hai?
+      - [Pertussis](disease) ke baare mein jankari.
+      - [Hepatitis B](disease) ke baare mein jankari.
+      - [Hepatitis C](disease) ke baare mein jankari.
+      - [HIV/AIDS](disease) kya hai?
+      - [Syphilis](disease) ke baare mein jankari.
+      - [Gonorrhea](disease) ke baare mein jankari.
+      - [Chlamydia](disease) kya hai?
+      - [Herpes](disease) ke baare mein jankari.
+      - [Trichomoniasis](disease) ke baare mein jankari.
+      - [Bacterial vaginosis](disease) kya hai?
+      - [Candidiasis](disease) ke baare mein jankari.
+      - [Pelvic inflammatory disease](disease) ke baare mein jankari.
+      - [Malaria](disease) ke baare mein jankari.
+      - [Dengue](disease) ke baare mein jankari.
+      - [COVID-19](disease) kya hai?
+      - [Flu](disease) ke baare mein jankari.
+      - [Common Cold](disease) ke baare mein jankari.
+      - [Tuberculosis](disease) kya hai?
+      - [Hepatitis](disease) ke baare mein jankari.
+      - [Asthma](disease) ke baare mein jankari.
+      - [Diabetes](disease) kya hai?
+      - [Heart Disease](disease) ke baare mein jankari.
+      - [Thyroid](disease) kya hai?
+      - [Obesity](disease) ke baare mein jankari.
+      - [Depression](disease) ke baare mein jankari.
+      - [Anxiety](disease) kya hai?
+      - [Hypertension](disease) ke baare mein jankari.
+      - [Allergy](disease) ke baare mein jankari.
+      - [Migraine](disease) kya hai?
+      - [Eczema](disease) ke baare mein jankari.
+      - [Insomnia](disease) ke baare mein jankari.
+      - [Obesity](disease) kya hai?
+      - [Osteoporosis](disease) ke baare mein jankari.
+      - [Psoriasis](disease) ke baare mein jankari.
+      - [Stroke](disease) kya hai?
+      - [Ulcer](disease) ke baare mein jankari.
+      - [Bronchitis](disease) ke baare mein jankari.
+      - [Cancer](disease) kya hai?
+      - [Dementia](disease) ke baare mein jankari.
+      - [Gout](disease) ke baare mein jankari.
+      - [Lupus](disease) kya hai?
+      - [Pneumonia](disease) ke baare mein jankari.
+      - [Sinusitis](disease) ke baare mein jankari.
+      - [Tinnitus](disease) kya hai?
+      - [Ulcerative colitis](disease) ke baare mein jankari.
+      - [Whooping cough](disease) ke baare mein jankari.
+      - [Zika virus](disease) kya hai?
+      - [Dengue fever](disease) ke baare mein jankari.
+      - [Ebola](disease) ke baare mein jankari.
+      - [Lyme disease](disease) kya hai?
+      - [Chikungunya](disease) ke baare mein jankari.
+      - [Yellow fever](disease) ke baare mein jankari.
+      - [Diabetes](disease) ke baare mein jankari.
+      - [BP](disease) kya hota hai?
+      - [Heart attack](disease) ki info.
+      - [Typhoid](disease) ke baare mein explain karo.
+      - [Asthma](disease) ki jankari chahiye.
+
+  - intent: general_health_info_option
+    examples: |
+      - 1
+      - सामान्य स्वास्थ्य जानकारी
+      - AI से बात करें
+      - health info
+      - chat with AI
+      - pehla option
+
+  - intent: back_to_main_menu
+    examples: |
+      - वापस
+      - मुख्य मेनू
+      - मेन मेनू में वापस जाओ
+      - back
+      - main menu
+      - wapas chalo
+      - menu
+
+  - intent: exit_chat_option
+    examples: |
+      - 5
+      - चैट से बाहर निकलें
+      - chat exit karo
+      - band karo
+      - paanch number
+
+  # ---------------------------------------------------------------------------------------------
+  # --- BENGALI & BENGLISH Intents ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: greet
+    examples: |
+      - হ্যালো
+      - নমস্কার
+      - কেমন আছেন
+      - শুভ সকাল
+      - শুভ সন্ধ্যা
+      - hey
+      - hi
+      - namaskar
+      - kemon acho
+      - cholo kotha boli
+      - start
+      - good morning
+
+  - intent: goodbye
+    examples: |
+      - বিদায়
+      - বাই
+      - আবার দেখা হবে
+      - নিজের যত্ন নিও
+      - বন্ধ করো
+      - bye
+      - abar dekha hobe
+      - take care
+      - off koro
+
+  - intent: thank_you
+    examples: |
+      - ধন্যবাদ
+      - আপনাকে অনেক ধন্যবাদ
+      - এটা সহায়ক ছিল
+      - thanks
+      - thank you
+      - anek dhonnobad
+      - helpful chhilo
+      - thx
+      - ty
+      - jankari dewar jonno dhonnobad
+
+  - intent: affirm
+    examples: |
+      - হ্যাঁ
+      - অবশ্যই
+      - ঠিকই
+      - haan
+      - yes
+      - thik ache
+      - nishchoi
+
+  - intent: deny
+    examples: |
+      - না
+      - কক্ষনো না
+      - আমি তা মনে করি না
+      - na
+      - no
+      - kakhono na
+      - eta thik noy
+
+  - intent: mood_great
+    examples: |
+      - খুব ভালো
+      - দারুণ
+      - চমৎকার
+      - আমি খুব ভালো আছি
+      - ami bhalo achi
+      - khub bhalo
+      - all good
+
+  - intent: mood_unhappy
+    examples: |
+      - আমার দিনটা খুব খারাপ ছিল
+      - আমি দুঃখিত
+      - আমার ভালো লাগছে না
+      - খারাপ
+      - খুব খারাপ
+      - bhalo lagche na
+      - ami udas
+      - not good
+
+  - intent: bot_challenge
+    examples: |
+      - আপনি কি একটি বট?
+      - আপনি কি মানুষ?
+      - আমি কি একটি বটের সাথে কথা বলছি?
+      - আপনি কি?
+      - tumi ki bot?
+      - manush na bot?
+      - ki tumi?
+
+  - intent: ask_symptoms
+    examples: |
+      - [ম্যালেরিয়া](disease) এর লক্ষণ কি কি?
+      - [ডেঙ্গু](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [জ্বর](disease) এর লক্ষণ কি?
+      - [COVID-19](disease) এর লক্ষণগুলি কী কী?
+      - [কাশি](disease) এর লক্ষণ জানতে চাই।
+      - [টিবি](disease) এর লক্ষণ কি কি?
+      - [হেপাটাইটিস](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [অ্যাজমা](disease) এর লক্ষণ কি?
+      - [ডায়াবেটিস](disease) এর লক্ষণ কি কি?
+      - [হার্ট ডিজিজ](disease) এর লক্ষণ কি?
+      - [থাইরয়েড](disease) এর লক্ষণ কি কি?
+      - [হাই ব্লাড প্রেশার](disease) এর লক্ষণ কি?
+      - [ডিপ্রেশন](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [এ্যাংজাইটি](disease) এর লক্ষণ কি?
+      - [হাইপারটেনশন](disease) এর লক্ষণ কি কি?
+      - [অ্যালার্জি](disease) এর লক্ষণ কি?
+      - [মাইগ্রেন](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [একজিমা](disease) এর লক্ষণ কি কি?
+      - [অনিদ্রা](disease) এর লক্ষণ কি?
+      - [মোটা হওয়া](disease) এর লক্ষণ কি?
+      - [অস্টিওপরোসিস](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [সোরিয়াসিস](disease) এর লক্ষণ কি কি?
+      - [স্ট্রোক](disease) এর লক্ষণ কি?
+      - [আলসার](disease) এর লক্ষণ কি?
+      - [ব্রংকাইটিস](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [নিউমোনিয়া](disease) এর লক্ষণ কি কি?
+      - [টাইফয়েড](disease) এর লক্ষণ কি?
+      - [ক্যান্সার](disease) এর লক্ষণ কি কি?
+      - [ডিমেনশিয়া](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [ফাইব্রোমায়ালজিয়া](disease) এর লক্ষণ কি কি?
+      - [গাউট](disease) এর লক্ষণ কি?
+      - [লুপাস](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [নিউমোনিয়া](disease) এর লক্ষণ কি কি?
+      - [সাইনুসাইটিস](disease) এর লক্ষণ কি?
+      - [টিনিটাস](disease) এর লক্ষণ কি?
+      - [আলসারেটিভ কোলাইটিস](disease) এর লক্ষণ সম্পর্কে বলুন।
+      - [হুপিং কফ](disease) এর লক্ষণ কি?
+      - [জিকা ভাইরাস](disease) এর লক্ষণ কি কি?
+      - [Malaria](disease) er symptoms ki?
+      - [Cancer](disease) er lokkhon.
+      - [Diabetes](disease) er symptoms ki ki?
+      - [TB](disease) er lokkhon.
+      - [Hepatitis](disease) er signs.
+      - [Fibromyalgia](disease) er lokkhon ki?
+      - [Gout](disease) er lokkhon ki?
+      - [Lupus](disease) er lokkhon ki?
+      - [Pneumonia](disease) er lokkhon ki?
+      - [Sinusitis](disease) er lokkhon ki?
+      - [Tinnitus](disease) er lokkhon ki?
+      - [Ulcerative colitis](disease) er lokkhon ki?
+      - [Whooping cough](disease) er lokkhon ki?
+      - [Zika virus](disease) er lokkhon ki?
+      - [Dengue fever](disease) er lokkhon ki?
+      - [Ebola](disease) er lokkhon ki?
+      - [Lyme disease](disease) er lokkhon ki?
+      - [Chikungunya](disease) er lokkhon ki?
+      - [Yellow fever](disease) er lokkhon ki?
+      - [Rabies](disease) er lokkhon ki?
+      - [Cholera](disease) er lokkhon ki?
+      - [Typhus](disease) er lokkhon ki?
+      - [Leprosy](disease) er lokkhon ki?
+      - [Anthrax](disease) er lokkhon ki?
+      - [Botulism](disease) er lokkhon ki?
+      - [Tuberculosis](disease) er lokkhon ki?
+      - [Measles](disease) er lokkhon ki?
+      - [Mumps](disease) er lokkhon ki?
+      - [Rubella](disease) er lokkhon ki?
+      - [Pertussis](disease) er lokkhon ki?
+      - [Hepatitis B](disease) er lokkhon ki?
+      - [Hepatitis C](disease) er lokkhon ki?
+      - [HIV/AIDS](disease) er lokkhon ki?
+      - [Syphilis](disease) er lokkhon ki?
+      - [Gonorrhea](disease) er lokkhon ki?
+      - [Chlamydia](disease) er lokkhon ki?
+      - [Herpes](disease) er lokkhon ki?
+      - [Trichomoniasis](disease) er lokkhon ki?
+      - [Bacterial vaginosis](disease) er lokkhon ki?
+      - [Candidiasis](disease) er lokkhon ki?
+      - [Pelvic inflammatory disease](disease) er lokkhon ki?
+      - [COVID-19](disease) er symptoms ki ki?
+      - [Flu](disease) er symptoms ki?
+      - [Common Cold](disease) er signs.
+      - [Asthma](disease) er symptoms ki ki?
+      - [Diabetes](disease) er symptoms ki ki?
+      - [Heart Disease](disease) er symptoms ki?
+      - [Thyroid](disease) er symptoms ki ki?
+      - [High Blood Pressure](disease) er symptoms ki?
+      - [Depression](disease) er symptoms ki?
+      - [Anxiety](disease) er symptoms ki ki?
+      - [Hypertension](disease) er symptoms ki?
+      - [Allergy](disease) er symptoms ki?
+      - [Migraine](disease) er symptoms ki?
+      - [Eczema](disease) er symptoms ki ki?
+      - [Insomnia](disease) er symptoms ki?
+      - [Obesity](disease) er symptoms ki?
+      - [Osteoporosis](disease) er symptoms ki ki?
+      - [Psoriasis](disease) er symptoms ki?
+      - [Stroke](disease) er symptoms ki?
+      - [Ulcer](disease) er symptoms ki?
+      - [Bronchitis](disease) er symptoms ki ki?
+      - [Cancer](disease) er symptoms ki?
+      - [Dementia](disease) er symptoms ki?
+      - [Gout](disease) er symptoms ki ki?
+      - [Lupus](disease) er symptoms ki?
+      - [Pneumonia](disease) er symptoms ki?
+      - [Sinusitis](disease) er symptoms ki ki?
+      - [Tinnitus](disease) er symptoms ki?
+      - [Ulcerative colitis](disease) er symptoms ki?
+      - [Whooping cough](disease) er symptoms ki ki?
+      - [Zika virus](disease) er symptoms ki?
+      - [Dengue fever](disease) er symptoms ki?
+      - [Ebola](disease) er symptoms ki ki?
+      - [Lyme disease](disease) er symptoms ki?
+      - [Chikungunya](disease) er symptoms ki?
+      - [Yellow fever](disease) er symptoms ki ki?
+      - [Rabies](disease) er symptoms ki?
+      - [Asthma](disease) er lokkhon ki?
+
+  - intent: ask_preventive_measures
+    examples: |
+      - [ডেঙ্গু](disease) থেকে কিভাবে বাঁচব?
+      - [ম্যালেরিয়া](disease) প্রতিরোধের উপায় কি?
+      - [COVID-19](disease) কিভাবে এড়ানো যায়?
+      - [কলেরা](disease) প্রতিরোধের জন্য কি করব?
+      - [ডায়াবেটিস](disease) থেকে বাঁচার উপায়।
+      - [হেপাটাইটিস](disease) থেকে কিভাবে বাঁচব?
+      - [নিউমোনিয়া](disease) থেকে বাঁচার উপায়।
+      - [স্ট্রোক](disease) থেকে কিভাবে বাঁচব?
+      - [ডায়াবেটিস](disease) থেকে বাঁচার উপায়।
+      - [হাইপারটেনশন](disease) থেকে কিভাবে বাঁচব?
+      - [ক্যান্সার](disease) থেকে বাঁচার উপায়।
+      - [মোটা হওয়া](disease) থেকে কিভাবে বাঁচব?
+      - [ডিপ্রেশন](disease) থেকে বাঁচার উপায়।
+      - [এ্যাংজাইটি](disease) থেকে কিভাবে বাঁচব?
+      - [হাই ব্লাড প্রেশার](disease) থেকে বাঁচার উপায়।
+      - [অ্যালার্জি](disease) থেকে কিভাবে বাঁচব?
+      - [মাইগ্রেন](disease) থেকে বাঁচার উপায়।
+      - [একজিমা](disease) থেকে কিভাবে বাঁচব?
+      - [অনিদ্রা](disease) থেকে বাঁচার উপায়।
+      - [অস্টিওপরোসিস](disease) থেকে কিভাবে বাঁচব?
+      - [সোরিয়াসিস](disease) থেকে বাঁচার উপায়।
+      - [স্ট্রোক](disease) থেকে কিভাবে বাঁচব?
+      - [আলসার](disease) থেকে বাঁচার উপায়।
+      - [ব্রংকাইটিস](disease) থেকে কিভাবে বাঁচব?
+      - [টিবি](disease) থেকে বাঁচার উপায়।
+      - [ক্যান্সার](disease) থেকে কিভাবে বাঁচব?
+      - [ডিমেনশিয়া](disease) থেকে বাঁচার উপায়।
+      - [গাউট](disease) থেকে কিভাবে বাঁচব?
+      - [লুপাস](disease) থেকে বাঁচার উপায়।
+      - [নিউমোনিয়া](disease) থেকে কিভাবে বাঁচব?
+      - [সাইনুসাইটিস](disease) থেকে বাঁচার উপায়।
+      - [টিনিটাস](disease) থেকে কিভাবে বাঁচব?
+      - [আলসারেটিভ কোলাইটিস](disease) থেকে বাঁচার উপায়।
+      - [হুপিং কফ](disease) থেকে কিভাবে বাঁচব?
+      - [জিকা ভাইরাস](disease) থেকে বাঁচার উপায়।
+      - [এবোলা](disease) থেকে কিভাবে বাঁচব?
+      - [লাইম ডিজিজ](disease) থেকে বাঁচার উপায়।
+      - [চিকনগুনিয়া](disease) থেকে কিভাবে বাঁচব?
+      - [ইয়েলো ফিভার](disease) থেকে বাঁচার উপায়।
+      - [রেবিস](disease) থেকে কিভাবে বাঁচব?
+      - [হ্যাজা](disease) থেকে বাঁচার উপায়।
+      - [টাইফাস](disease) থেকে কিভাবে বাঁচব?
+      - [কোষ্ঠকাঠিন্য](disease) থেকে বাঁচার উপায়।
+      - [অ্যানথ্রাক্স](disease) থেকে কিভাবে বাঁচব?
+      - [বোটুলিজম](disease) থেকে বাঁচার উপায়।
+      - [টিউবারকিউলোসিস](disease) থেকে কিভাবে বাঁচব?
+      - [মেজলস](disease) থেকে বাঁচার উপায়।
+      - [মাম্পস](disease) থেকে কিভাবে বাঁচব?
+      - [রুবেলা](disease) থেকে বাঁচার উপায়।
+      - [পার্টুসিস](disease) থেকে কিভাবে বাঁচব?
+      - [Heart disease](disease) theke kivabe bachbo?
+      - [Typhoid](disease) theke bachar upay.
+      - [Chronic cough](disease) theke kivabe bachbo?
+      - [Diabetes](disease) theke bachar upay.
+      - [Asthma](disease) theke bachar upay.
+      - [Chronic cough](disease) theke bachar upay.
+      - [Asthma](disease) theke kivabe bachbo?
+      - [BP](disease) control kivabe korbo?
+
+  - intent: general_health_query
+    examples: |
+      - [ম্যালেরিয়া](disease) সম্পর্কে বলুন।
+      - [ডেঙ্গু](disease) সম্পর্কে তথ্য দিন।
+      - [জ্বর](disease) কি?
+      - [COVID-19](disease) সম্পর্কে জানতে চাই।
+      - [ক্যান্সার](disease) সম্পর্কে আমাকে বলুন।
+      - [Diabetes](disease) niye kichu bolun.
+      - [BP](disease) ki?
+      - [Heart attack](disease) er info.
+      - [Typhoid](disease) niye explain korun.
+      - [Asthma](disease) niye jankari chai.
+
+  - intent: general_health_info_option
+    examples: |
+      - 1
+      - সাধারণ স্বাস্থ্য তথ্য
+      - AI এর সাথে কথা বলুন
+      - health info
+      - chat with AI
+      - prothom option
+
+  - intent: back_to_main_menu
+    examples: |
+      - পিছনে
+      - প্রধান মেনু
+      - main menu te phire jao
+      - back
+      - main menu
+      - menu
+
+  - intent: exit_chat_option
+    examples: |
+      - 5
+      - চ্যাট থেকে বের হন
+      - chat off koro
+      - bondho koro
+      - panch number
+
+  # ---------------------------------------------------------------------------------------------
+  # --- ODIA Intents ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: greet
+    examples: |
+      - ନମସ୍କାର
+      - ହେଲୋ
+      - ଶୁଭ ସକାଳ
+      - ଶୁଭ ସନ୍ଧ୍ୟା
+      - କେମିତି ଅଛନ୍ତି
+      - ହାଏ
+
+  - intent: goodbye
+    examples: |
+      - ବିଦାୟ
+      - ବାଏ
+      - ପୁଣି ଦେଖାହେବ
+      - ଯତ୍ନ ନିଅ
+      - ବନ୍ଦ କରନ୍ତୁ
+
+  - intent: thank_you
+    examples: |
+      - ଧନ୍ୟବାଦ
+      - ବହୁତ ବହୁତ ଧନ୍ୟବାଦ
+      - ଏହା ସହାୟକ ଥିଲା
+      - ଥ୍ୟାଙ୍କ୍ସ
+      - ଆପଣଙ୍କ ସାହାଯ୍ୟ ପାଇଁ ଧନ୍ୟବାଦ
+
+  - intent: affirm
+    examples: |
+      - ହଁ
+      - ନିଶ୍ଚିତ
+      - ହଁ ଠିକ୍
+      - ହଁ
+
+  - intent: deny
+    examples: |
+      - ନାହିଁ
+      - କେବେ ନୁହେଁ
+      - ମୁଁ ଭାବୁନାହିଁ
+      - ନା
+
+  - intent: mood_great
+    examples: |
+      - ବହୁତ ଭଲ
+      - ଉତ୍ତମ
+      - ଚମତ୍କାର
+      - ମୁଁ ବହୁତ ଖୁସି ଅଛି
+
+  - intent: mood_unhappy
+    examples: |
+      - ମୋର ଦିନ ଖରାପ ଥିଲା
+      - ମୁଁ ଦୁଃଖୀ ଅଛି
+      - ମୋତେ ଭଲ ଲାଗୁନାହିଁ
+      - ଖରାପ
+
+  - intent: bot_challenge
+    examples: |
+      - ଆପଣ ଏକ ବଟ୍ କି?
+      - ଆପଣ ମଣିଷ କି?
+      - ମୁଁ ଏକ ବଟ୍ ସହିତ କଥାବାର୍ତ୍ତା କରୁଛି କି?
+      - ଆପଣ କିଏ?
+
+  - intent: ask_symptoms
+    examples: |
+      - [ମ୍ୟାଲେରିଆ](disease) ର ଲକ୍ଷଣ କଣ?
+      - [ଡେଙ୍ଗୁ](disease) ର ଲକ୍ଷଣ କୁହନ୍ତୁ।
+      - [ଜ୍ୱର](disease) ର ଲକ୍ଷଣ କଣ?
+      - [COVID-19](disease) ର ଲକ୍ଷଣ କ'ଣ?
+      - [କାଶ](disease) ର ଲକ୍ଷଣ ଜାଣିବାକୁ ଚାହେଁ।
+
+  - intent: ask_preventive_measures
+    examples: |
+      - [ଡେଙ୍ଗୁ](disease) ରୁ କିପରି ବଞ୍ଚିବେ?
+      - [ମ୍ୟାଲେରିଆ](disease) ପ୍ରତିରୋଧର ଉପାୟ କଣ?
+      - [COVID-19](disease) ରୁ କିପରି ରକ୍ଷା ପାଇବେ?
+      - [ହଇଜା](disease) ପ୍ରତିରୋଧ ପାଇଁ କ'ଣ କରିବେ।
+      - [ଡାଇବେଟିସ୍](disease) ରୁ ବଞ୍ଚିବାର ଉପାୟ।
+
+  - intent: general_health_query
+    examples: |
+      - [ମ୍ୟାଲେରିଆ](disease) ବିଷୟରେ କୁହନ୍ତୁ।
+      - [ଡେଙ୍ଗୁ](disease) ବିଷୟରେ ସୂଚନା ଦିଅନ୍ତୁ।
+      - [ଜ୍ୱର](disease) କଣ?
+      - [COVID-19](disease) ବିଷୟରେ ଜାଣିବାକୁ ଚାହେଁ।
+      - [କର୍କଟ](disease) ବିଷୟରେ ମୋତେ କୁହନ୍ତୁ।
+
+  - intent: general_health_info_option
+    examples: |
+      - 1
+      - ସାଧାରଣ ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା
+      - AI ସହିତ କଥା ହୁଅନ୍ତୁ
+      - ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା
+      - AI ସହ କଥା ହୁଅ
+
+  - intent: back_to_main_menu
+    examples: |
+      - ପଛକୁ
+      - ମୁଖ୍ୟ ମେନୁ
+      - ମୁଖ୍ୟ ମେନୁକୁ ଫେରନ୍ତୁ
+      - ବ୍ୟାକ
+      - ମେନ ମେନୁ
+
+  - intent: exit_chat_option
+    examples: |
+      - 5
+      - ଚାଟରୁ ବାହାରନ୍ତୁ
+      - ଚାଟ୍ ବନ୍ଦ କରନ୍ତୁ
+      - ବାହାରକୁ ଯାଅ

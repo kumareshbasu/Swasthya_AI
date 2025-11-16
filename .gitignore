@@ -1,0 +1,7 @@
+models/
+tests/
+venv/
+__pycache__/
+
+app.py
+actions/actions.py

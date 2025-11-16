@@ -1,0 +1,58 @@
+# rules.yml
+version: "3.1"
+rules:
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: action_set_language_slot # Keep language setting
+      - action: utter_goodbye
+      - action: action_listen
+
+  - rule: Respond to bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: action_set_language_slot # Keep language setting
+      - action: utter_iamabot
+      - action: action_listen
+
+  - rule: Say hi to user
+    steps:
+      - intent: greet
+      - action: action_set_language_slot # Keep language setting
+      - action: utter_greet
+      - action: action_listen
+
+  - rule: Respond to thank you
+    steps:
+      - intent: thank_you
+      - action: action_set_language_slot # Keep language setting
+      - action: utter_you_are_welcome
+      - action: action_listen
+
+  - rule: Activate AI Health Assistant via NLU
+    steps:
+      - intent: general_health_info_option
+      - action: action_set_language_slot # Keep language setting
+      - action: utter_ai_assistant_welcome
+      - action: action_listen
+
+  - rule: Ask Gemini for symptoms
+    steps:
+      - intent: ask_symptoms
+      - action: action_set_language_slot # Keep language setting
+      - action: action_ask_gemini
+      - action: action_listen
+
+  - rule: Ask Gemini for preventive measures
+    steps:
+      - intent: ask_preventive_measures
+      - action: action_set_language_slot # Keep language setting
+      - action: action_ask_gemini
+      - action: action_listen
+
+  - rule: Ask Gemini for general health info
+    steps:
+      - intent: general_health_query
+      - action: action_set_language_slot # Keep language setting
+      - action: action_ask_gemini
+      - action: action_listen
