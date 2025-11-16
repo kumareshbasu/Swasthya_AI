@@ -1,7 +1,7 @@
 models/
 tests/
 venv/
-__pycache__/
+actions/__pycache__/
 
 app.py
 actions/actions.py
