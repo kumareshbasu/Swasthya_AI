@@ -5,4 +5,6 @@ actions/__pycache__/
 .rasa/
 
 app.py
+appp.py
 actions/actions.py
+actions/actionss.py
