@@ -7,7 +7,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-GEMINI_API_KEY = "AIzaSyD7BXwnmnlch7faV4m2XrTt4qwXP1HsUbM"
+GEMINI_API_KEY = "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8"
 genai.configure(api_key=GEMINI_API_KEY) 
 
 global_gemini_model_name = "gemini-2.5-pro" # Ensure this is 'gemini-2.5-pro'
