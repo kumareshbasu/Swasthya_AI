@@ -43,6 +43,11 @@ rules:
       - action: action_ask_gemini
       - action: action_listen
 
+  - rule: Analyze uploaded image
+    steps:
+      - intent: analyze_image
+      - action: action_analyze_image_gemini
+
   - rule: Ask Gemini for preventive measures
     steps:
       - intent: ask_preventive_measures
