@@ -3,3 +3,6 @@ tests/
 venv/
 actions/__pycache__/
 .rasa/
+
+actions/actions.py
+app.py
