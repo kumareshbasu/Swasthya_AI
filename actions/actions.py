@@ -4,10 +4,13 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 import logging 
+import requests
+from PIL import Image
+import io
 
 logger = logging.getLogger(__name__)
 
-GEMINI_API_KEY = "AIzaSyD7BXwnmnlch7faV4m2XrTt4qwXP1HsUbM"
+GEMINI_API_KEY = "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8"
 genai.configure(api_key=GEMINI_API_KEY) 
 
 global_gemini_model_name = "gemini-2.5-pro" # Ensure this is 'gemini-2.5-pro'
@@ -114,3 +117,67 @@ class ActionSetLanguageSlot(Action):
         lang = tracker.latest_message.get('metadata', {}).get('lang', 'en')
         logger.info(f"DEBUG ACTIONS: Setting 'lang' slot to: '{lang}' from metadata.")
         return [SlotSet("lang", lang)]
+    
+
+# --- NEW ACTION FOR IMAGES ---
+class ActionAnalyzeImageGemini(Action):
+    def name(self) -> Text:
+        return "action_analyze_image_gemini"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        # 1. Get the image URL and Language from the tracker
+        image_url = tracker.get_slot('image_url')
+        user_lang = tracker.latest_message.get('metadata', {}).get('lang', 'en')
+        
+        # We need the Meta Token here to download the image
+        # (Ideally, use os.environ, but for simplicity we copy it here as you did in app.py)
+        META_ACCESS_TOKEN = "EAAJz0nEJSNgBQJVilVFckutGI5wTnpypoB0fzZByRq7OaK72YcwXe5qEKlxGHwIJCvHfzoZBWp778bMgrGLp0Qpe4HzBJeJpDwZCqFvkKBevVTEXdNzZBaZBuP83070LMAxXdRwZACwp42kO7lqfeO8epaZCoaf25cQChbF0X9ZAIZBuVZA3f2RF1m1KZCImCzuGM3XTgbSrZCFsoMjgdR20eyRz5964Q9tyIQZC2YTSE6G21BbAG7jZAZCbROJHtxQBaEqfmJc6V9uyk0wjpMUY2BuuK8EagplaQZDZD"
+
+        if not image_url:
+            dispatcher.utter_message(text="I received the image request, but the URL is missing.")
+            return []
+
+        # 2. Download the Image Bytes
+        headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}"}
+        try:
+            logger.info(f"DEBUG ACTIONS: Downloading image from {image_url}")
+            response = requests.get(image_url, headers=headers)
+            response.raise_for_status()
+            image_bytes = response.content
+        except Exception as e:
+            logger.error(f"Failed to download image in actions.py: {e}")
+            dispatcher.utter_message(text="I'm having trouble downloading that image from WhatsApp.")
+            return []
+
+        # 3. Prepare Gemini
+        try:
+            model = genai.GenerativeModel('gemini-2.5-pro')
+            img = Image.open(io.BytesIO(image_bytes))
+
+            # 4. Construct Prompt
+            if user_lang == 'hi':
+                system_prompt = "आप एक सहायक चिकित्सा सहायक हैं। इस छवि का विश्लेषण करें और सुझाव दें। हमेशा सलाह दें कि 'कृपया डॉक्टर से मिलें'।"
+            elif user_lang == 'bn':
+                system_prompt = "আপনি একজন সহায়ক চিকিৎসা সহকারী। এই চিত্রটি বিশ্লেষণ করুন এবং পরামর্শ দিন। সর্বদা পরামর্শ দিন 'দয়া করে একজন ডাক্তারের সাথে দেখা করুন'।"
+            elif user_lang == 'or':
+                system_prompt = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ ଅଟନ୍ତି। ଏହି ଚିତ୍ରକୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ ଏବଂ ପରାମର୍ଶ ଦିଅନ୍ତୁ। ସର୍ବଦା ପରାମର୍ଶ ଦିଅନ୍ତୁ 'ଦୟାକରି ଡାକ୍ତରଙ୍କୁ ଦେଖା କରନ୍ତୁ'।"
+            else:
+                system_prompt = "You are a helpful medical assistant. Analyze this image (wound/symptom) and suggest what it might be and home remedies. Add disclaimer: 'Consult a doctor'."
+
+            # 5. Generate
+            logger.info("DEBUG ACTIONS: Sending image to Gemini...")
+            gemini_response = model.generate_content([system_prompt, img])
+            
+            if gemini_response and gemini_response.text:
+                dispatcher.utter_message(text=gemini_response.text)
+            else:
+                dispatcher.utter_message(text="I couldn't interpret that image.")
+
+        except Exception as e:
+            logger.error(f"Gemini Vision Error in actions: {e}")
+            dispatcher.utter_message(text="Sorry, I encountered an error analyzing the image.")
+
+        return []

@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 import requests
 import os
+import io
 import json
 import logging
 import threading
+import google.generativeai as genai
+from PIL import Image
 from langdetect import detect, DetectorFactory # Import langdetect
 
 # To ensure consistent language detection results
@@ -12,7 +15,7 @@ DetectorFactory.seed = 0
 app = Flask(__name__)
 
 # --- Configuration for Meta WhatsApp Business Platform API ---
-META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBP3DbZAZBxwzxuJFpNkGaPibZCEQ9jU5aXjRobP127i6uIZBb7SZAfVMIX4JVFwPF05h0eOIoF8W9Ioweci5f9q3bZBSZBASx9cI2ELxRG7cT4znZCElmkiYsuOX621L460BmBm5h2I9AYbBTegzC0PZCFEoITMembrE8RzWn873bdjEypEwZCSZB8tL44eSZAb93DdXhXIntDNnMqB0DWCqHXqcGGZAQgJ0Q9X1jEBjfPQdA8ASbeLdryXZAdjEvMHvwTwaAUssTP3lyTxXlRn")
+META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBQJVilVFckutGI5wTnpypoB0fzZByRq7OaK72YcwXe5qEKlxGHwIJCvHfzoZBWp778bMgrGLp0Qpe4HzBJeJpDwZCqFvkKBevVTEXdNzZBaZBuP83070LMAxXdRwZACwp42kO7lqfeO8epaZCoaf25cQChbF0X9ZAIZBuVZA3f2RF1m1KZCImCzuGM3XTgbSrZCFsoMjgdR20eyRz5964Q9tyIQZC2YTSE6G21BbAG7jZAZCbROJHtxQBaEqfmJc6V9uyk0wjpMUY2BuuK8EagplaQZDZD")
 PHONE_NUMBER_ID = os.environ.get("PHONE_NUMBER_ID", "819746631222018")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "secret_swasthya_ai_is_the_best") 
 
@@ -156,6 +159,68 @@ def send_whatsapp_message(to_number, message_body):
         return None
 
 
+# --- Image Handling Helpers ---
+
+def get_media_url_from_id(media_id):
+    """
+    Queries Meta API to get the URL for a specific media ID.
+    """
+    url = f"https://graph.facebook.com/v19.0/{media_id}"
+    headers = {
+        "Authorization": f"Bearer {META_ACCESS_TOKEN}",
+    }
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json().get("url")
+    except Exception as e:
+        logger.error(f"Error getting media URL: {e}")
+        return None
+
+def download_image_bytes(media_url):
+    """
+    Downloads the actual image binary data from Meta's URL.
+    """
+    headers = {
+        "Authorization": f"Bearer {META_ACCESS_TOKEN}",
+    }
+    try:
+        response = requests.get(media_url, headers=headers)
+        response.raise_for_status()
+        return response.content
+    except Exception as e:
+        logger.error(f"Error downloading image: {e}")
+        return None
+
+def analyze_image_with_gemini(image_bytes, lang='en'):
+    """
+    Sends the image to Gemini for medical/health analysis.
+    """
+    try:
+        # Initialize Gemini (Vision model)
+        model = genai.GenerativeModel('gemini-2.5-pro') 
+        
+        # Convert bytes to a PIL Image
+        img = Image.open(io.BytesIO(image_bytes))
+
+        # Construct Prompt based on Language
+        if lang == 'hi':
+            system_prompt = "आप एक सहायक चिकित्सा सहायक हैं। इस छवि का विश्लेषण करें (यदि यह घाव, त्वचा की समस्या, या दवा है) और सुझाव दें कि यह क्या हो सकता है और घरेलू उपचार क्या हैं। हमेशा सलाह दें कि 'कृपया डॉक्टर से मिलें'। बहुत संक्षेप में उत्तर दें।"
+        elif lang == 'bn':
+            system_prompt = "আপনি একজন সহায়ক চিকিৎসা সহকারী। এই চিত্রটি বিশ্লেষণ করুন (যদি এটি ক্ষত, ত্বকের সমস্যা বা ওষুধ হয়) এবং এটি কী হতে পারে এবং ঘরোয়া প্রতিকারগুলি কী তা পরামর্শ দিন। সর্বদা পরামর্শ দিন 'দয়া করে একজন ডাক্তারের সাথে দেখা করুন'। খুব সংক্ষেপে উত্তর দিন।"
+        elif lang == 'or':
+            system_prompt = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ ଅଟନ୍ତି। ଏହି ଚିତ୍ରକୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ (ଯଦି ଏହା କ୍ଷତ, ଚର୍ମ ସମସ୍ୟା କିମ୍ବା ଔଷଧ) ଏବଂ ଏହା କ’ଣ ହୋଇପାରେ ଏବଂ ଘରୋଇ ଉପଚାର କ’ଣ ତାହା ପରାମର୍ଶ ଦିଅନ୍ତୁ। ସର୍ବଦା ପରାମର୍ଶ ଦିଅନ୍ତୁ 'ଦୟାକରି ଡାକ୍ତରଙ୍କୁ ଦେଖା କରନ୍ତୁ'। ବହୁତ ସଂକ୍ଷେପରେ ଉତ୍ତର ଦିଅନ୍ତୁ।"
+        else:
+            system_prompt = "You are a helpful medical assistant. Analyze this image (if it is a wound, skin issue, or medicine) and suggest what it might be and actionable home remedies. Always add a disclaimer: 'This is AI advice, please consult a doctor'. Keep it concise."
+
+        # Generate content
+        response = model.generate_content([system_prompt, img])
+        return response.text
+    except Exception as e:
+        logger.error(f"Gemini Vision Error: {e}")
+        return "Sorry, I could not analyze that image. Please try again with a clearer photo."
+
+
 # ... (your existing verify_webhook GET route) ...
 
 def process_webhook_event(data):
@@ -181,7 +246,50 @@ def process_webhook_event(data):
                     if msg_type == "text":
                         incoming_msg = message["text"]["body"].strip() 
                     elif msg_type == "button":
-                        incoming_msg = message["button"]["payload"].strip() 
+                        incoming_msg = message["button"]["payload"].strip()
+                    elif msg_type == "image":
+                        media_id = message["image"]["id"]
+                        
+                        # 1. Get the URL from Meta immediately
+                        # We need to pass the URL to Rasa so actions.py can download it
+                        image_url = get_media_url_from_id(media_id)
+                        
+                        if image_url:
+                            logger.info(f"THREAD: Image URL obtained: {image_url}. Forwarding to Rasa...")
+                            
+                            # 2. Construct a Rasa Payload message
+                            # This tells Rasa: "Trigger intent 'analyze_image' and fill slot 'image_url'"
+                            # Format: /intent_name{"entity_name": "value"}
+                            rasa_payload = f'/analyze_image{{"image_url": "{image_url}"}}'
+                            
+                            try:
+                                rasa_response = requests.post(
+                                    RASA_WEBHOOK_URL,
+                                    json={
+                                        "sender": from_number, 
+                                        "message": rasa_payload, 
+                                        "metadata": {"lang": user_states.get(from_number, {}).get('lang', 'en')}
+                                    }
+                                )
+                                rasa_response.raise_for_status()
+                                # Handle Rasa's response (the analysis) in the standard block below...
+                                rasa_data = rasa_response.json()
+                                if rasa_data:
+                                    for bot_message in rasa_data:
+                                        if bot_message.get("text"):
+                                            send_whatsapp_message(from_number, bot_message.get("text"))
+                                else:
+                                    send_whatsapp_message(from_number, "Thinking...")
+                                    
+                                return # Done processing this image
+
+                            except Exception as e:
+                                logger.error(f"Error forwarding image to Rasa: {e}")
+                                send_whatsapp_message(from_number, "Error processing image with AI.")
+                                return
+                        else:
+                            send_whatsapp_message(from_number, "Could not retrieve image from WhatsApp.")
+                            return
 
                     # --- LANGUAGE DETECTION ---
                     detected_lang = 'en' # Default
