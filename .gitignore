@@ -1,6 +1,6 @@
 models/
 tests/
-venv/
+.venv/
 actions/__pycache__/
 .rasa/
 
