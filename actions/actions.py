@@ -134,7 +134,7 @@ class ActionAnalyzeImageGemini(Action):
         
         # We need the Meta Token here to download the image
         # (Ideally, use os.environ, but for simplicity we copy it here as you did in app.py)
-        META_ACCESS_TOKEN = "EAAJz0nEJSNgBQJVilVFckutGI5wTnpypoB0fzZByRq7OaK72YcwXe5qEKlxGHwIJCvHfzoZBWp778bMgrGLp0Qpe4HzBJeJpDwZCqFvkKBevVTEXdNzZBaZBuP83070LMAxXdRwZACwp42kO7lqfeO8epaZCoaf25cQChbF0X9ZAIZBuVZA3f2RF1m1KZCImCzuGM3XTgbSrZCFsoMjgdR20eyRz5964Q9tyIQZC2YTSE6G21BbAG7jZAZCbROJHtxQBaEqfmJc6V9uyk0wjpMUY2BuuK8EagplaQZDZD"
+        META_ACCESS_TOKEN = "EAAJz0nEJSNgBQH7CXDBhQOjzXqEAZAMKdDRnDpDvWnxoFcvNeuwktwHKzt83jpJuHDlS205SeuVuCJGJuOjaonNh03hHP7ZAB3nKTQOnyfsrGdG5OphKS3BtZAHX0vBGOFZCZA2nur0pUIRZCphmvhTPuKKJM0n6kXNNzyUiA7yZA13o1NqsUQ3GEtTOXnSRZCNcYcJmdbBY92N5DzH12orO8vqkL9XhCUv2LqEOwh9VPy2m2WR3ZAbZBSJkLNm0921YoDhf2HBWRgK6cZAuqzz7BfztPh1wAZDZD"
 
         if not image_url:
             dispatcher.utter_message(text="I received the image request, but the URL is missing.")
