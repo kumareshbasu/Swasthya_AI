@@ -21,7 +21,7 @@ app = Flask(__name__)
 # ---------------------------------------------------------
 
 # --- Meta / WhatsApp ---
-META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBQH7CXDBhQOjzXqEAZAMKdDRnDpDvWnxoFcvNeuwktwHKzt83jpJuHDlS205SeuVuCJGJuOjaonNh03hHP7ZAB3nKTQOnyfsrGdG5OphKS3BtZAHX0vBGOFZCZA2nur0pUIRZCphmvhTPuKKJM0n6kXNNzyUiA7yZA13o1NqsUQ3GEtTOXnSRZCNcYcJmdbBY92N5DzH12orO8vqkL9XhCUv2LqEOwh9VPy2m2WR3ZAbZBSJkLNm0921YoDhf2HBWRgK6cZAuqzz7BfztPh1wAZDZD")
+META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBQBZAtoR33JIAZBuZB7UmoMo4ojqlsZB7ZCgYxJQZBluxKrH8CxDPFv8Qfiq9hSuZBrwuz3TCndQlhw5196a1sxbX8mmxZBzdedho9N5oZAYwUDIVeNfoGguo6QyE0ag765AXIaIa83GxrMcvZAkMjM1mizJrCYlVrzbsMQBl8AjsQw3bPGuZBhET9glywZDZD")
 PHONE_NUMBER_ID = os.environ.get("PHONE_NUMBER_ID", "819746631222018")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "secret_swasthya_ai_is_the_best") 
 META_API_URL = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
