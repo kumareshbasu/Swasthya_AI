@@ -1,54 +1,94 @@
+# app.py
+# ---------------------------------------------------------------------------
+# This file acts as the "Gateway" or "Router" for the Swasthya AI Chatbot.
+# It handles incoming webhooks from WhatsApp (Meta API), manages the user's
+# conversation state (Menus, Language), logs data to Supabase, and routes 
+# complex queries to the Rasa NLU server.
+# ---------------------------------------------------------------------------
+
+# Flask is the web framework used to create the webhook server.
 from flask import Flask, request, jsonify
+
+# Requests is used to make HTTP calls to Meta, Rasa, and other APIs.
 import requests
+
+# os is used to read sensitive credentials from environment variables.
 import os
+
+# json is used for parsing webhook payloads and creating logs.
 import json
+
+# logging helps in debugging by printing info/errors to the terminal.
 import logging
+
+# threading allows us to process messages in the background, preventing
+# the webhook from timing out (WhatsApp requires a 200 OK response in <3s).
 import threading
+
+# io and PIL are used to process image data in memory.
 import io
 from PIL import Image
+
+# langdetect is used to automatically guess the user's language.
 from langdetect import detect, DetectorFactory
+
+# google.generativeai is the SDK for Gemini (used here for configuring the key).
 import google.generativeai as genai
+
+# datetime is used to timestamp messages stored in the database.
 from datetime import datetime, timezone
+
+# supabase is the client for our database where we store chat logs.
 from supabase import create_client, Client
 
-# To ensure consistent language detection results
+# To ensure consistent language detection results (deterministic behavior).
 DetectorFactory.seed = 0 
 
+# Initialize the Flask app.
 app = Flask(__name__)
 
 # ---------------------------------------------------------
-# 1. CONFIGURATION
+# 1. CONFIGURATION & CREDENTIALS
 # ---------------------------------------------------------
 
 # --- Meta / WhatsApp ---
+# These tokens allow us to read/write messages to the WhatsApp Business API.
 META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBQBZAtoR33JIAZBuZB7UmoMo4ojqlsZB7ZCgYxJQZBluxKrH8CxDPFv8Qfiq9hSuZBrwuz3TCndQlhw5196a1sxbX8mmxZBzdedho9N5oZAYwUDIVeNfoGguo6QyE0ag765AXIaIa83GxrMcvZAkMjM1mizJrCYlVrzbsMQBl8AjsQw3bPGuZBhET9glywZDZD")
 PHONE_NUMBER_ID = os.environ.get("PHONE_NUMBER_ID", "819746631222018")
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "secret_swasthya_ai_is_the_best") 
 META_API_URL = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
 
 # --- Rasa ---
+# The address of the local Rasa server handling NLU and custom actions.
 RASA_WEBHOOK_URL = "http://localhost:5005/webhooks/rest/webhook"
 
 # --- Gemini API Key (For app.py usage) ---
+# Even though actions.py uses Gemini, app.py might need it directly for debugging
+# or simpler flows. We configure it globally here.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8")
 genai.configure(api_key=GEMINI_API_KEY)
 
-# --- NEW: Supabase Configuration ---
+# --- Supabase Configuration ---
+# These credentials connect to the Supabase database for chat logging.
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://smdbaoppucxlpvzydek9.supabase.co")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkbHZzbXl0ZWN0aWxneHBtdm1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyODg2NzUsImV4cCI6MjA3ODg2NDY3NX0.qAwo57tzMLFD_OKWcpJBqgpKdXwJxBO2n5QRGxUKLVA")
 
-# Initialize Supabase Client
+# Initialize Supabase Client safely.
 try:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 except Exception as e:
     print(f"Supabase connection failed: {e}")
     supabase = None
 
+# This dictionary holds the state of each user in memory.
+# Structure: { 'phone_number': {'state': 'main_menu', 'lang': 'en'} }
+# Ideally, this should be moved to Redis or a Database for production scaling.
 user_states = {} 
 
 # ---------------------------------------------------------
 # 2. CONSTANTS (Menus & Messages)
 # ---------------------------------------------------------
+# This dictionary maps language codes ('en', 'hi', etc.) to the main menu text.
 MULTILINGUAL_MENUS = {
     'en': """
 Welcome to Swasthya AI!
@@ -88,6 +128,8 @@ Please choose an option by typing its number:
 """
 }
 
+# This dictionary holds translations for all static system responses.
+# It ensures the bot speaks the user's selected language for navigation.
 MULTILINGUAL_STATIC_MESSAGES = {
     'en': {
         "welcome_back": "Welcome back!",
@@ -103,7 +145,7 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "rasa_connection_error": "Sorry, I'm having trouble connecting to my brain right now. Please type 'back' to return to the main menu.",
         "chat_ended_prompt_restart": "Chat session ended. Please type 'hi' or 'hello' if you wish to start a new conversation."
     },
-    # ... (Keeping languages brief for this file, but assume Hi/Bn/Or exist as in your original code) ...
+    # ... (Assuming translations for 'hi', 'bn', 'or' exist here as in your original code) ...
     'hi': {'welcome_back': 'वापस स्वागत है!', 'already_main_menu': 'आप पहले से ही मुख्य मेनू में हैं।', 'left_ai_assistant': 'आपने AI स्वास्थ्य सहायक छोड़ दिया है।', 'entering_ai_assistant': 'ठीक है, AI स्वास्थ्य सहायक में प्रवेश कर रहा हूँ। मैं आज आपकी कैसे मदद कर सकता हूँ? (मुख्य मेनू पर लौटने के लिए \'back\' टाइप करें)', 'vaccination_selected': 'आपने टीकाकरण अनुसूची चुना है। (मुख्य मेनू पर लौटने के लिए \'menu\' टाइप करें)\nयहाँ टीकाकरण अनुसूची के बारे में जानकारी है...', 'health_center_selected': 'आपने निकटतम स्वास्थ्य केंद्र खोजें चुना है। (मुख्य मेनू पर लौटने के लिए \'menu\' टाइप करें)\nकृपया निकटतम स्वास्थ्य केंद्र खोजने के लिए अपना वर्तमान स्थान या क्षेत्र बताएं।', 'about_us_selected': 'आपने हमारे बारे में चुना है। (मुख्य मेनू पर लौटने के लिए \'menu\' टाइप करें)\nयह स्वास्थ्य AI स्वास्थ्य सूचना चैटबॉट है, जो Rasa और Gemini द्वारा संचालित है, जिसे बुनियादी सार्वजनिक स्वास्थ्य जानकारी प्रदान करने के लिए डिज़ाइन किया गया है। हमारा लक्ष्य स्वास्थ्य ज्ञान को सुलभ बनाना है। (मुख्य मेनू पर लौटने के लिए \'menu\' टाइप करें)', 'thank_you_goodbye': 'स्वास्थ्य AI का उपयोग करने के लिए धन्यवाद! अलविदा। (पुनः शुरू करने के लिए \'hi\' या \'hello\' टाइप करें)', 'invalid_option': 'यह एक वैध विकल्प नहीं है। कृपया नीचे दिए गए मेनू से एक नंबर चुनें:', 'rasa_no_response': 'क्षमा करें, मुझे AI से कोई प्रतिक्रिया नहीं मिली। आप मुख्य मेनू पर लौटने के लिए \'back\' कह सकते हैं।', 'rasa_connection_error': 'क्षमा करें, मुझे अभी अपने मस्तिष्क से जुड़ने में परेशानी हो रही है। कृपया मुख्य मेनू पर लौटने के लिए \'back\' टाइप करें।', 'chat_ended_prompt_restart': 'चैट सत्र समाप्त हो गया है। यदि आप एक नई बातचीत शुरू करना चाहते हैं तो \'hi\' या \'hello\' टाइप करें।'},
     'bn': {'welcome_back': 'পুনরায় স্বাগতম!', 'already_main_menu': 'আপনি ইতিমধ্যেই প্রধান মেনুতে আছেন।', 'left_ai_assistant': 'আপনি AI স্বাস্থ্য সহায়ক ছেড়ে গেছেন।', 'entering_ai_assistant': 'ঠিক আছে, AI স্বাস্থ্য সহায়ক-এ প্রবেশ করছি। আমি আজ আপনাকে কীভাবে সাহায্য করতে পারি? (প্রধান মেনুতে ফিরে যেতে \'back\' টাইপ করুন)', 'vaccination_selected': 'আপনি টিকা দেওয়ার সময়সূচী নির্বাচন করেছেন। (প্রধান মেনুতে ফিরে যেতে \'menu\' টাইপ করুন)\nএখানে টিকা দেওয়ার সময়সূচী সম্পর্কিত তথ্য আছে...', 'health_center_selected': 'আপনি নিকটতম স্বাস্থ্য কেন্দ্র খুঁজুন নির্বাচন করেছেন। (প্রধান মেনুতে ফিরে যেতে \'menu\' টাইপ করুন)\nনিকটতম স্বাস্থ্য কেন্দ্র খুঁজে পেতে দয়া করে আপনার বর্তমান অবস্থান বা এলাকা বলুন।', 'about_us_selected': 'আপনি আমাদের সম্পর্কে নির্বাচন করেছেন। (প্রধান মেনুতে ফিরে যেতে \'menu\' টাইপ করুন)\nএটি স্বাচ্ছন্দ্য AI স্বাস্থ্য তথ্য চ্যাটবট, যা Rasa এবং Gemini দ্বারা চালিত, মৌলিক জনস্বাস্থ্য তথ্য সরবরাহ করার জন্য ডিজাইন করা হয়েছে। আমাদের লক্ষ্য হল স্বাস্থ্য জ্ঞানকে সহজলভ্য করা। (প্রধান মেনুতে ফিরে যেতে \'menu\' টাইপ করুন)', 'thank_you_goodbye': 'স্বাস্থ্য AI ব্যবহার করার জন্য ধন্যবাদ! বিদায়। (পুনরায় শুরু করতে \'hi\' বা \'hello\' টাইপ করুন)', 'invalid_option': 'এটি একটি বৈধ বিকল্প নয়। দয়া করে নিচের মেনু থেকে একটি নম্বর বেছে নিন:', 'rasa_no_response': 'দুঃখিত, আমি AI থেকে কোনো প্রতিক্রিয়া পাইনি। আপনি প্রধান মেনুতে ফিরে যেতে \'back\' বলতে পারেন।', 'rasa_connection_error': 'দুঃখিত, আমার মস্তিষ্কের সাথে সংযোগ করতে সমস্যা হচ্ছে। দয়া করে প্রধান মেনুতে ফিরে যেতে \'back\' টাইপ করুন।', 'chat_ended_prompt_restart': 'চ্যাট সেশন শেষ হয়েছে। আপনি যদি নতুন কথোপকথন শুরু করতে চান তবে \'hi\' বা \'hello\' টাইপ করুন।'},
     'or': {'welcome_back': 'ପୁଣି ସ୍ୱାଗତ!', 'already_main_menu': 'ଆପଣ ପୂର୍ବରୁ ମୁଖ୍ୟ ମେନୁରେ ଅଛନ୍ତି।', 'left_ai_assistant': 'ଆପଣ AI ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକ ଛାଡି ଦେଇଛନ୍ତି।', 'entering_ai_assistant': 'ଠିକ୍ ଅଛି, AI ସ୍ୱାସ୍ଥ୍ୟ ସହାୟକରେ ପ୍ରବେଶ କରୁଛି। ମୁଁ ଆଜି ଆପଣଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି? (ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'back\' ଟାଇପ୍ କରନ୍ତୁ)', 'vaccination_selected': 'ଆପଣ ଟୀକାକରଣ ସୂଚୀ ବାଛିଛନ୍ତି। (ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'menu\' ଟାଇପ୍ କରନ୍ତୁ)\nଏଠାରେ ଟୀକାକରଣ ସୂଚୀ ବିଷୟରେ ସୂଚନା ଅଛି...', 'health_center_selected': 'ଆପଣ ନିକଟସ୍ଥ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର ଖୋଜନ୍ତୁ ବାଛିଛନ୍ତି। (ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'menu\' ଟାଇପ୍ କରନ୍ତୁ)\nନିକଟସ୍ଥ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର ଖୋଜିବା ପାଇଁ ଦୟାକରି ଆପଣଙ୍କ ବର୍ତ୍ତମାନର ସ୍ଥାନ କିମ୍ବା ଅଞ୍ଚଳ କୁହନ୍ତୁ।', 'about_us_selected': 'ଆପଣ ଆମ ବିଷୟରେ ବାଛିଛନ୍ତି। (ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'menu\' ଟାଇପ୍ କରନ୍ତୁ)\nଏହା ହେଉଛି ସ୍ୱାସ୍ଥ୍ୟ AI ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା ଚାଟ୍‌ବଟ୍, ଯାହା Rasa ଏବଂ Gemini ଦ୍ୱାରା ପରିଚାଳିତ, ମୌଳିକ ଜନସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା ପ୍ରଦାନ କରିବା ପାଇଁ ଡିଜାଇନ୍ କରାଯାଇଛି। ଆମର ଲକ୍ଷ୍ୟ ହେଉଛି ସ୍ୱାସ୍ଥ୍ୟ ଜ୍ଞାନକୁ ସୁଗମ କରିବା। (ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'menu\' ଟାଇପ୍ କରନ୍ତୁ)', 'thank_you_goodbye': 'ସ୍ୱାସ୍ଥ୍ୟ AI ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ! ଶୁଭରାତ୍ରି। (ପୁନର୍ବାର ଆରମ୍ଭ କରିବାକୁ \'hi\' କିମ୍ବା \'hello\' ଟାଇପ୍ କରନ୍ତୁ)', 'invalid_option': 'ଏହା ଏକ ବୈଧ ବିକଳ୍ପ ନୁହେଁ। ଦୟାକରି ତଳ ମେନୁରୁ ଏକ ନମ୍ବର ବାଛନ୍ତୁ:', 'rasa_no_response': 'କ୍ଷମା କରନ୍ତୁ, ମୁଁ AI ରୁ କୌଣସି ପ୍ରତିକ୍ରିୟା ପାଇଲି ନାହିଁ। ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'back\' କହିପାରିବେ।', 'rasa_connection_error': 'କ୍ଷମା କରନ୍ତୁ, ମୋର ମସ୍ତିଷ୍କ ସହିତ ସଂଯୋଗ କରିବାରେ ଅସୁବିଧା ହେଉଛି। ଦୟାକରି ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ \'back\' ଟାଇପ୍ କରନ୍ତୁ।', 'chat_ended_prompt_restart': 'ଚାଟ୍ ଅଧିବେଶନ ଶେଷ ହୋଇଛି। ଯଦି ଆପଣ ଏକ ନୂଆ କଥାବାର୍ତ୍ତା ଆରମ୍ଭ କରିବାକୁ ଚାହାଁନ୍ତି ତେବେ \'hi\' କିମ୍ବା \'hello\' ଟାଇପ୍ କରନ୍ତୁ।'}
@@ -116,10 +158,17 @@ logger = logging.getLogger(__name__)
 # 3. HELPER FUNCTIONS
 # ---------------------------------------------------------
 
-# --- NEW: Database Helper Functions ---
+# --- Database Helper Functions ---
 def insert_message(phone_num, sender, text=None, media=None, language="en"):
     """
-    Insert a message row into user_chat_media table in Supabase.
+    Inserts a new message row into the Supabase database.
+    
+    Args:
+        phone_num (str): The user's WhatsApp number.
+        sender (str): 'user' or 'bot'.
+        text (str): The text content of the message.
+        media (list): List of media URLs (for images).
+        language (str): The language code ('en', 'hi', etc.).
     """
     if not supabase:
         return
@@ -140,12 +189,19 @@ def insert_message(phone_num, sender, text=None, media=None, language="en"):
 
 # --- Localization ---
 def get_localized_message(from_number, key):
+    """
+    Retrieves a static message string based on the user's saved language preference.
+    """
     user_data = user_states.get(from_number, {})
     lang = user_data.get('lang', 'en') # Default to English
     return MULTILINGUAL_STATIC_MESSAGES.get(lang, {}).get(key, MULTILINGUAL_STATIC_MESSAGES['en'][key])
 
 # --- Sending Messages ---
 def send_whatsapp_message(to_number, message_body):
+    """
+    Sends a text message to a user via the WhatsApp Business API.
+    Also logs the bot's response to the database.
+    """
     headers = {
         "Authorization": f"Bearer {META_ACCESS_TOKEN}",
         "Content-Type": "application/json",
@@ -160,7 +216,7 @@ def send_whatsapp_message(to_number, message_body):
         response = requests.post(META_API_URL, headers=headers, json=payload)
         response.raise_for_status() 
         
-        # --- NEW: Log Bot Response to DB ---
+        # Log the Bot's response to DB
         insert_message(to_number, "bot", text=message_body, language=user_states.get(to_number, {}).get('lang', 'en'))
         
         logger.info(f"Message sent to {to_number}: {message_body[:50]}...")
@@ -171,6 +227,9 @@ def send_whatsapp_message(to_number, message_body):
 
 # --- Image Helpers ---
 def get_media_url_from_id(media_id):
+    """
+    Exchanges a WhatsApp Media ID for a temporary download URL.
+    """
     url = f"https://graph.facebook.com/v19.0/{media_id}"
     headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}"}
     try:
@@ -182,6 +241,9 @@ def get_media_url_from_id(media_id):
         return None
 
 def download_image_bytes(media_url):
+    """
+    Downloads the actual image binary data using the URL from Meta.
+    """
     headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}"}
     try:
         response = requests.get(media_url, headers=headers)
@@ -191,33 +253,13 @@ def download_image_bytes(media_url):
         logger.error(f"Error downloading image: {e}")
         return None
 
-def analyze_image_with_gemini(image_bytes, lang='en'):
-    try:
-        # Use Gemini 1.5 Pro (Correct model)
-        model = genai.GenerativeModel('gemini-2.5-pro') 
-        img = Image.open(io.BytesIO(image_bytes))
-
-        if lang == 'hi':
-            system_prompt = "आप एक सहायक चिकित्सा सहायक हैं। इस छवि का विश्लेषण करें और घरेलू उपचार सुझाएं।"
-        elif lang == 'bn':
-            system_prompt = "আপনি একজন সহায়ক চিকিৎসা সহকারী। এই চিত্রটি বিশ্লেষণ করুন এবং ঘরোয়া প্রতিকারের পরামর্শ দিন।"
-        elif lang == 'or':
-            system_prompt = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ ଅଟନ୍ତି। ଏହି ଚିତ୍ରକୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ।"
-        else:
-            system_prompt = "You are a helpful medical assistant. Analyze this image (wound, skin issue, or medicine) and suggest actionable home remedies. Always add a disclaimer: 'This is AI advice, please consult a doctor'."
-
-        response = model.generate_content([system_prompt, img])
-        return response.text
-    except Exception as e:
-        logger.error(f"Gemini Vision Error: {e}")
-        return "Sorry, I could not analyze that image. Please try again with a clearer photo."
-
 # ---------------------------------------------------------
 # 4. MAIN LOGIC (Webhook Processor)
 # ---------------------------------------------------------
 def process_webhook_event(data):
     """
-    Processes incoming messages in a background thread.
+    This is the core logic function. It processes incoming WhatsApp messages.
+    It runs in a separate thread to prevent blocking the Flask server.
     """
     try:
         logger.info(f"THREAD: Processing webhook event: {json.dumps(data, indent=2)}")
@@ -228,6 +270,7 @@ def process_webhook_event(data):
 
         for entry in data["entry"]:
             for change in entry["changes"]:
+                # Check if this change contains a message
                 if change.get("field") == "messages" and change.get("value", {}).get("messages"):
                     message = change["value"]["messages"][0]
                     from_number = message["from"]
@@ -239,23 +282,23 @@ def process_webhook_event(data):
                     elif msg_type == "button":
                         incoming_msg = message["button"]["payload"].strip()
                     
-                    # --- IMAGE HANDLING (Updated with DB Logging) ---
+                    # --- IMAGE HANDLING ---
                     elif msg_type == "image":
                         media_id = message["image"]["id"]
                         
-                        # 1. Get URL
+                        # 1. Get Download URL
                         image_url = get_media_url_from_id(media_id)
                         
-                        # 2. Get Lang
+                        # 2. Get User's Language Context
                         current_lang = user_states.get(from_number, {}).get('lang', 'en')
 
                         if image_url:
                             logger.info(f"THREAD: Image URL obtained: {image_url}. Forwarding to Rasa...")
                             
-                            # --- NEW: Save Image to DB ---
+                            # --- Log User's Image to DB ---
                             insert_message(from_number, "user", text=None, media=[image_url], language=current_lang)
 
-                            # 3. Tell Rasa (which calls actions.py) to process it
+                            # 3. Send a "Slash Command" to Rasa to trigger the image analysis Action
                             rasa_payload = f'/analyze_image{{"image_url": "{image_url}"}}'
                             
                             try:
@@ -269,6 +312,8 @@ def process_webhook_event(data):
                                 )
                                 rasa_response.raise_for_status()
                                 rasa_data = rasa_response.json()
+                                
+                                # Process Rasa's response (which is the analysis from Gemini)
                                 if rasa_data:
                                     for bot_message in rasa_data:
                                         if bot_message.get("text"):
@@ -276,7 +321,7 @@ def process_webhook_event(data):
                                 else:
                                     send_whatsapp_message(from_number, "Thinking...")
                                     
-                                return # Done processing this image
+                                return # Stop here for images
 
                             except Exception as e:
                                 logger.error(f"Error forwarding image to Rasa: {e}")
@@ -286,25 +331,26 @@ def process_webhook_event(data):
                             send_whatsapp_message(from_number, "Could not retrieve image from WhatsApp.")
                             return
 
-                    # --- LANGUAGE DETECTION ---
-                    # 1. Get existing language (default to 'en' if new)
+                    # --- LANGUAGE DETECTION & STATE MANAGEMENT ---
+                    
+                    # 1. Get existing language (persist what we know)
                     current_lang = user_states.get(from_number, {}).get('lang', 'en')
 
                     try:
-                        # 2. Update ONLY if text is long enough and NOT a digit
+                        # 2. Detect language ONLY if text is long enough and NOT a number (like menu options)
                         if msg_type == "text" and not incoming_msg.isdigit() and len(incoming_msg) > 3:
                             detected_code = detect(incoming_msg)
                             if detected_code in MULTILINGUAL_MENUS: 
                                 current_lang = detected_code
                                 
-                        # 3. Reset on standard greetings
+                        # 3. Reset logic: Standard greetings default to English/Menu reset
                         elif incoming_msg.lower() in ['hi', 'hello', 'start', 'menu']:
                              current_lang = 'en' 
                              
                     except Exception as e:
                         logger.warning(f"THREAD: Language detection skipped: {e}. Keeping: {current_lang}")
 
-                    # 4. Save State
+                    # 4. Update/Save User State
                     if from_number not in user_states:
                         user_states[from_number] = {'state': 'initial', 'lang': current_lang}
                     else:
@@ -315,11 +361,12 @@ def process_webhook_event(data):
                     
                     logger.info(f"THREAD: Incoming from {from_number} (lang:{current_lang}): '{normalized_incoming_msg}' in state '{current_state}'")
 
-                    # --- NEW: Log Text Message to DB ---
+                    # --- Log User's Text Message to DB ---
                     if msg_type == "text":
                         insert_message(from_number, "user", text=incoming_msg, language=current_lang)
 
-                    # --- NAVIGATION LOGIC ---
+                    # --- MENU NAVIGATION LOGIC ---
+                    # Check for Global Commands
                     if normalized_incoming_msg in ['hi', 'hello', 'menu', 'start']:
                         if current_state == 'main_menu':
                             send_whatsapp_message(from_number, get_localized_message(from_number, "already_main_menu"))
@@ -333,12 +380,14 @@ def process_webhook_event(data):
                         logger.info(f"THREAD: User {from_number} navigated to MAIN_MENU in {current_lang}.")
                         return 
 
+                    # Initial State Handling
                     if current_state == 'initial':
                         user_states[from_number]['state'] = 'main_menu'
                         send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
                         logger.info(f"THREAD: New user {from_number} showing MAIN_MENU in {current_lang}.")
                         return 
 
+                    # Active Conversation with AI
                     if current_state == 'in_rasa_conversation':
                         if normalized_incoming_msg in ['back', 'main menu']: 
                             user_states[from_number]['state'] = 'main_menu'
@@ -347,6 +396,7 @@ def process_webhook_event(data):
                             logger.info(f"THREAD: User {from_number} explicitly went 'back' to main menu in {current_lang}.")
                             return
                         else:
+                            # Forward the text to Rasa NLU
                             logger.info(f"THREAD: Forwarding message to Rasa for {from_number} (lang:{current_lang}): '{incoming_msg}'")
                             try:
                                 rasa_response = requests.post(
@@ -361,8 +411,8 @@ def process_webhook_event(data):
                                 if rasa_data:
                                     for bot_message in rasa_data:
                                         if bot_message.get("text"):
+                                            # Rasa's reply (generated by actions.py or static response)
                                             send_whatsapp_message(from_number, bot_message.get("text"))
-                                        # Note: If Rasa sends an image back, handle it here
                                 else:
                                     send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_no_response"))
 
@@ -371,11 +421,13 @@ def process_webhook_event(data):
                                 send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_connection_error"))
                         return 
                     
+                    # Chat Exited State
                     elif current_state == 'exited_chat':
                         send_whatsapp_message(from_number, get_localized_message(from_number, "chat_ended_prompt_restart"))
                         logger.info(f"THREAD: User {from_number} in 'exited_chat' state in {current_lang}.")
                         return 
 
+                    # Main Menu State
                     elif current_state == 'main_menu':
                         if normalized_incoming_msg == '1':
                             user_states[from_number]['state'] = 'in_rasa_conversation'
@@ -395,11 +447,13 @@ def process_webhook_event(data):
                             send_whatsapp_message(from_number, get_localized_message(from_number, "thank_you_goodbye"))
                             logger.info(f"THREAD: User {from_number} exited chat in {current_lang}.")
                         else:
+                            # Invalid input in Menu
                             send_whatsapp_message(from_number, get_localized_message(from_number, "invalid_option"))
                             send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
                             logger.info(f"THREAD: User {from_number} entered invalid main menu option. Redisplaying menu in {current_lang}.")
                         return
                     
+                    # Fallback safety net
                     logger.warning(f"THREAD: No state matched for incoming message: '{normalized_incoming_msg}' from {from_number}. This should not happen. Defaulting to main menu.")
                     user_states[from_number]['state'] = 'main_menu'
                     send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
@@ -411,8 +465,15 @@ def process_webhook_event(data):
         logger.error(f"THREAD: Unhandled exception in process_webhook_event: {e}", exc_info=True)
 
 
+# ---------------------------------------------------------
+# 5. WEBHOOK ROUTE
+# ---------------------------------------------------------
 @app.route("/whatsapp", methods=['POST'])
 def whatsapp_reply():
+    """
+    The public endpoint that Meta calls when a message arrives.
+    It sends a 200 OK immediately and processes the logic asynchronously.
+    """
     try:
         data = request.get_json()
         if not data:
@@ -422,7 +483,7 @@ def whatsapp_reply():
         logger.error(f"Could not parse request JSON: {e}")
         return "Bad Request: Malformed JSON", 400
 
-    # 4. START THE BACKGROUND THREAD
+    # 4. START THE BACKGROUND THREAD (Non-blocking)
     thread = threading.Thread(target=process_webhook_event, args=(data,))
     thread.start()
 
