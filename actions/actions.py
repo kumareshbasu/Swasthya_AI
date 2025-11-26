@@ -35,7 +35,6 @@ logger = logging.getLogger(__name__)
 
 # 1. Configure the Gemini API Key.
 # This key authenticates our requests to Google servers.
-# SECURITY NOTE: In production, store this in an environment variable (os.environ).
 GEMINI_API_KEY = "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8" 
 genai.configure(api_key=GEMINI_API_KEY) 
 
@@ -215,7 +214,6 @@ class ActionAnalyzeImageGemini(Action):
         
         # --- CREDENTIALS ---
         # This token allows us to download media from WhatsApp servers.
-        # IMPORTANT: Keep this token updated. If it expires, image download will fail (401 Error).
         META_ACCESS_TOKEN = "EAAJz0nEJSNgBQBZAtoR33JIAZBuZB7UmoMo4ojqlsZB7ZCgYxJQZBluxKrH8CxDPFv8Qfiq9hSuZBrwuz3TCndQlhw5196a1sxbX8mmxZBzdedho9N5oZAYwUDIVeNfoGguo6QyE0ag765AXIaIa83GxrMcvZAkMjM1mizJrCYlVrzbsMQBl8AjsQw3bPGuZBhET9glywZDZD"
 
         # Basic validation.
@@ -244,7 +242,7 @@ class ActionAnalyzeImageGemini(Action):
 
         # 3. Prepare Gemini Analysis
         try:
-            # Initialize the Vision model. If global init failed, this will try locally.
+            # Initialize the Vision model. If global init failed, this will try again here.
             model = genai.GenerativeModel('gemini-2.5-pro')
             
             # Convert raw bytes into a PIL Image object that Gemini can understand.
@@ -272,6 +270,16 @@ class ActionAnalyzeImageGemini(Action):
                 dispatcher.utter_message(text=gemini_response.text)
             else:
                 dispatcher.utter_message(text="I couldn't interpret that image.")
+            
+            # --- Closing Prompt ---
+            closing_options = {
+                'en': "This response is completed.\nSelect any one option:\n1. Do you want to ask anything more about this or something else?\n2. Would you like to go back to main menu?",
+                'hi': "उत्तर पूरा हो गया है।\nकृपया एक विकल्प चुनें:\n1. क्या आप इसके बारे में या किसी अन्य विषय पर और पूछना चाहते हैं?\n2. क्या आप मुख्य मेनू पर वापस जाना चाहते हैं?",
+                'bn': "উত্তর সম্পূর্ণ হয়েছে।\nএকটি বিকল্প নির্বাচন করুন:\n1. আপনি কি এ সম্পর্কে বা অন্য কিছু সম্পর্কে আরও জানতে চান?\n2. আপনি কি প্রধান মেনুতে ফিরে যেতে চান?",
+                'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n1. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n2. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?"
+            } 
+            dispatcher.utter_message(text=closing_options.get(user_lang, closing_options['en']))
+            
 
         except Exception as e:
             # Catch errors specific to Gemini (e.g., 404 model not found, safety blocks).
