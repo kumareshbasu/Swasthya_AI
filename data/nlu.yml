@@ -1189,3 +1189,356 @@ nlu:
       - ଚାଟରୁ ବାହାରନ୍ତୁ
       - ଚାଟ୍ ବନ୍ଦ କରନ୍ତୁ
       - ବାହାରକୁ ଯାଅ
+
+  # ---------------------------------------------------------------------------------------------
+  # --- NON-HEALTH QUERY Intents ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: non_health_query
+    examples: |
+      - where is the cinema hall
+      - where is the movie theatre nearby
+      - what time is it now
+      - what day is today
+      - tell me a joke
+      - who is the prime minister of india
+      - who is the president of india
+      - what is the capital of france
+      - how to reach the railway station
+      - give me directions
+      - nearest bus stop
+      - location of nearest mall
+      - weather today
+      - will it rain tomorrow
+      - open youtube
+      - play music
+      - sing a song
+      - how to cook biryani
+      - give me recipe of pasta
+      - what is the cricket score
+      - who won the match yesterday
+      - tell me news
+      - latest trending news
+      - when is diwali
+      - when is christmas
+      - date of next festival
+      - solve this what is 5 plus 7
+      - what's 2+2
+      - tell me a story
+      - send me a picture
+      - how to fix my laptop
+      - my phone is hanging
+      - what is the meaning of life
+      - tell me about astronauts
+      - how to become rich
+      - best phone under 20000
+      - movie reviews
+      - show me sports updates
+      - book a cab
+      - find me a restaurant
+      - pizza order karna hai
+      - give me whatsapp tips
+      - how to get a job
+      - fashion tips please  
+      - आज कौन सा दिन है?
+      - अभी कितना समय हुआ है?
+      - मुझे एक जोक सुनाओ।
+      - भारत के प्रधानमंत्री कौन हैं?
+      - राष्ट्रपति कौन हैं?
+      - सिनेमा हॉल कहाँ है?
+      - सब्ज़ी मंडी कहाँ है?
+      - आज मौसम कैसा है?
+      - क्या कल बारिश होगी?
+      - गाना सुनाओ।
+      - यूट्यूब खोलो।
+      - मुझे रेसिपी बताओ।
+      - बिरयानी कैसे बनती है?
+      - क्रिकेट का स्कोर क्या है?
+      - आज की खबर बताओ।
+      - मूवी रिव्यू बताओ।
+      - अगला त्योहार कब है?
+      - आज की तारीख क्या है?
+      - मुझे कहानी सुनाओ।
+      - मोबाइल कैसे ठीक करूँ?
+      - लैपटॉप बार-बार बंद हो रहा है।
+      - मैं कहाँ हूँ?
+      - रास्ता कैसे जाना है?
+      - फोन हैंग हो गया है।
+      - aaj kaun sa din hai
+      - kya time ho raha hai
+      - mujhe joke sunao
+      - PM kaun hai
+      - rashtrapati kaun hai
+      - cinema hall kahan hai
+      - sabzi mandi kahan hogi
+      - aaj mausam kaisa hai
+      - kal barish hogi kya
+      - mujhe gaana sunao
+      - youtube chalao
+      - mujhe recipe batao
+      - biryani kaise banate hain
+      - cricket ka score kya hai
+      - news batao
+      - movie review batao
+      - agla festival kab hai
+      - date kya hai
+      - mujhe ek kahani sunao
+      - mobile kaise sahi karu
+      - laptop off ho raha hai kya karu
+      - main kaha hoon
+      - rasta kaise jaaye
+      - phone hang ho gaya
+      - আজকে কি বার?
+      - এখন কত বাজে?
+      - আমাকে একটা মজার জোক বলো।
+      - সিনেমা হল কোথায় আছে?
+      - আজকের আবহাওয়া কেমন?
+      - কাল বৃষ্টি হবে কি?
+      - আমার ফোন হ্যাং করেছে।
+      - ল্যাপটপ কিভাবে ঠিক করবো?
+      - খাবারের রেসিপি দাও।
+      - বিরিয়ানি কিভাবে বানায়?
+      - ক্রিকেট স্কোর কত?
+      - আজকের খবর দাও।
+      - একটা গান বাজাও।
+      - ইউটিউব খুলো।
+      - কোথায় যেতে হবে?
+      - রাস্তার দিকনির্দেশ দাও।
+      - আগামী পূজা কবে?
+      - একটা গল্প বলো।
+      - মোবাইল টিপস দাও।
+      - শপিং মল কোথায়?
+      - ajke ki din
+      - koto bajlo
+      - amake ekta mojadar joke bolo
+      - cinema hall kothay ache
+      - ajker weather kemon
+      - kal brishti hobe ki
+      - amar phone hang koreche
+      - laptop fix korbo kivabe
+      - khabar recipe dao
+      - biryani kivabe banay
+      - cricket score ki
+      - ajker news dao
+      - ekta gaan bajao
+      - youtube khulo
+      - kothay jete hobe
+      - rastar direction dao
+      - agami pujo kobe
+      - ekta golpo bolo
+      - mobile tips dao
+      - shopping mall kothay   
+      - ଆଜି କେଉଁ ଦିନ?
+      - ଏବେ କେତେ ବେଳ ହେଲା?
+      - ମୋତେ ଜଣେ ମଜାଦାର ଜୋକ୍ କହନ୍ତୁ।
+      - ସିନେମା ହଲ୍ କେଉଁଠି ଅଛି?
+      - ଆଜିର ମୌସମ କେମିତି?
+      - କାଲି ବର୍ଷା ହେବ କି?
+      - ମୋତେ ଗୀତ ସୁଣାନ୍ତୁ।
+      - ଇଉଟ୍ୟୁବ୍ ଖୋଲନ୍ତୁ।
+      - ବିରିୟାଣୀ କେମିତି ବଣାଇବେ?
+      - ରେସିପି କହନ୍ତୁ।
+      - କ୍ରିକେଟ୍ ସ୍କୋର କେତେ?
+      - ଆଜିର ନ୍ୟୁଜ୍ କହନ୍ତୁ।
+      - ମୋତେ ରାସ୍ତା ଦେଖାନ୍ତୁ।
+      - ରେଳୁଏ ଷ୍ଟେଶନ୍ କେଉଁଠି ଅଛି?
+      - ନିକଟସ୍ଥ ଶପିଂ ମଲ୍ କେଉଁଠି?
+      - ଫୋନ୍ ହ୍ୟାଙ୍ଗ୍ ହେଲା, କଣ କରିବି?
+      - ଲ୍ୟାପଟପ୍ କେମିତି ଠିକ୍ କରିବି?
+      - ମୋତେ ଗୋଟିଏ କାହାଣୀ କହନ୍ତୁ।
+      - ଆଗାମୀ ପର୍ବ କଣ?
+      - ମୋତେ ଦିଗନିର୍ଦେଶ ଦେଇପାରିବେ କି?
+      - ରେଷ୍ଟୁରାଣ୍ଟ କେଉଁଠି ଅଛି?
+      - aja kana dina
+      - ebe kana bela hela
+      - mote eka maja-dara joke kahantu
+      - cinema hall kahi achhi
+      - ajira mousam kemiti
+      - kalire barsha heba ki
+      - mote ekati gita sunaantu
+      - youtube kholo
+      - biryani kemiti baniba
+      - recipe kahantu
+      - cricket score kana
+      - ajira news kahantu
+      - mote rasta dekhantu
+      - railway station kaha achhi
+      - shopping mall kahi achhi
+      - phone hang hela kana karibi
+      - laptop kemiti thik karibi
+      - mote eka kahani kahantu
+      - upcoming festival kona
+      - mote direction deiparibe ki
+      - restaurant kaha achhi
+
+
+  - intent: gibberish_query
+    examples: |
+      - asdfghjkl
+      - qwertyuiop
+      - zxcvbnm
+      - lkjasdlkajsd
+      - hghghghghg
+      - ???
+      - !!!!???
+      - @#$%^&
+      - 🤣🤣🤣🤣🤣🤣🤣
+      - 😭😭😭😭😭😭
+      - 🥴🥴🥴🥴
+      - kdsjfhsdkjfh
+      - lorem ipsum
+      - sdfsdfsdfsdfsdf
+      - fjdkfjdkfjd
+      - weuroweurow
+      - ajskdja123
+      - 123412341234??
+      - ******?
+      - random text wtf
+      - blah blah blah
+      - nonsensical message
+      - blahhhhhhhhh
+      - jjjjjjjjjjjjjjjj
+      - fffffffffff
+      - asdfghjkl
+      - qwertyuiop
+      - zxcvbnm
+      - lkajsdflkajsd
+      - hghghghghg
+      - kskkskkskskk
+      - hahahhahahahaha
+      - jjjjjjjjjjjjjjjjjjj
+      - omgmgmgmgmgmg
+      - laalalalalala
+      - basbsabsabsa
+      - yxyxyxyxyxyx
+      - ????
+      - !!!!
+      - ???!!!???!!!
+      - @#$%@#$%
+      - 😭😭😭😭😭
+      - 🤣🤣🤣🤣🤣🤣🤣
+      - 😂😂😂😂😂😂😂
+      - 111111111
+      - 999999999
+      - 123123123123
+      - asasasasasasa
+      - sfsfsfsfsf
+      - nonsensenonsensense
+      - blahblahblahblah
+      - uhsdufhsdufh
+      - kdjfhskdjfh
+      - dfjsdfjsdfjsdfj  
+      - क्स्क्स्क्स्क्स
+      - ह्ह्ह्ह्ह्ह्ह
+      - झगझगझगझग
+      - अअअअअअअअ
+      - हहहहहहहह
+      - कककककककक
+      - ञञञञञञ
+      - झ्झ्झ्झ्झ्झ्झ
+      - बकवास बकवास
+      - क्या क्या क्या ????
+      - 😑😑😑😑
+      - 🤯🤯🤯🤯
+      - १२३१२३१२३
+      - अब्स्ड्फ्ग्ह
+      - ह्ग्फ्ड्स
+      - ट्ट्ट्ट्ट्ट
+      - ढसढसढसढस
+      - ब्ज्ब्ज्ब्ज
+      - हहहह????
+      - फस्फस्फस्फस
+      - kskkskskkss
+      - hahahhahahhaha
+      - hmmmmmnnnnn
+      - kyaaaaahhhh
+      - arreyyyyeeeeyyyy
+      - yehhhhhh kyaaaaa
+      - asuodasuodasu
+      - bakwaastexttext
+      - kyaaaa?????
+      - ohohohohohoho
+      - arrearrearre
+      - chutiyachutiyachutiya (safe placeholder gibberish)
+      - lolololololo
+      - kkkkkkkkkkkk
+      - sadsadsadsad
+      - mastmastmast
+      - bakbakbakbak
+      - kofkofkofko
+      - hhhhnnnnnnnn
+      - nnnnsssssssss
+      - ক্ক্ক্ক্ক্ক্ক্ক
+      - হ্গ্গ্গ্গ্গ্গ
+      - ত্ত্ত্ত্ত্ত্ত
+      - অঅঅঅঅঅ
+      - গগগগগগগ
+      - ককককককক
+      - ঝঝঝঝঝঝঝ
+      - ঢঢঢঢঢঢঢ
+      - 😵😵😵😵
+      - 🤔🤔🤔🤔🤔
+      - ১২৩১২৩১২৩১২৩
+      - শ্জ্শ্জ্শ্জ
+      - গ্শশ্গ্শগ
+      - ব্লাহ ব্লাহ ব্লাহ
+      - কিছুঈইইইইইই
+      - উউউউউউউউ
+      - জসজসজসজস
+      - পপপপপপ
+      - য্যয্যয্যয্য
+      - kikkikkikkik
+      - uffffffffff
+      - hoynaaaaaaa
+      - kiiiiiiiiiii
+      - hmmmmmmmmmmmm
+      - aghghghghg
+      - lololololoo
+      - bolbolbolbol
+      - bishbashbosh
+      - kothayyyyyy???
+      - hayrehayrehayre
+      - dakadakadaka
+      - fushfashfushfash
+      - paglapaglapagla
+      - eiiiieiiiieiiii
+      - ghhyghhyghhy
+      - hmmmmmmmmmm
+      - bhhbhhbhhbhh
+      - କ୍କ୍କ୍କ୍କ୍କ୍
+      - ହ୍ହ୍ହ୍ହ୍ହ୍
+      - ଜ୍ଜ୍ଜ୍ଜ୍ଜ୍
+      - ଗଗଗଗଗଗ
+      - ଆଆଆଆଆ
+      - ତ୍ତ୍ତ୍ତ୍ତ୍
+      - ର୍ର୍ର୍ର୍ର୍
+      - ବ୍ବ୍ବ୍ବ୍ବ୍
+      - 😵😵😵😵
+      - 🤨🤨🤨🤨
+      - ୧୨୩୧୨୩୧୨୩
+      - ଡ଼୍ଡ଼୍ଡ଼୍ଡ଼୍ଡ଼୍
+      - ଛଞଛଞଛଞ
+      - ମ୍ମ୍ମ୍ମ୍ମ୍
+      - ଆଆଆଆ???
+      - ଝଝଝଝଝ
+      - ଚ୍ଚ୍ଚ୍ଚ୍ଚ୍
+      - ଜସଜସଜସ
+      - ଙ୍ଘଙ୍ଘଙ୍ଘ
+      - haaahaaaahaaa
+      - kemitikemitikemiti
+      - agagagagaga
+      - ajjjjaajjjja
+      - tiktiktiktik
+      - bhabhabhabha
+      - bjbjbjbjbj
+      - ghunchaghuncha
+      - hahahuhuhaha
+      - lolololololo
+      - jaujaujau
+      - kahankahankahan???
+      - hmmmmmhhhhmmm
+      - agagagagaggagga
+      - chhichhichhichhi
+      - thikthikthikthik
+      - ajibajibajib
+      - bhulbhulbhulbhul
+      - gngngngngng

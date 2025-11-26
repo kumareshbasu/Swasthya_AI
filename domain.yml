@@ -16,6 +16,9 @@ intents:
   - general_health_info_option
   - back_to_main_menu
   - exit_chat_option
+  - non_health_query
+  - gibberish_query
+
 
 entities:
   - disease
@@ -171,6 +174,8 @@ actions:
   - action_ask_gemini
   - action_set_language_slot
   - action_analyze_image_gemini
+  - action_handle_non_health_query
+  - action_handle_gibberish
 
 session_config:
   session_expiration_time: 60

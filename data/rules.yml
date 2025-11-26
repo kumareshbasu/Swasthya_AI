@@ -1,21 +1,21 @@
 # rules.yml
 version: "3.1"
 rules:
-  - rule: Say goodbye anytime the user says goodbye
+  - rule: Say goodbye anytime the user says goodbye # General goodbye rules
     steps:
       - intent: goodbye
       - action: action_set_language_slot # Keep language setting
       - action: utter_goodbye
       - action: action_listen
 
-  - rule: Respond to bot challenge
+  - rule: Respond to bot challenge # General bot challenge rules
     steps:
       - intent: bot_challenge
       - action: action_set_language_slot # Keep language setting
       - action: utter_iamabot
       - action: action_listen
 
-  - rule: Say hi to user
+  - rule: Say hi to user # General greet rules
     steps:
       - intent: greet
       - action: action_set_language_slot # Keep language setting
@@ -29,35 +29,52 @@ rules:
       - action: utter_you_are_welcome
       - action: action_listen
 
-  - rule: Activate AI Health Assistant via NLU
+  - rule: Activate AI Health Assistant via NLU # General health info option
     steps:
       - intent: general_health_info_option
       - action: action_set_language_slot # Keep language setting
       - action: utter_ai_assistant_welcome
       - action: action_listen
 
-  - rule: Ask Gemini for symptoms
+  - rule: Ask Gemini for symptoms # General symptom query
     steps:
       - intent: ask_symptoms
       - action: action_set_language_slot # Keep language setting
       - action: action_ask_gemini
       - action: action_listen
 
-  - rule: Analyze uploaded image
+  - rule: Analyze uploaded image # General image analysis
     steps:
       - intent: analyze_image
       - action: action_analyze_image_gemini
 
-  - rule: Ask Gemini for preventive measures
+  - rule: Ask Gemini for preventive  # General preventive measures query
     steps:
       - intent: ask_preventive_measures
       - action: action_set_language_slot # Keep language setting
       - action: action_ask_gemini
       - action: action_listen
 
-  - rule: Ask Gemini for general health info
+  - rule: Ask Gemini for general health info # General health query
     steps:
       - intent: general_health_query
       - action: action_set_language_slot # Keep language setting
       - action: action_ask_gemini
       - action: action_listen
+
+
+  - rule: block non health queries # Handle non-health queries
+    steps:
+      - intent: non_health_query
+      - action: action_set_language_slot
+      - action: action_handle_non_health_query
+      - action: action_listen
+
+
+  - rule: block gibberish queries
+    steps:
+      - intent: gibberish_query
+      - action: action_set_language_slot
+      - action: action_handle_gibberish
+      - action: action_listen
+
