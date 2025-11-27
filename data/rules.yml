@@ -78,3 +78,7 @@ rules:
       - action: action_handle_gibberish
       - action: action_listen
 
+  - rule: Run Disease Checker
+    steps:
+      - intent: check_disease
+      - action: action_check_disease_gemini

@@ -56,43 +56,43 @@ MENU_RETURN_TRIGGER = ['back', 'main menu', 'Back', 'Return', 'return', 'Exit', 
 MULTILINGUAL_MENUS = {
     'en': """
 Welcome to Swasthya AI!
-Please choose an option by typing its number:
 1. General Health Info (Chat with AI)
 2. Vaccination Schedule
-3. Find Nearest Health Center
-4. About Us
-5. Change Language / भाषा बदलें / ভাষা পরিবর্তন করুন / ଭାଷା ପରିବର୍ତ୍ତନ କରନ୍ତୁ 
-6. Exit Chat
+3. Disease Checker (By Symptoms) 🩺
+4. Find Nearest Health Center
+5. About Us
+6. Change Language
+7. Exit Chat
 """,
     'hi': """
-स्वस्थ्य AI में आपका स्वागत है!
-कृपया इसका नंबर टाइप करके एक विकल्प चुनें:
+स्वास्थ्य AI में आपका स्वागत है!
 1. सामान्य स्वास्थ्य जानकारी (AI से बात करें)
 2. टीकाकरण अनुसूची
-3. निकटतम स्वास्थ्य केंद्र खोजें
-4. हमारे बारे में
-5. भाषा बदलें / Change Language / ভাষা পরিবর্তন করুন / ଭାଷା ପରିବର୍ତ୍ତନ କରନ୍ତୁ
-6. चैट से बाहर निकलें
+3. बीमारी जांच (लक्षणों द्वारा) 🩺
+4. निकटतम स्वास्थ्य केंद्र खोजें
+5. हमारे बारे में
+6. भाषा बदलें
+7. चैट से बाहर निकलें
 """,
     'bn': """
 স্বাস্থ্য AI-তে আপনাকে স্বাগতম!
-দয়া করে এর নম্বর টাইপ করে একটি বিকল্প বেছে নিন:
 1. সাধারণ স্বাস্থ্য তথ্য (AI এর সাথে চ্যাট করুন)
 2. টিকা দেওয়ার সময়সূচী
-3. নিকটতম স্বাস্থ্য কেন্দ্র খুঁজুন
-4. আমাদের সম্পর্কে
-5. ভাষা পরিবর্তন করুন /Change Language / भाषा बदलें / ଭାଷା ପରିବର୍ତ୍ତନ କରନ୍ତୁ
-6. চ্যাট থেকে প্রস্থান করুন
+3. রোগ পরীক্ষক (লক্ষণ দ্বারা) 🩺
+4. নিকটতম স্বাস্থ্য কেন্দ্র খুঁজুন
+5. আমাদের সম্পর্কে
+6. ভাষা পরিবর্তন
+7. চ্যাট থেকে প্রস্থান
 """,
     'or': """
-ସ୍ୱାସ୍ଥ୍ୟ AI କୁ ସ୍ୱାଗତ!
-ଦୟାକରି ଏହାର ନମ୍ବର ଟାଇପ୍ କରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:
-1. ସାଧାରଣ ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା (AI ସହିତ ଚାଟ୍ କରନ୍ତୁ)
-2. ଟୀକାକରଣ ସୂଚୀ
-3. ନିକଟସ୍ଥ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର ଖୋଜନ୍ତୁ
-4. ଆମ ବିଷୟରେ
-5. ଭାଷା ପରିବର୍ତ୍ତନ କରନ୍ତୁ / Change Language / भाषा बदलें / ভাষা পরিবর্তন করুন
-6. ଚାଟ୍ ରୁ ବାହାରନ୍ତୁ
+ସ୍ୱାସ୍ଥ୍ୟ AI ରେ ଆପଣଙ୍କୁ ସ୍ୱାଗତ!
+1. ସାଧାରଣ ସ୍ୱାସ୍ଥ୍ୟ ସୂଚନା (AI ସହିତ ଆଲୋଚନା କରନ୍ତୁ)
+2. ଟୀକାକରଣ ଅନୁସୂଚୀ
+3. ରୋଗ ଯାଞ୍ଚ (ଲକ୍ଷଣ ଦ୍ୱାରା) 🩺
+4. ସବୁଠାରୁ ନିକଟସ୍ଥ ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର ଖୋଜନ୍ତୁ
+5. ଆମ ବିଷୟରେ
+6. ଭାଷା ପରିବର୍ତ୍ତନ
+7. ଚାଟ୍ ଛାଡ଼ନ୍ତୁ
 """
 }
 
@@ -109,7 +109,21 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "That's not a valid option. Please choose a number from the menu below:",
         "rasa_no_response": "Sorry, I didn't get a response from the AI. You can say 'back' to return to the main menu.",
         "rasa_connection_error": "Sorry, I'm having trouble connecting to my brain right now. Please type 'back' to return to the main menu.",
-        "chat_ended_prompt_restart": "Chat session ended. Please type 'hi' or 'hello' if you wish to start a new conversation."
+        "chat_ended_prompt_restart": "Chat session ended. Please type 'hi' or 'hello' if you wish to start a new conversation.",
+
+        # --- Disease Checker Prompts ---
+        "ask_age": "Step 1/10: Please enter the patient's Age (e.g., 25).",
+        "ask_weight": "Step 2/10: Enter Weight (e.g., 60kg).",
+        "ask_gender": "Step 3/10: Enter Gender (Male/Female/Other).",
+        "ask_reports": "Step 4/10: Any recent Test Reports? (Type 'None' if not).",
+        "ask_eating": "Step 5/10: Describe daily eating routine.",
+        "ask_meds": "Step 6/10: Any ongoing medications? (Type 'None' if not).",
+        "ask_habits": "Step 7/10: Any habits like smoking/alcohol? (Type 'None' if not).",
+        "ask_disability": "Step 8/10: Any physical/mental disabilities? (Type 'None' if not).",
+        "ask_history": "Step 9/10: Any family history of diseases (Diabetes, Cancer, etc.)?",
+        "ask_current_symptoms": "Step 10/10: Please describe the SYMPTOMS you are facing right now (e.g., Fever, Headache, Stomach pain):",
+        
+        "processing_diagnosis": "Thank you. Analyzing all 10 points to generate a report... Please wait."
     },
     'hi': {
         "welcome_back": "वापस स्वागत है!",
@@ -123,7 +137,20 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "यह एक वैध विकल्प नहीं है। कृपया नीचे दिए गए मेनू से एक नंबर चुनें:",
         "rasa_no_response": "क्षमा करें, मुझे AI से कोई प्रतिक्रिया नहीं मिली। आप मुख्य मेनू पर लौटने के लिए 'back' कह सकते हैं।",
         "rasa_connection_error": "क्षमा करें, मुझे अभी अपने मस्तिष्क से जुड़ने में परेशानी हो रही है। कृपया मुख्य मेनू पर लौटने के लिए 'back' टाइप करें।",
-        "chat_ended_prompt_restart": "चैट सत्र समाप्त हो गया है। यदि आप एक नई बातचीत शुरू करना चाहते हैं तो 'hi' या 'hello' टाइप करें।"
+        "chat_ended_prompt_restart": "चैट सत्र समाप्त हो गया है। यदि आप एक नई बातचीत शुरू करना चाहते हैं तो 'hi' या 'hello' टाइप करें।",
+
+        # --- Disease Checker Prompts ---
+        "ask_age": "चरण 1/10: कृपया रोगी की उम्र दर्ज करें (जैसे: 25).",
+        "ask_weight": "चरण 2/10: वजन दर्ज करें (जैसे: 60kg).",
+        "ask_gender": "चरण 3/10: लिंग दर्ज करें (पुरुष/महिला/अन्य).",
+        "ask_reports": "चरण 4/10: क्या कोई हालिया जांच रिपोर्ट है? (यदि नहीं, तो 'None' या 'कोई नहीं' लिखें).",
+        "ask_eating": "चरण 5/10: अपने दैनिक भोजन की दिनचर्या का वर्णन करें.",
+        "ask_meds": "चरण 6/10: क्या कोई दवा चल रही है? (यदि नहीं, तो 'None' या 'कोई नहीं' लिखें).",
+        "ask_habits": "चरण 7/10: क्या धूम्रपान/शराब जैसी कोई आदत है? (यदि नहीं, तो 'None' या 'कोई नहीं' लिखें).",
+        "ask_disability": "चरण 8/10: क्या कोई शारीरिक/मानसिक विकलांगता है? (यदि नहीं, तो 'None' या 'कोई नहीं' लिखें).",
+        "ask_history": "चरण 9/10: क्या बीमारियों का कोई पारिवारिक इतिहास है (जैसे मधुमेह, कैंसर, आदि)?",
+        "ask_current_symptoms": "चरण 10/10: कृपया वर्तमान में आप जिन लक्षणों का सामना कर रहे हैं उनका वर्णन करें (जैसे बुखार, सिरदर्द, पेट दर्द):",
+        "processing_diagnosis": "धन्यवाद। रिपोर्ट तैयार करने के लिए सभी 10 बिंदुओं का विश्लेषण किया जा रहा है... कृपया प्रतीक्षा करें."
     },
     'bn': {
         "welcome_back": "পুনরায় স্বাগতম!",
@@ -137,7 +164,20 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "এটি একটি বৈধ বিকল্প নয়। দয়া করে নিচের মেনু থেকে একটি নম্বর বেছে নিন:",
         "rasa_no_response": "দুঃখিত, আমি AI থেকে কোনো প্রতিক্রিয়া পাইনি। আপনি প্রধান মেনুতে ফিরে যেতে 'back' বলতে পারেন।",
         "rasa_connection_error": "দুঃখিত, আমার মস্তিষ্কের সাথে সংযোগ করতে সমস্যা হচ্ছে। দয়া করে প্রধান মেনুতে ফিরে যেতে 'back' টাইপ করুন।",
-        "chat_ended_prompt_restart": "চ্যাট সেশন শেষ হয়েছে। আপনি যদি নতুন কথোপকথন শুরু করতে চান তবে 'hi' বা 'hello' টাইপ করুন।"
+        "chat_ended_prompt_restart": "চ্যাট সেশন শেষ হয়েছে। আপনি যদি নতুন কথোপকথন শুরু করতে চান তবে 'hi' বা 'hello' টাইপ করুন।",
+
+        # --- Disease Checker Prompts ---
+        "ask_age": "ধাপ 1/10: দয়া করে রোগীর বয়স লিখুন (যেমন: 25)।",
+        "ask_weight": "ধাপ 2/10: ওজন লিখুন (যেমন: 60kg)।",
+        "ask_gender": "ধাপ 3/10: লিঙ্গ লিখুন (পুরুষ/মহিলা/অন্যান্য)।",
+        "ask_reports": "ধাপ 4/10: কোনো সাম্প্রতিক পরীক্ষার রিপোর্ট আছে? (যদি না থাকে, তবে 'None' বা 'কোনো নেই' লিখুন)।",
+        "ask_eating": "ধাপ 5/10: দৈনিক খাদ্যাভ্যাস বর্ণনা করুন।",
+        "ask_meds": "ধাপ 6/10: কোনো চলমান ওষুধ আছে? (যদি না থাকে, তবে 'None' বা 'কোনো নেই' লিখুন)।",
+        "ask_habits": "ধাপ 7/10: ধূমপান/মদ্যপান এর মতো কোনো অভ্যাস আছে? (যদি না থাকে, তবে 'None' বা 'কোনো নেই' লিখুন)।",
+        "ask_disability": "ধাপ 8/10: কোনো শারীরিক/মানসিক অক্ষমতা আছে? (যদি না থাকে, তবে 'None' বা 'কোনো নেই' লিখুন)।",
+        "ask_history": "ধাপ 9/10: কোনো রোগের পারিবারিক ইতিহাস আছে (ডায়াবেটিস, ক্যান্সার, ইত্যাদি)?",
+        "ask_current_symptoms": "ধাপ 10/10: দয়া করে বর্তমানে আপনি যে লক্ষণগুলি অনুভব করছেন তা বর্ণনা করুন (যেমন: জ্বর, মাথাব্যথা, পেটের ব্যথা):",
+        "processing_diagnosis": "ধন্যবাদ। একটি রিপোর্ট তৈরি করতে সমস্ত 10টি পয়েন্ট বিশ্লেষণ করা হচ্ছে... দয়া করে অপেক্ষা করুন।"
     },
     'or': {
         "welcome_back": "ପୁଣି ସ୍ୱାଗତ!",
@@ -151,7 +191,20 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "ଏହା ଏକ ବୈଧ ବିକଳ୍ପ ନୁହେଁ। ଦୟାକରି ତଳ ମେନୁରୁ ଏକ ନମ୍ବର ବାଛନ୍ତୁ:",
         "rasa_no_response": "କ୍ଷମା କରନ୍ତୁ, ମୁଁ AI ରୁ କୌଣସି ପ୍ରତିକ୍ରିୟା ପାଇଲି ନାହିଁ। ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ 'back' କହିପାରିବେ।",
         "rasa_connection_error": "କ୍ଷମା କରନ୍ତୁ, ମୋର ମସ୍ତିଷ୍କ ସହିତ ସଂଯୋଗ କରିବାରେ ଅସୁବିଧା ହେଉଛି। ଦୟାକରି ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବା ପାଇଁ 'back' ଟାଇପ୍ କରନ୍ତୁ।",
-        "chat_ended_prompt_restart": "ଚାଟ୍ ଅଧିବେଶନ ଶେଷ ହୋଇଛି। ଯଦି ଆପଣ ଏକ ନୂଆ କଥାବାର୍ତ୍ତା ଆରମ୍ଭ କରିବାକୁ ଚାହାଁନ୍ତି ତେବେ 'hi' କିମ୍ବା 'hello' ଟାଇପ୍ କରନ୍ତୁ।"
+        "chat_ended_prompt_restart": "ଚାଟ୍ ଅଧିବେଶନ ଶେଷ ହୋଇଛି। ଯଦି ଆପଣ ଏକ ନୂଆ କଥାବାର୍ତ୍ତା ଆରମ୍ଭ କରିବାକୁ ଚାହାଁନ୍ତି ତେବେ 'hi' କିମ୍ବା 'hello' ଟାଇପ୍ କରନ୍ତୁ।",
+
+        # --- Disease Checker Prompts ---
+        "ask_age": "ପଦକ୍ଷେପ 1/10: ଦୟାକରି ରୋଗୀଙ୍କ ବୟସ୍ ଦାଖଲ କରନ୍ତୁ (ଉଦାହରଣ: 25)।",
+        "ask_weight": "ପଦକ୍ଷେପ 2/10: ଓଜନ୍ ଦାଖଲ କରନ୍ତୁ (ଉଦାହରଣ: 60kg)।",
+        "ask_gender": "ପଦକ୍ଷେପ 3/10: ଲିଙ୍ଗ ଦାଖଲ କରନ୍ତୁ (ପୁରୁଷ/ମହିଳା/ଅନ୍ୟ).",
+        "ask_reports": "ପଦକ୍ଷେପ 4/10: କୌଣସି ସাম্প୍ରତିକ ପରୀକ୍ଷା ରିପୋର୍ଟ ଅଛି? (ଯଦି ନାହିଁ, ତେବେ 'None' କିମ୍ବା 'କୌଣସି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
+        "ask_eating": "ପଦକ୍ଷେପ 5/10: ଦৈନନ୍ଦିନ ଖାଦ୍ୟ ଅଭ୍ୟାସ ବର୍ଣ୍ଣନା କରନ୍ତୁ।",
+        "ask_meds": "ପଦକ୍ଷେପ 6/10: କୌଣସି ଚାଲୁଥିବା ଔଷଧ ଅଛି? (ଯଦି ନାହିଁ, ତେବେ 'None' କିମ୍ବା 'କୌଣସି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
+        "ask_habits": "ପଦକ୍ଷେପ 7/10: ଧୂମପାନ/ମଦ୍ୟପାନ ଭଳି କୌଣସି ଅଭ୍ୟାସ ଅଛି? (ଯଦି ନାହିଁ, ତେବେ 'None' କିମ୍ବା 'କୌଣସି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
+        "ask_disability": "ପଦକ୍ଷେପ 8/10: କୌଣସି ଶାରୀରିକ/ମାନସିକ ଅସମର୍ଥତା ଅଛି? (ଯଦି ନାହିଁ, ତେବେ 'None' କିମ୍ବା 'କୌଣସି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
+        "ask_history": "ପଦକ୍ଷେପ 9/10: କୌଣସି ରୋଗର ପାରିବାରିକ ଇତିହାସ ଅଛି (ମଧୁମେହ, କ୍ୟାନ୍ସର୍, ଇତ୍ୟାଦି)?",
+        "ask_current_symptoms": "ପଦକ୍ଷେପ 10/10: ଦୟାକରି ବର୍ତ୍ତମାନ ଆପଣ ଯେଉଁ ଲକ୍ଷଣଗୁଡିକୁ ଅନୁଭବ କରୁଛନ୍ତି ସେଗୁଡିକୁ ବର୍ଣ୍ଣନା କରନ୍ତୁ (ଉଦାହରଣ: ଜ୍ୱର, ମୁଣ୍ଡବେଥା, ପେଟ୍ ବେଥା):",
+        "processing_diagnosis": "ଧନ୍ୟବାଦ। ଏକ ରିପୋର୍ଟ ପ୍ରସ୍ତୁତ କରିବା ପାଇଁ ସମସ୍ତ 10ଟି ବିନ୍ଦୁ ବିଶ୍ଳେଷଣ କରାଯାଉଛି... ଦୟାକରି ପ୍ରତୀକ୍ଷା କରନ୍ତୁ।"
     }
 }
 
@@ -289,325 +342,215 @@ def analyze_image_with_gemini(image_bytes, lang='en'):
 # 4. MAIN LOGIC (Webhook Processor)
 # ---------------------------------------------------------
 def process_webhook_event(data):
-    """
-    This function processes the webhook data in a background thread
-    so the main route can return 200 OK immediately.
-    """
     try:
-        logger.info(f"THREAD: Processing webhook event: {json.dumps(data, indent=2)}")
-
-        if "object" not in data or "entry" not in data:
-            logger.warning("THREAD: Webhook event is not a valid WhatsApp event.")
-            return
+        if "object" not in data or "entry" not in data: return
 
         for entry in data["entry"]:
             for change in entry["changes"]:
-                if change.get("field") == "messages" and change.get("value", {}).get("messages"):
+                if change["value"].get("messages"):
                     message = change["value"]["messages"][0]
                     from_number = message["from"]
                     msg_type = message["type"]
 
                     incoming_msg = ""
-                    if msg_type == "text":
-                        incoming_msg = message["text"]["body"].strip() 
-                    elif msg_type == "button":
-                        incoming_msg = message["button"]["payload"].strip()
-                    
-                    # --- IMAGE HANDLING (Updated with DB Logging) ---
-                    elif msg_type == "image":
-                        media_id = message["image"]["id"]
-                        
-                        # 1. Get URL
-                        image_url = get_media_url_from_id(media_id)
-                        
-                        # 2. Get Lang
-                        current_lang = user_states.get(from_number, {}).get('lang', 'en')
+                    if msg_type == "text": incoming_msg = message["text"]["body"].strip()
+                    elif msg_type == "button": incoming_msg = message["button"]["payload"].strip()
 
-                        if image_url:
-                            logger.info(f"THREAD: Image URL obtained: {image_url}. Forwarding to Rasa...")
-                            
-                            # --- NEW: Save Image to DB ---
-                            insert_message(from_number, "user", text=None, media=[image_url], language=current_lang)
-
-                            # 3. Tell Rasa (which calls actions.py) to process it
-                            rasa_payload = f'/analyze_image{{"image_url": "{image_url}"}}'
-                            
-                            try:
-                                rasa_response = requests.post(
-                                    RASA_WEBHOOK_URL,
-                                    json={
-                                        "sender": from_number, 
-                                        "message": rasa_payload, 
-                                        "metadata": {"lang": current_lang}
-                                    }
-                                )
-                                rasa_response.raise_for_status()
-                                # 4. Handle Rasa Response
-                                rasa_data = rasa_response.json()
-                                if rasa_data:
-                                    for bot_message in rasa_data:
-                                        if bot_message.get("text"):
-                                            send_whatsapp_message(from_number, bot_message.get("text"))
-                                    """ # --- SEND CLOSING OPTIONS AFTER IMAGE RESULT ---
-                                    closing_text = MULTILINGUAL_AI_CLOSING.get(
-                                        user_states.get(from_number, {}).get('lang', 'en'),
-                                        MULTILINGUAL_AI_CLOSING['en']
-                                    )
-                                    send_whatsapp_message(from_number, closing_text)"""
-
-                                    # Switch state so user must pick 1 or 2
-                                    user_states[from_number]['state'] = 'awaiting_ai_choice' 
-
-                                else:
-                                    send_whatsapp_message(from_number, "Thinking...")
-                                    
-                                return # Done processing this image
-
-                            except Exception as e:
-                                logger.error(f"Error forwarding image to Rasa: {e}")
-                                send_whatsapp_message(from_number, "Error processing image with AI.")
-                                return
-                        else:
-                            send_whatsapp_message(from_number, "Could not retrieve image from WhatsApp.")
-                            return
-
-                    """ # --- LANGUAGE DETECTION ---
-                    # 1. Get existing language (default to 'en' if new)
-                    current_lang = user_states.get(from_number, {}).get('lang', 'en')
-
-                    try:
-                        # 2. Update ONLY if text is long enough and NOT a digit
-                        if msg_type == "text" and not incoming_msg.isdigit() and len(incoming_msg) > 3:
-                            detected_code = detect(incoming_msg)
-                            if detected_code in MULTILINGUAL_MENUS: 
-                                current_lang = detected_code
-                                
-                        # 3. Reset on standard greetings
-                        elif incoming_msg.lower() in ['hi', 'hello', 'start', 'menu']:
-                             current_lang = 'en' 
-                             
-                    except Exception as e:
-                        logger.warning(f"THREAD: Language detection skipped: {e}. Keeping: {current_lang}")
-
-                    # 4. Save State
+                    # Init State (Force Language Selection for new users)
                     if from_number not in user_states:
-                        user_states[from_number] = {'state': 'initial', 'lang': current_lang}
-                    else:
-                        user_states[from_number]['lang'] = current_lang
-                    
-                    normalized_incoming_msg = incoming_msg.lower()
-                    current_state = user_states[from_number]['state'] 
-                    
-                    logger.info(f"THREAD: Incoming from {from_number} (lang:{current_lang}): '{normalized_incoming_msg}' in state '{current_state}'") """
-                    
-                    # We will ask the user to choose manually
-                    # NEW USER: show language selection menu
-                    if from_number not in user_states:
-                        user_states[from_number] = {'state': 'language_selection', 'lang': 'en'}
-                        send_whatsapp_message(from_number, LANGUAGE_MENU)
-                        return
+                        user_states[from_number] = {'state': 'language_selection', 'lang': 'en', 'data': {}}
 
-                    # Use already-selected language
-                    detected_lang = user_states[from_number]['lang']
-
-                    normalized_incoming_msg = incoming_msg.lower()
-
-                    current_state = user_states[from_number]['state'] 
+                    current_state = user_states[from_number]['state']
                     current_lang = user_states[from_number]['lang']
+                    normalized_msg = incoming_msg.lower()
 
-                    # LANGUAGE SELECTION HANDLER
-                    if current_state == 'language_selection':
+                    if msg_type == "text": insert_message(from_number, "user", text=incoming_msg, language=current_lang)
 
-                        if normalized_incoming_msg == '1':
-                            user_states[from_number]['lang'] = 'en'
-                        elif normalized_incoming_msg == '2':
-                            user_states[from_number]['lang'] = 'hi'
-                        elif normalized_incoming_msg == '3':
-                            user_states[from_number]['lang'] = 'bn'
-                        elif normalized_incoming_msg == '4':
-                            user_states[from_number]['lang'] = 'or'
-                        else:
-                            send_whatsapp_message(from_number, "Invalid choice. Please select a valid number:\n" + LANGUAGE_MENU)
+                    # --- IMAGE HANDLING ---
+                    if msg_type == "image":
+                        media_id = message["image"]["id"]
+                        image_url = get_media_url_from_id(media_id)
+                        if image_url:
+                            insert_message(from_number, "user", media=[image_url], language=current_lang)
+                            
+                            rasa_payload = f'/analyze_image{{"image_url": "{image_url}"}}'
+                            try:
+                                r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}})
+                                for bot_msg in r.json():
+                                    if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
+                                
+                                closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
+                                send_whatsapp_message(from_number, closing)
+                                user_states[from_number]['state'] = 'awaiting_ai_choice'
+                            except: pass
                             return
 
-                        # Move to main menu
-                        user_states[from_number]['state'] = 'main_menu'
-                        lang = user_states[from_number]['lang']
-                        send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(lang, MULTILINGUAL_MENUS['en']))
+                    # --- NAVIGATION & RESET LOGIC (FIXED) ---
+                    if normalized_msg in MENU_ENTRY_TRIGGER:
+                        if current_state == 'language_selection':
+                            send_whatsapp_message(from_number, LANGUAGE_MENU)
+                        else:
+                            user_states[from_number]['state'] = 'main_menu'
+                            send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
                         return
 
-                    logger.info(f"THREAD: Incoming from {from_number} (lang:{current_lang}): '{normalized_incoming_msg}' in state '{current_state}'")
-
-                    # --- NEW: Log Text Message to DB ---
-                    if msg_type == "text":
-                        insert_message(from_number, "user", text=incoming_msg, language=current_lang)
-
-                    # --- NAVIGATION LOGIC ---
-                    if normalized_incoming_msg in MENU_ENTRY_TRIGGER:
-                        if current_state == 'main_menu':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "already_main_menu"))
-                        elif current_state == 'in_rasa_conversation':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "left_ai_assistant"))
-                        elif current_state == 'exited_chat':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "welcome_back"))
-                        
-                        user_states[from_number]['state'] = 'main_menu' 
-                        send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en'])) 
-                        logger.info(f"THREAD: User {from_number} navigated to MAIN_MENU in {current_lang}.")
-                        return 
-
-                    if current_state == 'initial':
+                    # --- LANGUAGE SELECTION ---
+                    if current_state == 'language_selection':
+                        if normalized_msg == '1': user_states[from_number]['lang'] = 'en'
+                        elif normalized_msg == '2': user_states[from_number]['lang'] = 'hi'
+                        elif normalized_msg == '3': user_states[from_number]['lang'] = 'bn'
+                        elif normalized_msg == '4': user_states[from_number]['lang'] = 'or'
+                        else: 
+                            send_whatsapp_message(from_number, "Invalid. 1-4.\n" + LANGUAGE_MENU)
+                            return
                         user_states[from_number]['state'] = 'main_menu'
-                        send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
-                        logger.info(f"THREAD: New user {from_number} showing MAIN_MENU in {current_lang}.")
-                        return 
+                        send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(user_states[from_number]['lang']))
+                        return
 
-                    # AI CHOICE HANDLER (1 or 2)
-                    if current_state == 'awaiting_ai_choice':
-                        # Get correct multilingual prompt
-                        ai_choice_prompt = MULTILINGUAL_AI_CLOSING.get(
-                            current_lang,
-                            MULTILINGUAL_AI_CLOSING['en']
-                        )
-                        # Only 1 or 2 allowed here
-                        if normalized_incoming_msg == '1':
-                            # Continue AI conversation
-                            user_states[from_number]['state'] = 'in_rasa_conversation'
-                            send_whatsapp_message(
-                                from_number,
-                                get_localized_message(from_number, "entering_ai_assistant")
-                            )
-                            return
-                        elif normalized_incoming_msg == '2':
-                            # Go back to main menu
-                            user_states[from_number]['state'] = 'main_menu'
-                            send_whatsapp_message(
-                                from_number,
-                                MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en'])
-                            )
-                            return
-                        else:
-                            # Wrong input → repeat multilingual prompt
-                            send_whatsapp_message(from_number, ai_choice_prompt)
-                            return
+                    # --- DISEASE CHECKER FLOW (10 Steps) ---
+                    if current_state == 'ask_age':
+                        user_states[from_number]['data']['age'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_weight'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_weight"))
+                        return
 
-                    if current_state == 'in_rasa_conversation':
-                        if normalized_incoming_msg in MENU_RETURN_TRIGGER: 
-                            # If we already sent a Gemini response, user is now in awaiting_ai_choice
-                            # → DO NOT allow back/menu/return now.
-                            if user_states[from_number]['state'] == 'awaiting_ai_choice':
-                                ai_choice_prompt = MULTILINGUAL_AI_CLOSING.get(
-                                    current_lang,
-                                    MULTILINGUAL_AI_CLOSING['en']
-                                )
-                                send_whatsapp_message(from_number, ai_choice_prompt)
-                                return
-                            
-                            # Else → back works normally (before sending any Gemini response)
-                            user_states[from_number]['state'] = 'main_menu'
-                            send_whatsapp_message(
-                                from_number,
-                                MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en'])
-                            )
-                            return
-                                               
-                        logger.info(f"THREAD: Forwarding message to Rasa for {from_number} (lang:{current_lang}): '{incoming_msg}'")
+                    if current_state == 'ask_weight':
+                        user_states[from_number]['data']['weight'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_gender'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_gender"))
+                        return
+
+                    if current_state == 'ask_gender':
+                        user_states[from_number]['data']['gender'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_reports'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_reports"))
+                        return
+
+                    if current_state == 'ask_reports':
+                        user_states[from_number]['data']['reports'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_eating'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_eating"))
+                        return
+
+                    if current_state == 'ask_eating':
+                        user_states[from_number]['data']['eating'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_meds'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_meds"))
+                        return
+
+                    if current_state == 'ask_meds':
+                        user_states[from_number]['data']['meds'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_habits'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_habits"))
+                        return
+
+                    if current_state == 'ask_habits':
+                        user_states[from_number]['data']['habits'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_disability'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_disability"))
+                        return
+
+                    if current_state == 'ask_disability':
+                        user_states[from_number]['data']['disability'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_history'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_history"))
+                        return
+
+                    if current_state == 'ask_history':
+                        user_states[from_number]['data']['history'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_current_symptoms'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_current_symptoms"))
+                        return
+
+                    # --- STEP 10: GET SYMPTOMS & PROCESS ---
+                    if current_state == 'ask_current_symptoms':
+                        user_states[from_number]['data']['current_symptoms'] = incoming_msg
+                        
+                        # Format data
+                        d = user_states[from_number]['data']
+                        data_str = (f"Age: {d.get('age')}, Weight: {d.get('weight')}, Gender: {d.get('gender')}, "
+                                    f"Reports: {d.get('reports')}, Diet: {d.get('eating')}, "
+                                    f"Meds: {d.get('meds')}, Habits: {d.get('habits')}, "
+                                    f"Disability: {d.get('disability')}, History: {d.get('history')}, "
+                                    f"CURRENT SYMPTOMS: {incoming_msg}")
+                        
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "processing_diagnosis"))
+                        
+                        rasa_payload = f'/check_disease{{"patient_details": "{data_str}"}}'
                         try:
-                            rasa_response = requests.post(
-                                RASA_WEBHOOK_URL,
-                                json={"sender": from_number, "message": incoming_msg, "metadata": {"lang": current_lang}} 
-                            )
-                            rasa_response.raise_for_status()
+                            r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}})
+                            for bot_msg in r.json():
+                                if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
                             
-                            rasa_data = rasa_response.json()
-                            logger.info(f"THREAD: Received from Rasa (raw) for {from_number}: {json.dumps(rasa_data, indent=2)}")
+                            # --- THIS WAS MISSING: SEND CLOSING OPTIONS ---
+                            closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
+                            send_whatsapp_message(from_number, closing)
+                            user_states[from_number]['state'] = 'awaiting_ai_choice'
+                            
+                        except: pass
+                        return
 
-                            if rasa_data:
-                                for bot_message in rasa_data:
-                                    if bot_message.get("text"):
-                                        send_whatsapp_message(from_number, bot_message.get("text"))
-                                        logger.info(f"THREAD: Dispatched Rasa text message to {from_number} (lang:{current_lang}): '{bot_message.get('text')[:50]}...'")
-                                
-                                    if bot_message.get("image"):
-                                        image_url = bot_message.get("image")
-                                        if image_url:
-                                            headers = {
-                                                "Authorization": f"Bearer {META_ACCESS_TOKEN}",
-                                                "Content-Type": "application/json",
-                                            }
-                                            image_payload = {
-                                                "messaging_product": "whatsapp",
-                                                "to": from_number,
-                                                "type": "image",
-                                                "image": {"link": image_url},
-                                            }
-                                            requests.post(META_API_URL, headers=headers, json=image_payload)
-                                            logger.info(f"THREAD: Dispatched Rasa image message to {from_number}: '{image_url}'")
-                                        else:
-                                            logger.warning(f"THREAD: Rasa sent an image message without a URL for {from_number}.")
-                                # --- AFTER ALL GEMINI RESPONSES, SEND CLOSING OPTIONS ---
-                                closing_text = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
-                                send_whatsapp_message(from_number, closing_text)
-                                # Change state to awaiting_ai_choice
-                                user_states[from_number]['state'] = 'awaiting_ai_choice'
-
-                            else:
-                                send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_no_response"))
-                                #logger.warning(f"THREAD: Rasa data was empty for {from_number}. Sending generic no-response message in {current_lang}.")
-
-                        except requests.exceptions.RequestException as e:
-                            logger.error(f"THREAD: Error connecting to Rasa for {from_number}: {e}", exc_info=True)
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_connection_error"))
-                        return 
-                    elif current_state == 'exited_chat':
-                        send_whatsapp_message(from_number, get_localized_message(from_number, "chat_ended_prompt_restart"))
-                        logger.info(f"THREAD: User {from_number} in 'exited_chat' state in {current_lang}.")
-                        return 
-
-                    elif current_state == 'main_menu':
-                        if normalized_incoming_msg == '1':
+                    # --- AI CHOICE ---
+                    if current_state == 'awaiting_ai_choice':
+                        if normalized_msg == '1':
                             user_states[from_number]['state'] = 'in_rasa_conversation'
                             send_whatsapp_message(from_number, get_localized_message(from_number, "entering_ai_assistant"))
-                            logger.info(f"THREAD: User {from_number} entered AI Assistant in {current_lang}.")
-                        elif normalized_incoming_msg == '2':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "vaccination_selected"))
-                            logger.info(f"THREAD: User {from_number} selected Vaccination info in {current_lang}.")
-                        elif normalized_incoming_msg == '3':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "health_center_selected"))
-                            logger.info(f"THREAD: User {from_number} selected Health Center in {current_lang}.")
-                        elif normalized_incoming_msg == '4':
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "about_us_selected"))
-                            logger.info(f"THREAD: User {from_number} selected About Us in {current_lang}.")
-                        elif normalized_incoming_msg == '5':
-                            # Go back to language selection menu
-                            user_states[from_number]['state'] = 'language_selection'
-                            send_whatsapp_message(from_number, LANGUAGE_MENU)
-                            return
-                        elif normalized_incoming_msg == '6':
-                            # EXIT CHAT AND RESET USER COMPLETELY
-                            send_whatsapp_message(from_number, get_localized_message(from_number, "thank_you_goodbye"))
-                            # Completely remove user state → force language selection next time
-                            if from_number in user_states:
-                                user_states.pop(from_number)
+                        elif normalized_msg == '2':
+                            user_states[from_number]['state'] = 'main_menu'
+                            send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
+                        else:
+                            send_whatsapp_message(from_number, MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en']))
+                        return
 
-                            logger.info(f"THREAD: User {from_number} exited chat. State cleared.")
+                    # --- GENERAL CHAT ---
+                    if current_state == 'in_rasa_conversation':
+                        if normalized_msg in MENU_RETURN_TRIGGER:
+                            user_states[from_number]['state'] = 'main_menu'
+                            send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
                             return
                         
+                        try:
+                            r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": incoming_msg, "metadata": {"lang": current_lang}})
+                            data = r.json()
+                            if data:
+                                for bot_msg in data:
+                                    if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
+                                
+                                closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
+                                send_whatsapp_message(from_number, closing)
+                                user_states[from_number]['state'] = 'awaiting_ai_choice'
+                            else:
+                                send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_no_response"))
+                        except: pass
+                        return
+
+                    # --- MAIN MENU LOGIC ---
+                    if current_state == 'main_menu':
+                        if normalized_msg == '1':
+                            user_states[from_number]['state'] = 'in_rasa_conversation'
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "entering_ai_assistant"))
+                        elif normalized_msg == '2':
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "vaccination_selected"))
+                        elif normalized_msg == '3': # DISEASE CHECKER
+                            user_states[from_number]['state'] = 'ask_age'
+                            user_states[from_number]['data'] = {} 
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "ask_age"))
+                        elif normalized_msg == '4':
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "health_center_selected"))
+                        elif normalized_msg == '5':
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "about_us_selected"))
+                        elif normalized_msg == '6':
+                            user_states[from_number]['state'] = 'language_selection'
+                            send_whatsapp_message(from_number, LANGUAGE_MENU)
+                        elif normalized_msg == '7':
+                            user_states.pop(from_number, None)
+                            send_whatsapp_message(from_number, get_localized_message(from_number, "thank_you_goodbye"))
                         else:
                             send_whatsapp_message(from_number, get_localized_message(from_number, "invalid_option"))
                             send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
-                            logger.info(f"THREAD: User {from_number} entered invalid main menu option. Redisplaying menu in {current_lang}.")
                         return
-                    
-                    logger.warning(f"THREAD: No state matched for incoming message: '{normalized_incoming_msg}' from {from_number}. This should not happen. Defaulting to main menu.")
-                    user_states[from_number]['state'] = 'main_menu'
-                    send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
-                    return
 
-        logger.warning("THREAD: No messages found in the incoming webhook event.")
-    
-    except Exception as e:
-        logger.error(f"THREAD: Unhandled exception in process_webhook_event: {e}", exc_info=True)
+    except Exception as e: logger.error(f"Logic Error: {e}")
 
 # ---------------------------------------------------------
 # 5. FLASK ROUTES

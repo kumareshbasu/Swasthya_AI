@@ -235,3 +235,55 @@ class ActionHandleGibberish(Action):
 
         dispatcher.utter_message(text=replies.get(user_lang, replies["en"]))
         return []
+
+# --- NEW ACTION: DISEASE CHECKER (SYMPTOMS) ---
+class ActionCheckDiseaseGemini(Action):
+    def name(self) -> Text:
+        return "action_check_disease_gemini"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        details = tracker.get_slot('patient_details')
+        user_lang = tracker.latest_message.get('metadata', {}).get('lang', 'en')
+        
+        logger.info(f"DEBUG ACTIONS: Disease Check for: {details}")
+
+        if not details:
+            dispatcher.utter_message(text="Error: No patient details provided.")
+            return []
+
+        # Prompt based on Language
+        lang_instruction = "Respond in English."
+        if user_lang == 'hi': lang_instruction = "उत्तर हिंदी में दें।"
+        elif user_lang == 'bn': lang_instruction = "বাংলায় উত্তর দিন।"
+        elif user_lang == 'or': lang_instruction = "ଓଡିଆରେ ଉତ୍ତର ଦିଅନ୍ତୁ |"
+
+        system_prompt = f"""
+        Act as an experienced diagnostic assistant. 
+        Patient Profile & Symptoms:
+        {details}
+
+        Tasks:
+        1. Identify all possible causes/diseases.
+        2. Suggest immediate home care steps.
+        3. Recommend which specialist (e.g., Cardiologist, Dermatologist) to visit.
+
+        MANDATORY DISCLAIMER: "This is AI advice, NOT a medical diagnosis. Please consult a doctor."
+        
+        {lang_instruction}
+        """
+
+        try:
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-1.5-pro")
+            response = model.generate_content(system_prompt)
+            
+            if response and response.text:
+                dispatcher.utter_message(text=response.text)
+            else:
+                dispatcher.utter_message(text="I couldn't generate a diagnosis.")
+
+        except Exception as e:
+            logger.error(f"Disease Checker Error: {e}")
+            dispatcher.utter_message(text="Error processing diagnosis.")
+        
+        return []
