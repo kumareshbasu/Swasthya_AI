@@ -10,6 +10,9 @@ from langdetect import DetectorFactory
 import google.generativeai as genai
 from datetime import datetime, timezone
 from supabase import create_client, Client
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # To ensure consistent language detection results
 DetectorFactory.seed = 0 
@@ -21,21 +24,21 @@ app = Flask(__name__)
 # ---------------------------------------------------------
 
 # --- Meta / WhatsApp ---
-META_ACCESS_TOKEN = os.environ.get("META_ACCESS_TOKEN", "EAAJz0nEJSNgBQBZAtoR33JIAZBuZB7UmoMo4ojqlsZB7ZCgYxJQZBluxKrH8CxDPFv8Qfiq9hSuZBrwuz3TCndQlhw5196a1sxbX8mmxZBzdedho9N5oZAYwUDIVeNfoGguo6QyE0ag765AXIaIa83GxrMcvZAkMjM1mizJrCYlVrzbsMQBl8AjsQw3bPGuZBhET9glywZDZD")
-PHONE_NUMBER_ID = os.environ.get("PHONE_NUMBER_ID", "819746631222018")
-VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN", "secret_swasthya_ai_is_the_best")
+META_ACCESS_TOKEN = os.getenv("META_ACCESS_TOKEN")
+PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
+VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 META_API_URL = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/messages"
 
 # --- Rasa ---
 RASA_WEBHOOK_URL = "http://localhost:5005/webhooks/rest/webhook"
 
 # --- Gemini API Key (For app.py usage) ---
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
 # --- NEW: Supabase Configuration ---
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://yovoeamdqiravtfhurtc.supabase.co")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlvdm9lYW1kcWlyYXZ0Zmh1cnRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMjExOTgsImV4cCI6MjA3OTY5NzE5OH0.Hm-jhl01nGvCghRWk7rAM24fB8SkUuc2AhOPIttpOfA")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 # Initialize Supabase Client
 try:

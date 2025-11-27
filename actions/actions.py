@@ -9,11 +9,16 @@ from PIL import Image
 import io
 import psycopg2
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+# --- Gemini Initialization ---
 logger = logging.getLogger(__name__)
 
-GEMINI_API_KEY = "AIzaSyD3V-KfgabsetBfnT1gEjXOBUsahW5DLM8"
-genai.configure(api_key=GEMINI_API_KEY) 
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
 
 global_gemini_model_name = "gemini-2.5-pro" # Ensure this is 'gemini-2.5-pro'
 try:
@@ -136,7 +141,7 @@ class ActionAnalyzeImageGemini(Action):
         
         # We need the Meta Token here to download the image
         # (Ideally, use os.environ, but for simplicity we copy it here as you did in app.py)
-        META_ACCESS_TOKEN = "EAAJz0nEJSNgBQBZAtoR33JIAZBuZB7UmoMo4ojqlsZB7ZCgYxJQZBluxKrH8CxDPFv8Qfiq9hSuZBrwuz3TCndQlhw5196a1sxbX8mmxZBzdedho9N5oZAYwUDIVeNfoGguo6QyE0ag765AXIaIa83GxrMcvZAkMjM1mizJrCYlVrzbsMQBl8AjsQw3bPGuZBhET9glywZDZD"
+        META_ACCESS_TOKEN = os.getenv("META_ACCESS_TOKEN")
 
         if not image_url:
             dispatcher.utter_message(text="I received the image request, but the URL is missing.")

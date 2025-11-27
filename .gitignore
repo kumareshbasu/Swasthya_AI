@@ -7,4 +7,4 @@ actions/__pycache__/
 actions/actions.py
 app.py
 
-credentials.txt
+.env
