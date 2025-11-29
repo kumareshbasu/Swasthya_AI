@@ -2,12 +2,9 @@
 from flask import Flask, request, jsonify
 import requests
 import os
-import json
 import logging
 import threading
-import io
-from PIL import Image
-from langdetect import detect, DetectorFactory 
+from langdetect import DetectorFactory 
 import google.generativeai as genai
 from datetime import datetime, timezone
 from supabase import create_client, Client

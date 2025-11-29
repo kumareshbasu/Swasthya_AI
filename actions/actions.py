@@ -8,8 +8,6 @@ import logging
 import requests
 from PIL import Image
 import io
-import psycopg2
-from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
@@ -280,7 +278,7 @@ class ActionCheckDiseaseGemini(Action):
         """
 
         try:
-            model = global_gemini_model_instance or genai.GenerativeModel("gemini-1.5-pro")
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-pro")
             response = model.generate_content(system_prompt)
             
             if response and response.text:
@@ -355,7 +353,7 @@ class ActionCheckMedicineGemini(Action):
         """
 
         try:
-            model = global_gemini_model_instance or genai.GenerativeModel("gemini-1.5-pro")
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-pro")
             response = model.generate_content(system_prompt)
             
             if response and response.text:
