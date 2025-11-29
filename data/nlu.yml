@@ -1542,3 +1542,1076 @@ nlu:
       - ajibajibajib
       - bhulbhulbhulbhul
       - gngngngngng
+
+  - intent: check_medicine
+    examples: |
+      - Tell me about [Paracetamol](medicine_name)
+      - What is [Amoxicillin](medicine_name) used for?
+      - Side effects of [Ibuprofen](medicine_name)
+      - Dosage for [Azithromycin](medicine_name)
+      - Explain [Metformin](medicine_name) medicine
+      - Details about [Ciprofloxacin](medicine_name)
+      - Is [Aspirin](medicine_name) safe?
+      - What does [Cetirizine](medicine_name) do?
+      - Info on [Dolo 650](medicine_name)
+      - [Pan 40](medicine_name) ke fayde
+      - [Combiflam](medicine_name) ki jankari
+      - [Digene](medicine_name) syrup uses
+      - [Omez](medicine_name) tablet details
+      - [Montelukast](medicine_name) side effects
+      - [Atorvastatin](medicine_name) dosage
+      - [Thyroxine](medicine_name) ke baare mein batao
+      - [Insulin](medicine_name) injection details
+      - [Augmentin](medicine_name) 625 uses
+      - [Pantoprazole](medicine_name) medicine info
+      - [Levocetirizine](medicine_name) tablet
+      - [Crocin](medicine_name) kis liye hai
+      - [Disprin](medicine_name) ke nuksan
+      - [Vicks Action 500](medicine_name) details
+      - [Benadryl](medicine_name) syrup dosage
+      - [Allegra](medicine_name) 120 mg info
+      - [Telmisartan](medicine_name) tablet uses
+      - [Amlodipine](medicine_name) side effects
+      - [Ranitidine](medicine_name) details
+      - [Gelusil](medicine_name) syrup info
+      - [Becosules](medicine_name) capsule uses
+      - [Shelcal 500](medicine_name) details
+      - [Limcee](medicine_name) tablet benefits
+      - [Zincovit](medicine_name) tablet uses
+      - [Evion 400](medicine_name) capsule details
+      - [Neurobion Forte](medicine_name) injection
+      - [Betadine](medicine_name) ointment uses
+      - [Soframycin](medicine_name) cream details
+      - [Volini](medicine_name) gel uses
+      - [Moov](medicine_name) spray info
+      - [Iodex](medicine_name) balm details
+      - [Zandu Balm](medicine_name) uses
+      - [Eno](medicine_name) powder details
+      - [Electral](medicine_name) powder uses
+      - [ORS](medicine_name) liquid details
+      - [Dettol](medicine_name) liquid uses
+      - [Savlon](medicine_name) liquid details
+      - [Himalaya Liv.52](medicine_name) syrup
+      - [Cystone](medicine_name) tablet uses
+      - [Septilin](medicine_name) tablet details
+      - [Gasex](medicine_name) tablet uses
+      - [Pudin Hara](medicine_name) pearls info
+      - [Hajmola](medicine_name) tablet details
+      - [Isabgol](medicine_name) husk uses
+      - [Kayam Churna](medicine_name) powder
+      - [Triphala Churna](medicine_name) benefits
+      - [Chyawanprash](medicine_name) details
+      - [Honey](medicine_name) uses in medicine
+      - [Tulsi](medicine_name) drops benefits
+      - [Giloy](medicine_name) juice details
+      - [Amla](medicine_name) juice uses
+      - [Aloe Vera](medicine_name) juice details
+      - [Ashwagandha](medicine_name) powder uses
+      - [Shilajit](medicine_name) resin details
+      - [Brahmi](medicine_name) tablets uses
+      - [Shatavari](medicine_name) powder info
+      - [Neem](medicine_name) tablets details
+      - [Karela](medicine_name) juice uses
+      - [Jamun](medicine_name) juice details
+      - [Arjuna](medicine_name) bark powder
+      - [Gokshura](medicine_name) tablets uses
+      - [Punarnava](medicine_name) syrup details
+      - [Kanchanar Guggulu](medicine_name) uses
+      - [Mahasudarshan Churna](medicine_name) info
+      - [Sitopaladi Churna](medicine_name) details
+      - [Trikatu Churna](medicine_name) uses
+      - [Avipattikar Churna](medicine_name) info
+      - [Lavan Bhaskar Churna](medicine_name) details
+      - [Hingvastak Churna](medicine_name) uses
+      - [Ajwain Ark](medicine_name) info
+      - [Saunf Ark](medicine_name) details
+      - [Jeera Ark](medicine_name) uses
+      - [Gulab Jal](medicine_name) medical uses
+      - [Kesar](medicine_name) benefits
+      - [Haldi](medicine_name) milk benefits
+      - [Adrak](medicine_name) tea benefits
+      - [Lehsun](medicine_name) for heart
+      - [Dalchini](medicine_name) for diabetes
+      - [Methi](medicine_name) seeds for sugar
+      - [Kalwonji](medicine_name) oil uses
+      - [Alsi](medicine_name) seeds benefits
+      - [Chia Seeds](medicine_name) health benefits
+      - [Sunflower Seeds](medicine_name) benefits
+      - [Pumpkin Seeds](medicine_name) uses
+      - [Watermelon Seeds](medicine_name) info
+      - [Sesame Seeds](medicine_name) benefits
+      - [Poppy Seeds](medicine_name) uses
+      - [Mustard Seeds](medicine_name) benefits
+      - [Cumin Seeds](medicine_name) uses
+      - [Coriander Seeds](medicine_name) benefits
+      - [Fennel Seeds](medicine_name) uses
+      - [Fenugreek Seeds](medicine_name) benefits
+      - [Cardamom](medicine_name) health benefits
+      - [Clove](medicine_name) oil uses
+      - [Black Pepper](medicine_name) benefits
+      - [Cinnamon](medicine_name) powder uses
+      - [Nutmeg](medicine_name) benefits
+      - [Mace](medicine_name) spice uses
+      - [Star Anise](medicine_name) benefits
+      - [Bay Leaf](medicine_name) uses
+      - [Curry Leaves](medicine_name) benefits
+      - [Mint Leaves](medicine_name) uses
+      - [Coriander Leaves](medicine_name) benefits
+      - [Spinach](medicine_name) health benefits
+      - [Kale](medicine_name) benefits
+      - [Lettuce](medicine_name) uses
+      - [Cabbage](medicine_name) benefits
+      - [Cauliflower](medicine_name) uses
+      - [Broccoli](medicine_name) benefits
+      - [Carrot](medicine_name) juice uses
+      - [Beetroot](medicine_name) juice benefits
+      - [Radish](medicine_name) benefits
+      - [Turnip](medicine_name) uses
+      - [Sweet Potato](medicine_name) benefits
+      - [Potato](medicine_name) uses
+      - [Onion](medicine_name) juice for hair
+      - [Garlic](medicine_name) benefits
+      - [Ginger](medicine_name) benefits
+      - [Tomato](medicine_name) benefits
+      - [Cucumber](medicine_name) benefits
+      - [Pumpkin](medicine_name) benefits
+      - [Bitter Gourd](medicine_name) for diabetes
+      - [Bottle Gourd](medicine_name) juice
+      - [Ridge Gourd](medicine_name) benefits
+      - [Snake Gourd](medicine_name) uses
+      - [Ivy Gourd](medicine_name) benefits
+      - [Pointed Gourd](medicine_name) uses
+      - [Teasel Gourd](medicine_name) benefits
+      - [Ash Gourd](medicine_name) juice
+      - [Drumstick](medicine_name) leaves benefits
+      - [Plantain](medicine_name) flower uses
+      - [Banana Stem](medicine_name) juice
+      - [Raw Banana](medicine_name) benefits
+      - [Raw Mango](medicine_name) drink
+      - [Ripe Mango](medicine_name) benefits
+      - [Apple](medicine_name) benefits
+      - [Banana](medicine_name) benefits
+      - [Orange](medicine_name) juice benefits
+      - [Grapes](medicine_name) benefits
+      - [Papaya](medicine_name) for digestion
+      - [Pomegranate](medicine_name) juice for blood
+      - [Guava](medicine_name) benefits
+      - [Watermelon](medicine_name) benefits
+      - [Muskmelon](medicine_name) benefits
+      - [Pineapple](medicine_name) benefits
+      - [Strawberry](medicine_name) benefits
+      - [Blueberry](medicine_name) benefits
+      - [Raspberry](medicine_name) benefits
+      - [Blackberry](medicine_name) benefits
+      - [Cranberry](medicine_name) juice for UTI
+      - [Kiwi](medicine_name) for dengue
+      - [Dragon Fruit](medicine_name) benefits
+      - [Avocado](medicine_name) benefits
+      - [Coconut Water](medicine_name) benefits
+      - [Lemon Water](medicine_name) benefits
+      - [Green Tea](medicine_name) benefits
+      - [Black Tea](medicine_name) benefits
+      - [Coffee](medicine_name) benefits
+      - [Milk](medicine_name) benefits
+      - [Curd](medicine_name) benefits
+      - [Buttermilk](medicine_name) benefits
+      - [Ghee](medicine_name) benefits
+      - [Butter](medicine_name) benefits
+      - [Cheese](medicine_name) benefits
+      - [Paneer](medicine_name) benefits
+      - [Tofu](medicine_name) benefits
+      - [Soya Chunks](medicine_name) benefits
+      - [Egg](medicine_name) benefits
+      - [Chicken](medicine_name) soup benefits
+      - [Mutton](medicine_name) soup benefits
+      - [Fish](medicine_name) oil benefits
+      - [Cod Liver Oil](medicine_name) capsules
+      - [Vitamin C](medicine_name) tablets
+      - [Vitamin D](medicine_name) sachets
+      - [Vitamin E](medicine_name) capsules
+      - [Vitamin B12](medicine_name) tablets
+      - [Calcium](medicine_name) tablets
+      - [Iron](medicine_name) tablets
+      - [Folic Acid](medicine_name) tablets
+      - [Multivitamin](medicine_name) tablets
+      - [Protein Powder](medicine_name) uses
+      - [Whey Protein](medicine_name) benefits
+      - [Creatine](medicine_name) uses
+      - [BCAA](medicine_name) benefits
+      - [Glutamine](medicine_name) uses
+      - [Fish Oil](medicine_name) capsules
+      - [Flaxseed Oil](medicine_name) capsules
+      - [Evening Primrose Oil](medicine_name) capsules
+      - [Wheat Germ Oil](medicine_name) capsules
+      - [Garlic Pearls](medicine_name) capsules
+      - [Spirulina](medicine_name) tablets
+      - [Chlorella](medicine_name) tablets
+      - [Moringa](medicine_name) powder
+      - [Wheatgrass](medicine_name) powder
+      - [Barley Grass](medicine_name) powder
+      - [Alfalfa](medicine_name) powder
+      - [Amla Powder](medicine_name) benefits
+      - [Triphala Powder](medicine_name) benefits
+      - [Ashwagandha Powder](medicine_name) benefits
+      - [Shatavari Powder](medicine_name) benefits
+      - [Brahmi Powder](medicine_name) benefits
+      - [Shankhpushpi](medicine_name) syrup
+      - [Arjuna Powder](medicine_name) benefits
+      - [Gokshura Powder](medicine_name) benefits
+      - [Punarnava Powder](medicine_name) benefits
+      - [Kaunch Beej](medicine_name) powder
+      - [Safed Musli](medicine_name) powder
+      - [Vidarikand](medicine_name) powder
+      - [Akarkara](medicine_name) root
+      - [Jatamansi](medicine_name) root
+      - [Tagar](medicine_name) root
+      - [Vacha](medicine_name) root
+      - [Kutki](medicine_name) root
+      - [Chirata](medicine_name) herb
+      - [Kalmegh](medicine_name) herb
+      - [Bhringraj](medicine_name) oil
+      - [Amla Oil](medicine_name) benefits
+      - [Coconut Oil](medicine_name) benefits
+      - [Almond Oil](medicine_name) benefits
+      - [Olive Oil](medicine_name) benefits
+      - [Sesame Oil](medicine_name) benefits
+      - [Mustard Oil](medicine_name) benefits
+      - [Castor Oil](medicine_name) benefits
+      - [Neem Oil](medicine_name) benefits
+      - [Tea Tree Oil](medicine_name) uses
+      - [Lavender Oil](medicine_name) uses
+      - [Peppermint Oil](medicine_name) uses
+      - [Eucalyptus Oil](medicine_name) uses
+      - [Lemon Oil](medicine_name) uses
+      - [Orange Oil](medicine_name) uses
+      - [Rosemary Oil](medicine_name) uses
+      - [Thyme Oil](medicine_name) uses
+      - [Oregano Oil](medicine_name) uses
+      - [Basil Oil](medicine_name) uses
+      - [Lemongrass Oil](medicine_name) uses
+      - [Citronella Oil](medicine_name) uses
+      - [Geranium Oil](medicine_name) uses
+      - [Ylang Ylang Oil](medicine_name) uses
+      - [Sandalwood Oil](medicine_name) uses
+      - [Frankincense Oil](medicine_name) uses
+      - [Myrrh Oil](medicine_name) uses
+      - [Patchouli Oil](medicine_name) uses
+      - [Cedarwood Oil](medicine_name) uses
+      - [Bergamot Oil](medicine_name) uses
+      - [Grapefruit Oil](medicine_name) uses
+      - [Clary Sage Oil](medicine_name) uses
+      - [Jasmine Oil](medicine_name) uses
+      - [Rose Oil](medicine_name) uses
+      - [Chamomile Oil](medicine_name) uses
+      - [Cinnamon Oil](medicine_name) uses
+      - [Clove Oil](medicine_name) uses
+      - [Ginger Oil](medicine_name) uses
+      - [Black Pepper Oil](medicine_name) uses
+      - [Turmeric Oil](medicine_name) uses
+
+  # ---------------------------------------------------------------------------------------------
+  # --- HINDI & HINGLISH (Medicine Info) ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: check_medicine
+    examples: |
+      - [Paracetamol](medicine_name) ke baare mein batao
+      - [Amoxicillin](medicine_name) kiske liye hai?
+      - [Ibuprofen](medicine_name) ke side effects
+      - [Azithromycin](medicine_name) ki dosage
+      - [Metformin](medicine_name) dawai samjhao
+      - [Ciprofloxacin](medicine_name) ki jankari
+      - Kya [Aspirin](medicine_name) safe hai?
+      - [Cetirizine](medicine_name) kya karti hai?
+      - [Dolo 650](medicine_name) ki info
+      - [Pan 40](medicine_name) ke fayde
+      - [Combiflam](medicine_name) ki jankari do
+      - [Digene](medicine_name) syrup ke upyog
+      - [Omez](medicine_name) tablet ke baare mein
+      - [Montelukast](medicine_name) ke dushprabhav
+      - [Atorvastatin](medicine_name) ki khuraak
+      - [Thyroxine](medicine_name) ke baare mein bataiye
+      - [Insulin](medicine_name) injection ki jankari
+      - [Augmentin](medicine_name) 625 ke upyog
+      - [Pantoprazole](medicine_name) dawai ki info
+      - [Levocetirizine](medicine_name) tablet ke baare mein
+      - [Crocin](medicine_name) kis kaam aati hai
+      - [Disprin](medicine_name) ke nuksan batao
+      - [Vicks Action 500](medicine_name) ki jankari
+      - [Benadryl](medicine_name) syrup ki dosage
+      - [Allegra](medicine_name) 120 mg ki info
+      - [Telmisartan](medicine_name) tablet ke uses
+      - [Amlodipine](medicine_name) ke side effects
+      - [Ranitidine](medicine_name) ki details
+      - [Gelusil](medicine_name) syrup ki jankari
+      - [Becosules](medicine_name) capsule ke uses
+      - [Shelcal 500](medicine_name) ki details
+      - [Limcee](medicine_name) tablet ke fayde
+      - [Zincovit](medicine_name) tablet ke uses
+      - [Evion 400](medicine_name) capsule ki jankari
+      - [Neurobion Forte](medicine_name) injection ke baare mein
+      - [Betadine](medicine_name) ointment ke upyog
+      - [Soframycin](medicine_name) cream ki details
+      - [Volini](medicine_name) gel ke uses
+      - [Moov](medicine_name) spray ki info
+      - [Iodex](medicine_name) balm ki details
+      - [Zandu Balm](medicine_name) ke uses
+      - [Eno](medicine_name) powder ki jankari
+      - [Electral](medicine_name) powder ke upyog
+      - [ORS](medicine_name) liquid ki details
+      - [Dettol](medicine_name) liquid ke uses
+      - [Savlon](medicine_name) liquid ki details
+      - [Himalaya Liv.52](medicine_name) syrup ke baare mein
+      - [Cystone](medicine_name) tablet ke uses
+      - [Septilin](medicine_name) tablet ki details
+      - [Gasex](medicine_name) tablet ke uses
+      - [Pudin Hara](medicine_name) pearls ki info
+      - [Hajmola](medicine_name) tablet ki details
+      - [Isabgol](medicine_name) husk ke uses
+      - [Kayam Churna](medicine_name) powder ki jankari
+      - [Triphala Churna](medicine_name) ke fayde
+      - [Chyawanprash](medicine_name) ki details
+      - [Honey](medicine_name) ke medicine mein uses
+      - [Tulsi](medicine_name) drops ke fayde
+      - [Giloy](medicine_name) juice ki details
+      - [Amla](medicine_name) juice ke uses
+      - [Aloe Vera](medicine_name) juice ki details
+      - [Ashwagandha](medicine_name) powder ke uses
+      - [Shilajit](medicine_name) resin ki details
+      - [Brahmi](medicine_name) tablets ke uses
+      - [Shatavari](medicine_name) powder ki info
+      - [Neem](medicine_name) tablets ki details
+      - [Karela](medicine_name) juice ke uses
+      - [Jamun](medicine_name) juice ki details
+      - [Arjuna](medicine_name) bark powder ke baare mein
+      - [Gokshura](medicine_name) tablets ke uses
+      - [Punarnava](medicine_name) syrup ki details
+      - [Kanchanar Guggulu](medicine_name) ke uses
+      - [Mahasudarshan Churna](medicine_name) ki info
+      - [Sitopaladi Churna](medicine_name) ki details
+      - [Trikatu Churna](medicine_name) ke uses
+      - [Avipattikar Churna](medicine_name) ki info
+      - [Lavan Bhaskar Churna](medicine_name) ki details
+      - [Hingvastak Churna](medicine_name) ke uses
+      - [Ajwain Ark](medicine_name) ki info
+      - [Saunf Ark](medicine_name) ki details
+      - [Jeera Ark](medicine_name) ke uses
+      - [Gulab Jal](medicine_name) ke medical uses
+      - [Kesar](medicine_name) ke fayde
+      - [Haldi](medicine_name) doodh ke fayde
+      - [Adrak](medicine_name) chai ke fayde
+      - [Lehsun](medicine_name) dil ke liye
+      - [Dalchini](medicine_name) diabetes ke liye
+      - [Methi](medicine_name) dana sugar ke liye
+      - [Kalwonji](medicine_name) oil ke uses
+      - [Alsi](medicine_name) seeds ke fayde
+      - [Chia Seeds](medicine_name) ke health benefits
+      - [Sunflower Seeds](medicine_name) ke fayde
+      - [Pumpkin Seeds](medicine_name) ke uses
+      - [Watermelon Seeds](medicine_name) ki info
+      - [Sesame Seeds](medicine_name) ke fayde
+      - [Poppy Seeds](medicine_name) ke uses
+      - [Mustard Seeds](medicine_name) ke fayde
+      - [Cumin Seeds](medicine_name) ke uses
+      - [Coriander Seeds](medicine_name) ke fayde
+      - [Fennel Seeds](medicine_name) ke uses
+      - [Fenugreek Seeds](medicine_name) ke fayde
+      - [Cardamom](medicine_name) ke health benefits
+      - [Clove](medicine_name) oil ke uses
+      - [Black Pepper](medicine_name) ke fayde
+      - [Cinnamon](medicine_name) powder ke uses
+      - [Nutmeg](medicine_name) ke fayde
+      - [Mace](medicine_name) spice ke uses
+      - [Star Anise](medicine_name) ke fayde
+      - [Bay Leaf](medicine_name) ke uses
+      - [Curry Leaves](medicine_name) ke fayde
+      - [Mint Leaves](medicine_name) ke uses
+      - [Coriander Leaves](medicine_name) ke fayde
+      - [Spinach](medicine_name) ke health benefits
+      - [Kale](medicine_name) ke fayde
+      - [Lettuce](medicine_name) ke uses
+      - [Cabbage](medicine_name) ke fayde
+      - [Cauliflower](medicine_name) ke uses
+      - [Broccoli](medicine_name) ke fayde
+      - [Carrot](medicine_name) juice ke uses
+      - [Beetroot](medicine_name) juice ke fayde
+      - [Radish](medicine_name) ke fayde
+      - [Turnip](medicine_name) ke uses
+      - [Sweet Potato](medicine_name) ke fayde
+      - [Potato](medicine_name) ke uses
+      - [Onion](medicine_name) juice baalon ke liye
+      - [Garlic](medicine_name) ke fayde
+      - [Ginger](medicine_name) ke fayde
+      - [Tomato](medicine_name) ke fayde
+      - [Cucumber](medicine_name) ke fayde
+      - [Pumpkin](medicine_name) ke fayde
+      - [Bitter Gourd](medicine_name) diabetes ke liye
+      - [Bottle Gourd](medicine_name) juice
+      - [Ridge Gourd](medicine_name) ke fayde
+      - [Snake Gourd](medicine_name) ke uses
+      - [Ivy Gourd](medicine_name) ke fayde
+      - [Pointed Gourd](medicine_name) ke uses
+      - [Teasel Gourd](medicine_name) ke fayde
+      - [Ash Gourd](medicine_name) juice
+      - [Drumstick](medicine_name) leaves ke fayde
+      - [Plantain](medicine_name) flower ke uses
+      - [Banana Stem](medicine_name) juice
+      - [Raw Banana](medicine_name) ke fayde
+      - [Raw Mango](medicine_name) drink
+      - [Ripe Mango](medicine_name) ke fayde
+      - [Apple](medicine_name) ke fayde
+      - [Banana](medicine_name) ke fayde
+      - [Orange](medicine_name) juice ke fayde
+      - [Grapes](medicine_name) ke fayde
+      - [Papaya](medicine_name) digestion ke liye
+      - [Pomegranate](medicine_name) juice khoon ke liye
+      - [Guava](medicine_name) ke fayde
+      - [Watermelon](medicine_name) ke fayde
+      - [Muskmelon](medicine_name) ke fayde
+      - [Pineapple](medicine_name) ke fayde
+      - [Strawberry](medicine_name) ke fayde
+      - [Blueberry](medicine_name) ke fayde
+      - [Raspberry](medicine_name) ke fayde
+      - [Blackberry](medicine_name) ke fayde
+      - [Cranberry](medicine_name) juice UTI ke liye
+      - [Kiwi](medicine_name) dengue ke liye
+      - [Dragon Fruit](medicine_name) ke fayde
+      - [Avocado](medicine_name) ke fayde
+      - [Coconut Water](medicine_name) ke fayde
+      - [Lemon Water](medicine_name) ke fayde
+      - [Green Tea](medicine_name) ke fayde
+      - [Black Tea](medicine_name) ke fayde
+      - [Coffee](medicine_name) ke fayde
+      - [Milk](medicine_name) ke fayde
+      - [Curd](medicine_name) ke fayde
+      - [Buttermilk](medicine_name) ke fayde
+      - [Ghee](medicine_name) ke fayde
+      - [Butter](medicine_name) ke fayde
+      - [Cheese](medicine_name) ke fayde
+      - [Paneer](medicine_name) ke fayde
+      - [Tofu](medicine_name) ke fayde
+      - [Soya Chunks](medicine_name) ke fayde
+      - [Egg](medicine_name) ke fayde
+      - [Chicken](medicine_name) soup ke fayde
+      - [Mutton](medicine_name) soup ke fayde
+      - [Fish](medicine_name) oil ke fayde
+      - [Cod Liver Oil](medicine_name) capsules
+      - [Vitamin C](medicine_name) tablets
+      - [Vitamin D](medicine_name) sachets
+      - [Vitamin E](medicine_name) capsules
+      - [Vitamin B12](medicine_name) tablets
+      - [Calcium](medicine_name) tablets
+      - [Iron](medicine_name) tablets
+      - [Folic Acid](medicine_name) tablets
+      - [Multivitamin](medicine_name) tablets
+      - [Protein Powder](medicine_name) ke uses
+      - [Whey Protein](medicine_name) ke fayde
+      - [Creatine](medicine_name) ke uses
+      - [BCAA](medicine_name) ke fayde
+      - [Glutamine](medicine_name) ke uses
+      - [Fish Oil](medicine_name) capsules
+      - [Flaxseed Oil](medicine_name) capsules
+      - [Evening Primrose Oil](medicine_name) capsules
+      - [Wheat Germ Oil](medicine_name) capsules
+      - [Garlic Pearls](medicine_name) capsules
+      - [Spirulina](medicine_name) tablets
+      - [Chlorella](medicine_name) tablets
+      - [Moringa](medicine_name) powder
+      - [Wheatgrass](medicine_name) powder
+      - [Barley Grass](medicine_name) powder
+      - [Alfalfa](medicine_name) powder
+      - [Amla Powder](medicine_name) ke fayde
+      - [Triphala Powder](medicine_name) ke fayde
+      - [Ashwagandha Powder](medicine_name) ke fayde
+      - [Shatavari Powder](medicine_name) ke fayde
+      - [Brahmi Powder](medicine_name) ke fayde
+      - [Shankhpushpi](medicine_name) syrup
+      - [Arjuna Powder](medicine_name) ke fayde
+      - [Gokshura Powder](medicine_name) ke fayde
+      - [Punarnava Powder](medicine_name) ke fayde
+      - [Kaunch Beej](medicine_name) powder
+      - [Safed Musli](medicine_name) powder
+      - [Vidarikand](medicine_name) powder
+      - [Akarkara](medicine_name) root
+      - [Jatamansi](medicine_name) root
+      - [Tagar](medicine_name) root
+      - [Vacha](medicine_name) root
+      - [Kutki](medicine_name) root
+      - [Chirata](medicine_name) herb
+      - [Kalmegh](medicine_name) herb
+      - [Bhringraj](medicine_name) oil
+      - [Amla Oil](medicine_name) ke fayde
+      - [Coconut Oil](medicine_name) ke fayde
+      - [Almond Oil](medicine_name) ke fayde
+      - [Olive Oil](medicine_name) ke fayde
+      - [Sesame Oil](medicine_name) ke fayde
+      - [Mustard Oil](medicine_name) ke fayde
+      - [Castor Oil](medicine_name) ke fayde
+      - [Neem Oil](medicine_name) ke fayde
+      - [Tea Tree Oil](medicine_name) ke uses
+      - [Lavender Oil](medicine_name) ke uses
+      - [Peppermint Oil](medicine_name) ke uses
+      - [Eucalyptus Oil](medicine_name) ke uses
+      - [Lemon Oil](medicine_name) ke uses
+      - [Orange Oil](medicine_name) ke uses
+      - [Rosemary Oil](medicine_name) ke uses
+      - [Thyme Oil](medicine_name) ke uses
+      - [Oregano Oil](medicine_name) ke uses
+      - [Basil Oil](medicine_name) ke uses
+      - [Lemongrass Oil](medicine_name) ke uses
+      - [Citronella Oil](medicine_name) ke uses
+      - [Geranium Oil](medicine_name) ke uses
+      - [Ylang Ylang Oil](medicine_name) ke uses
+      - [Sandalwood Oil](medicine_name) ke uses
+      - [Frankincense Oil](medicine_name) ke uses
+      - [Myrrh Oil](medicine_name) ke uses
+      - [Patchouli Oil](medicine_name) ke uses
+      - [Cedarwood Oil](medicine_name) ke uses
+      - [Bergamot Oil](medicine_name) ke uses
+      - [Grapefruit Oil](medicine_name) ke uses
+      - [Clary Sage Oil](medicine_name) ke uses
+      - [Jasmine Oil](medicine_name) ke uses
+      - [Rose Oil](medicine_name) ke uses
+      - [Chamomile Oil](medicine_name) ke uses
+      - [Cinnamon Oil](medicine_name) ke uses
+      - [Clove Oil](medicine_name) ke uses
+      - [Ginger Oil](medicine_name) ke uses
+      - [Black Pepper Oil](medicine_name) ke uses
+      - [Turmeric Oil](medicine_name) ke uses
+  
+  # ---------------------------------------------------------------------------------------------
+  # --- BENGALI (Medicine Info) ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: check_medicine
+    examples: |
+      - [Paracetamol](medicine_name) সম্পর্কে বলুন
+      - [Amoxicillin](medicine_name) কিসের জন্য?
+      - [Ibuprofen](medicine_name) এর পার্শ্বপ্রতিক্রিয়া
+      - [Azithromycin](medicine_name) এর ডোজ
+      - [Metformin](medicine_name) ওষুধ বুঝিয়ে বলুন
+      - [Ciprofloxacin](medicine_name) এর তথ্য
+      - [Aspirin](medicine_name) কি নিরাপদ?
+      - [Cetirizine](medicine_name) কি কাজ করে?
+      - [Dolo 650](medicine_name) এর তথ্য
+      - [Pan 40](medicine_name) এর উপকারিতা
+      - [Combiflam](medicine_name) এর তথ্য দিন
+      - [Digene](medicine_name) সিরাপ এর ব্যবহার
+      - [Omez](medicine_name) ট্যাবলেট সম্পর্কে
+      - [Montelukast](medicine_name) এর পার্শ্বপ্রতিক্রিয়া
+      - [Atorvastatin](medicine_name) এর ডোজ
+      - [Thyroxine](medicine_name) সম্পর্কে বলুন
+      - [Insulin](medicine_name) ইনজেকশন এর তথ্য
+      - [Augmentin](medicine_name) 625 এর ব্যবহার
+      - [Pantoprazole](medicine_name) ওষুধের তথ্য
+      - [Levocetirizine](medicine_name) ট্যাবলেট সম্পর্কে
+      - [Crocin](medicine_name) কিসের জন্য
+      - [Disprin](medicine_name) এর অপকারিতা
+      - [Vicks Action 500](medicine_name) এর তথ্য
+      - [Benadryl](medicine_name) সিরাপ এর ডোজ
+      - [Allegra](medicine_name) 120 mg এর তথ্য
+      - [Telmisartan](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Amlodipine](medicine_name) এর পার্শ্বপ্রতিক্রিয়া
+      - [Ranitidine](medicine_name) এর বিবরণ
+      - [Gelusil](medicine_name) সিরাপ এর তথ্য
+      - [Becosules](medicine_name) ক্যাপসুল এর ব্যবহার
+      - [Shelcal 500](medicine_name) এর বিবরণ
+      - [Limcee](medicine_name) ট্যাবলেট এর উপকারিতা
+      - [Zincovit](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Evion 400](medicine_name) ক্যাপসুল এর তথ্য
+      - [Neurobion Forte](medicine_name) ইনজেকশন সম্পর্কে
+      - [Betadine](medicine_name) মলম এর ব্যবহার
+      - [Soframycin](medicine_name) ক্রিম এর বিবরণ
+      - [Volini](medicine_name) জেল এর ব্যবহার
+      - [Moov](medicine_name) স্প্রে এর তথ্য
+      - [Iodex](medicine_name) বাম এর বিবরণ
+      - [Zandu Balm](medicine_name) এর ব্যবহার
+      - [Eno](medicine_name) পাউডার এর তথ্য
+      - [Electral](medicine_name) পাউডার এর ব্যবহার
+      - [ORS](medicine_name) লিকুইড এর বিবরণ
+      - [Dettol](medicine_name) লিকুইড এর ব্যবহার
+      - [Savlon](medicine_name) লিকুইড এর বিবরণ
+      - [Himalaya Liv.52](medicine_name) সিরাপ সম্পর্কে
+      - [Cystone](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Septilin](medicine_name) ট্যাবলেট এর বিবরণ
+      - [Gasex](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Pudin Hara](medicine_name) পার্ল এর তথ্য
+      - [Hajmola](medicine_name) ট্যাবলেট এর বিবরণ
+      - [Isabgol](medicine_name) ভুষি এর ব্যবহার
+      - [Kayam Churna](medicine_name) পাউডার এর তথ্য
+      - [Triphala Churna](medicine_name) এর উপকারিতা
+      - [Chyawanprash](medicine_name) এর বিবরণ
+      - [Honey](medicine_name) এর ওষুধে ব্যবহার
+      - [Tulsi](medicine_name) ড্রপ এর উপকারিতা
+      - [Giloy](medicine_name) জুস এর বিবরণ
+      - [Amla](medicine_name) জুস এর ব্যবহার
+      - [Aloe Vera](medicine_name) জুস এর বিবরণ
+      - [Ashwagandha](medicine_name) পাউডার এর ব্যবহার
+      - [Shilajit](medicine_name) রেজিন এর বিবরণ
+      - [Brahmi](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Shatavari](medicine_name) পাউডার এর তথ্য
+      - [Neem](medicine_name) ট্যাবলেট এর বিবরণ
+      - [Karela](medicine_name) জুস এর ব্যবহার
+      - [Jamun](medicine_name) জুস এর বিবরণ
+      - [Arjuna](medicine_name) ছাল পাউডার সম্পর্কে
+      - [Gokshura](medicine_name) ট্যাবলেট এর ব্যবহার
+      - [Punarnava](medicine_name) সিরাপ এর বিবরণ
+      - [Kanchanar Guggulu](medicine_name) এর ব্যবহার
+      - [Mahasudarshan Churna](medicine_name) এর তথ্য
+      - [Sitopaladi Churna](medicine_name) এর বিবরণ
+      - [Trikatu Churna](medicine_name) এর ব্যবহার
+      - [Avipattikar Churna](medicine_name) এর তথ্য
+      - [Lavan Bhaskar Churna](medicine_name) এর বিবরণ
+      - [Hingvastak Churna](medicine_name) এর ব্যবহার
+      - [Ajwain Ark](medicine_name) এর তথ্য
+      - [Saunf Ark](medicine_name) এর বিবরণ
+      - [Jeera Ark](medicine_name) এর ব্যবহার
+      - [Gulab Jal](medicine_name) এর ঔষধি ব্যবহার
+      - [Kesar](medicine_name) এর উপকারিতা
+      - [Haldi](medicine_name) দুধ এর উপকারিতা
+      - [Adrak](medicine_name) চা এর উপকারিতা
+      - [Lehsun](medicine_name) হার্টের জন্য
+      - [Dalchini](medicine_name) ডায়াবেটিসের জন্য
+      - [Methi](medicine_name) দানা সুগারের জন্য
+      - [Kalwonji](medicine_name) তেল এর ব্যবহার
+      - [Alsi](medicine_name) বীজ এর উপকারিতা
+      - [Chia Seeds](medicine_name) এর স্বাস্থ্য উপকারিতা
+      - [Sunflower Seeds](medicine_name) এর উপকারিতা
+      - [Pumpkin Seeds](medicine_name) এর ব্যবহার
+      - [Watermelon Seeds](medicine_name) এর তথ্য
+      - [Sesame Seeds](medicine_name) এর উপকারিতা
+      - [Poppy Seeds](medicine_name) এর ব্যবহার
+      - [Mustard Seeds](medicine_name) এর উপকারিতা
+      - [Cumin Seeds](medicine_name) এর ব্যবহার
+      - [Coriander Seeds](medicine_name) এর উপকারিতা
+      - [Fennel Seeds](medicine_name) এর ব্যবহার
+      - [Fenugreek Seeds](medicine_name) এর উপকারিতা
+      - [Cardamom](medicine_name) এর স্বাস্থ্য উপকারিতা
+      - [Clove](medicine_name) তেল এর ব্যবহার
+      - [Black Pepper](medicine_name) এর উপকারিতা
+      - [Cinnamon](medicine_name) পাউডার এর ব্যবহার
+      - [Nutmeg](medicine_name) এর উপকারিতা
+      - [Mace](medicine_name) মশলা এর ব্যবহার
+      - [Star Anise](medicine_name) এর উপকারিতা
+      - [Bay Leaf](medicine_name) এর ব্যবহার
+      - [Curry Leaves](medicine_name) এর উপকারিতা
+      - [Mint Leaves](medicine_name) এর ব্যবহার
+      - [Coriander Leaves](medicine_name) এর উপকারিতা
+      - [Spinach](medicine_name) এর স্বাস্থ্য উপকারিতা
+      - [Kale](medicine_name) এর উপকারিতা
+      - [Lettuce](medicine_name) এর ব্যবহার
+      - [Cabbage](medicine_name) এর উপকারিতা
+      - [Cauliflower](medicine_name) এর ব্যবহার
+      - [Broccoli](medicine_name) এর উপকারিতা
+      - [Carrot](medicine_name) জুস এর ব্যবহার
+      - [Beetroot](medicine_name) জুস এর উপকারিতা
+      - [Radish](medicine_name) এর উপকারিতা
+      - [Turnip](medicine_name) এর ব্যবহার
+      - [Sweet Potato](medicine_name) এর উপকারিতা
+      - [Potato](medicine_name) এর ব্যবহার
+      - [Onion](medicine_name) জুস চুলের জন্য
+      - [Garlic](medicine_name) এর উপকারিতা
+      - [Ginger](medicine_name) এর উপকারিতা
+      - [Tomato](medicine_name) এর উপকারিতা
+      - [Cucumber](medicine_name) এর উপকারিতা
+      - [Pumpkin](medicine_name) এর উপকারিতা
+      - [Bitter Gourd](medicine_name) ডায়াবেটিসের জন্য
+      - [Bottle Gourd](medicine_name) জুস
+      - [Ridge Gourd](medicine_name) এর উপকারিতা
+      - [Snake Gourd](medicine_name) এর ব্যবহার
+      - [Ivy Gourd](medicine_name) এর উপকারিতা
+      - [Pointed Gourd](medicine_name) এর ব্যবহার
+      - [Teasel Gourd](medicine_name) এর উপকারিতা
+      - [Ash Gourd](medicine_name) জুস
+      - [Drumstick](medicine_name) পাতা এর উপকারিতা
+      - [Plantain](medicine_name) ফুল এর ব্যবহার
+      - [Banana Stem](medicine_name) জুস
+      - [Raw Banana](medicine_name) এর উপকারিতা
+      - [Raw Mango](medicine_name) ড্রিংক
+      - [Ripe Mango](medicine_name) এর উপকারিতা
+      - [Apple](medicine_name) এর উপকারিতা
+      - [Banana](medicine_name) এর উপকারিতা
+      - [Orange](medicine_name) জুস এর উপকারিতা
+      - [Grapes](medicine_name) এর উপকারিতা
+      - [Papaya](medicine_name) হজমের জন্য
+      - [Pomegranate](medicine_name) জুস রক্তের জন্য
+      - [Guava](medicine_name) এর উপকারিতা
+      - [Watermelon](medicine_name) এর উপকারিতা
+      - [Muskmelon](medicine_name) এর উপকারিতা
+      - [Pineapple](medicine_name) এর উপকারিতা
+      - [Strawberry](medicine_name) এর উপকারিতা
+      - [Blueberry](medicine_name) এর উপকারিতা
+      - [Raspberry](medicine_name) এর উপকারিতা
+      - [Blackberry](medicine_name) এর উপকারিতা
+      - [Cranberry](medicine_name) জুস UTI এর জন্য
+      - [Kiwi](medicine_name) ডেঙ্গুর জন্য
+      - [Dragon Fruit](medicine_name) এর উপকারিতা
+      - [Avocado](medicine_name) এর উপকারিতা
+      - [Coconut Water](medicine_name) এর উপকারিতা
+      - [Lemon Water](medicine_name) এর উপকারিতা
+      - [Green Tea](medicine_name) এর উপকারিতা
+      - [Black Tea](medicine_name) এর উপকারিতা
+      - [Coffee](medicine_name) এর উপকারিতা
+      - [Milk](medicine_name) এর উপকারিতা
+      - [Curd](medicine_name) এর উপকারিতা
+      - [Buttermilk](medicine_name) এর উপকারিতা
+      - [Ghee](medicine_name) এর উপকারিতা
+      - [Butter](medicine_name) এর উপকারিতা
+      - [Cheese](medicine_name) এর উপকারিতা
+      - [Paneer](medicine_name) এর উপকারিতা
+      - [Tofu](medicine_name) এর উপকারিতা
+      - [Soya Chunks](medicine_name) এর উপকারিতা
+      - [Egg](medicine_name) এর উপকারিতা
+      - [Chicken](medicine_name) স্যুপ এর উপকারিতা
+      - [Mutton](medicine_name) স্যুপ এর উপকারিতা
+      - [Fish](medicine_name) তেল এর উপকারিতা
+      - [Cod Liver Oil](medicine_name) ক্যাপসুল
+      - [Vitamin C](medicine_name) ট্যাবলেট
+      - [Vitamin D](medicine_name) স্যাচেট
+      - [Vitamin E](medicine_name) ক্যাপসুল
+      - [Vitamin B12](medicine_name) ট্যাবলেট
+      - [Calcium](medicine_name) ট্যাবলেট
+      - [Iron](medicine_name) ট্যাবলেট
+      - [Folic Acid](medicine_name) ট্যাবলেট
+      - [Multivitamin](medicine_name) ট্যাবলেট
+      - [Protein Powder](medicine_name) এর ব্যবহার
+      - [Whey Protein](medicine_name) এর উপকারিতা
+      - [Creatine](medicine_name) এর ব্যবহার
+      - [BCAA](medicine_name) এর উপকারিতা
+      - [Glutamine](medicine_name) এর ব্যবহার
+      - [Fish Oil](medicine_name) ক্যাপসুল
+      - [Flaxseed Oil](medicine_name) ক্যাপসুল
+      - [Evening Primrose Oil](medicine_name) ক্যাপসুল
+      - [Wheat Germ Oil](medicine_name) ক্যাপসুল
+      - [Garlic Pearls](medicine_name) ক্যাপসুল
+      - [Spirulina](medicine_name) ট্যাবলেট
+      - [Chlorella](medicine_name) ট্যাবলেট
+      - [Moringa](medicine_name) পাউডার
+      - [Wheatgrass](medicine_name) পাউডার
+      - [Barley Grass](medicine_name) পাউডার
+      - [Alfalfa](medicine_name) পাউডার
+      - [Amla Powder](medicine_name) এর উপকারিতা
+      - [Triphala Powder](medicine_name) এর উপকারিতা
+      - [Ashwagandha Powder](medicine_name) এর উপকারিতা
+      - [Shatavari Powder](medicine_name) এর উপকারিতা
+      - [Brahmi Powder](medicine_name) এর উপকারিতা
+      - [Shankhpushpi](medicine_name) সিরাপ
+      - [Arjuna Powder](medicine_name) এর উপকারিতা
+      - [Gokshura Powder](medicine_name) এর উপকারিতা
+      - [Punarnava Powder](medicine_name) এর উপকারিতা
+      - [Kaunch Beej](medicine_name) পাউডার
+      - [Safed Musli](medicine_name) পাউডার
+      - [Vidarikand](medicine_name) পাউডার
+      - [Akarkara](medicine_name) রুট
+      - [Jatamansi](medicine_name) রুট
+      - [Tagar](medicine_name) রুট
+      - [Vacha](medicine_name) রুট
+      - [Kutki](medicine_name) রুট
+      - [Chirata](medicine_name) হার্ব
+      - [Kalmegh](medicine_name) হার্ব
+      - [Bhringraj](medicine_name) তেল
+      - [Amla Oil](medicine_name) এর উপকারিতা
+      - [Coconut Oil](medicine_name) এর উপকারিতা
+      - [Almond Oil](medicine_name) এর উপকারিতা
+      - [Olive Oil](medicine_name) এর উপকারিতা
+      - [Sesame Oil](medicine_name) এর উপকারিতা
+      - [Mustard Oil](medicine_name) এর উপকারিতা
+      - [Castor Oil](medicine_name) এর উপকারিতা
+      - [Neem Oil](medicine_name) এর উপকারিতা
+      - [Tea Tree Oil](medicine_name) এর ব্যবহার
+      - [Lavender Oil](medicine_name) এর ব্যবহার
+      - [Peppermint Oil](medicine_name) এর ব্যবহার
+      - [Eucalyptus Oil](medicine_name) এর ব্যবহার
+      - [Lemon Oil](medicine_name) এর ব্যবহার
+      - [Orange Oil](medicine_name) এর ব্যবহার
+      - [Rosemary Oil](medicine_name) এর ব্যবহার
+      - [Thyme Oil](medicine_name) এর ব্যবহার
+      - [Oregano Oil](medicine_name) এর ব্যবহার
+      - [Basil Oil](medicine_name) এর ব্যবহার
+      - [Lemongrass Oil](medicine_name) এর ব্যবহার
+      - [Citronella Oil](medicine_name) এর ব্যবহার
+      - [Geranium Oil](medicine_name) এর ব্যবহার
+      - [Ylang Ylang Oil](medicine_name) এর ব্যবহার
+      - [Sandalwood Oil](medicine_name) এর ব্যবহার
+      - [Frankincense Oil](medicine_name) এর ব্যবহার
+      - [Myrrh Oil](medicine_name) এর ব্যবহার
+      - [Patchouli Oil](medicine_name) এর ব্যবহার
+      - [Cedarwood Oil](medicine_name) এর ব্যবহার
+      - [Bergamot Oil](medicine_name) এর ব্যবহার
+      - [Grapefruit Oil](medicine_name) এর ব্যবহার
+      - [Clary Sage Oil](medicine_name) এর ব্যবহার
+      - [Jasmine Oil](medicine_name) এর ব্যবহার
+      - [Rose Oil](medicine_name) এর ব্যবহার
+      - [Chamomile Oil](medicine_name) এর ব্যবহার
+      - [Cinnamon Oil](medicine_name) এর ব্যবহার
+      - [Clove Oil](medicine_name) এর ব্যবহার
+      - [Ginger Oil](medicine_name) এর ব্যবহার
+      - [Black Pepper Oil](medicine_name) এর ব্যবহার
+      - [Turmeric Oil](medicine_name) এর ব্যবহার
+
+  # ---------------------------------------------------------------------------------------------
+  # --- ODIA (Medicine Info) ---
+  # ---------------------------------------------------------------------------------------------
+  - intent: check_medicine
+    examples: |
+      - [Paracetamol](medicine_name) ବିଷୟରେ କୁହନ୍ତୁ
+      - [Amoxicillin](medicine_name) କାହା ପାଇଁ ବ୍ୟବହୃତ ହୁଏ?
+      - [Ibuprofen](medicine_name) ର ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା
+      - [Azithromycin](medicine_name) ର ଡୋଜ୍
+      - [Metformin](medicine_name) ଔଷଧ ବୁଝାଇ ଦିଅନ୍ତୁ
+      - [Ciprofloxacin](medicine_name) ର ସୂଚନା
+      - [Aspirin](medicine_name) ସୁରକ୍ଷିତ କି?
+      - [Cetirizine](medicine_name) କଣ କାମ କରେ?
+      - [Dolo 650](medicine_name) ର ସୂଚନା
+      - [Pan 40](medicine_name) ର ଫାଇଦା
+      - [Combiflam](medicine_name) ବିଷୟରେ କୁହନ୍ତୁ
+      - [Digene](medicine_name) ସିରପ୍ ର ବ୍ୟବହାର
+      - [Omez](medicine_name) ଟାବଲେଟ୍ ବିଷୟରେ
+      - [Montelukast](medicine_name) ର କୁପ୍ରଭାବ
+      - [Atorvastatin](medicine_name) ର ଖୁରାକ
+      - [Thyroxine](medicine_name) ବିଷୟରେ କୁହନ୍ତୁ
+      - [Insulin](medicine_name) ଇଞ୍ଜେକ୍ସନ୍ ର ସୂଚନା
+      - [Augmentin](medicine_name) 625 ର ବ୍ୟବହାର
+      - [Pantoprazole](medicine_name) ଔଷଧର ସୂଚନା
+      - [Levocetirizine](medicine_name) ଟାବଲେଟ୍ ବିଷୟରେ
+      - [Crocin](medicine_name) କାହା ପାଇଁ
+      - [Disprin](medicine_name) ର କ୍ଷତି
+      - [Vicks Action 500](medicine_name) ର ସୂଚନା
+      - [Benadryl](medicine_name) ସିରପ୍ ର ଡୋଜ୍
+      - [Allegra](medicine_name) 120 mg ର ସୂଚନା
+      - [Telmisartan](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Amlodipine](medicine_name) ର ପାର୍ଶ୍ୱ ପ୍ରତିକ୍ରିୟା
+      - [Ranitidine](medicine_name) ର ବିବରଣୀ
+      - [Gelusil](medicine_name) ସିରପ୍ ର ସୂଚନା
+      - [Becosules](medicine_name) କ୍ୟାପସୁଲ୍ ର ବ୍ୟବହାର
+      - [Shelcal 500](medicine_name) ର ବିବରଣୀ
+      - [Limcee](medicine_name) ଟାବଲେଟ୍ ର ଫାଇଦା
+      - [Zincovit](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Evion 400](medicine_name) କ୍ୟାପସୁଲ୍ ର ସୂଚନା
+      - [Neurobion Forte](medicine_name) ଇଞ୍ଜେକ୍ସନ୍ ବିଷୟରେ
+      - [Betadine](medicine_name) ମଲମ ର ବ୍ୟବହାର
+      - [Soframycin](medicine_name) କ୍ରିମ୍ ର ବିବରଣୀ
+      - [Volini](medicine_name) ଜେଲ୍ ର ବ୍ୟବହାର
+      - [Moov](medicine_name) ସ୍ପ୍ରେ ର ସୂଚନା
+      - [Iodex](medicine_name) ବାମ୍ ର ବିବରଣୀ
+      - [Zandu Balm](medicine_name) ର ବ୍ୟବହାର
+      - [Eno](medicine_name) ପାଉଡର୍ ର ସୂଚନା
+      - [Electral](medicine_name) ପାଉଡର୍ ର ବ୍ୟବହାର
+      - [ORS](medicine_name) ଲିକ୍ୱିଡ୍ ର ବିବରଣୀ
+      - [Dettol](medicine_name) ଲିକ୍ୱିଡ୍ ର ବ୍ୟବହାର
+      - [Savlon](medicine_name) ଲିକ୍ୱିଡ୍ ର ବିବରଣୀ
+      - [Himalaya Liv.52](medicine_name) ସିରପ୍ ବିଷୟରେ
+      - [Cystone](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Septilin](medicine_name) ଟାବଲେଟ୍ ର ବିବରଣୀ
+      - [Gasex](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Pudin Hara](medicine_name) ପର୍ଲ୍ ର ସୂଚନା
+      - [Hajmola](medicine_name) ଟାବଲେଟ୍ ର ବିବରଣୀ
+      - [Isabgol](medicine_name) ଭୂଷି ର ବ୍ୟବହାର
+      - [Kayam Churna](medicine_name) ପାଉଡର୍ ର ସୂଚନା
+      - [Triphala Churna](medicine_name) ର ଫାଇଦା
+      - [Chyawanprash](medicine_name) ର ବିବରଣୀ
+      - [Honey](medicine_name) ର ଔଷଧରେ ବ୍ୟବହାର
+      - [Tulsi](medicine_name) ଡ୍ରପ୍ସ ର ଫାଇଦା
+      - [Giloy](medicine_name) ଜୁସ୍ ର ବିବରଣୀ
+      - [Amla](medicine_name) ଜୁସ୍ ର ବ୍ୟବହାର
+      - [Aloe Vera](medicine_name) ଜୁସ୍ ର ବିବରଣୀ
+      - [Ashwagandha](medicine_name) ପାଉଡର୍ ର ବ୍ୟବହାର
+      - [Shilajit](medicine_name) ରେଜିନ୍ ର ବିବରଣୀ
+      - [Brahmi](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Shatavari](medicine_name) ପାଉଡର୍ ର ସୂଚନା
+      - [Neem](medicine_name) ଟାବଲେଟ୍ ର ବିବରଣୀ
+      - [Karela](medicine_name) ଜୁସ୍ ର ବ୍ୟବହାର
+      - [Jamun](medicine_name) ଜୁସ୍ ର ବିବରଣୀ
+      - [Arjuna](medicine_name) ଛାଲ ପାଉଡର୍ ବିଷୟରେ
+      - [Gokshura](medicine_name) ଟାବଲେଟ୍ ର ବ୍ୟବହାର
+      - [Punarnava](medicine_name) ସିରପ୍ ର ବିବରଣୀ
+      - [Kanchanar Guggulu](medicine_name) ର ବ୍ୟବହାର
+      - [Mahasudarshan Churna](medicine_name) ର ସୂଚନା
+      - [Sitopaladi Churna](medicine_name) ର ବିବରଣୀ
+      - [Trikatu Churna](medicine_name) ର ବ୍ୟବହାର
+      - [Avipattikar Churna](medicine_name) ର ସୂଚନା
+      - [Lavan Bhaskar Churna](medicine_name) ର ବିବରଣୀ
+      - [Hingvastak Churna](medicine_name) ର ବ୍ୟବହାର
+      - [Ajwain Ark](medicine_name) ର ସୂଚନା
+      - [Saunf Ark](medicine_name) ର ବିବରଣୀ
+      - [Jeera Ark](medicine_name) ର ବ୍ୟବହାର
+      - [Gulab Jal](medicine_name) ର ଔଷଧୀୟ ବ୍ୟବହାର
+      - [Kesar](medicine_name) ର ଫାଇଦା
+      - [Haldi](medicine_name) କ୍ଷୀର ର ଫାଇଦା
+      - [Adrak](medicine_name) ଚା ର ଫାଇଦା
+      - [Lehsun](medicine_name) ହୃଦୟ ପାଇଁ
+      - [Dalchini](medicine_name) ମଧୁମେହ ପାଇଁ
+      - [Methi](medicine_name) ଦାନା ସୁଗାର ପାଇଁ
+      - [Kalwonji](medicine_name) ତେଲ ର ବ୍ୟବହାର
+      - [Alsi](medicine_name) ମଞ୍ଜି ର ଫାଇଦା
+      - [Chia Seeds](medicine_name) ର ସ୍ୱାସ୍ଥ୍ୟ ଉପକାରିତା
+      - [Sunflower Seeds](medicine_name) ର ଫାଇଦା
+      - [Pumpkin Seeds](medicine_name) ର ବ୍ୟବହାର
+      - [Watermelon Seeds](medicine_name) ର ସୂଚନା
+      - [Sesame Seeds](medicine_name) ର ଫାଇଦା
+      - [Poppy Seeds](medicine_name) ର ବ୍ୟବହାର
+      - [Mustard Seeds](medicine_name) ର ଫାଇଦା
+      - [Cumin Seeds](medicine_name) ର ବ୍ୟବହାର
+      - [Coriander Seeds](medicine_name) ର ଫାଇଦା
+      - [Fennel Seeds](medicine_name) ର ବ୍ୟବହାର
+      - [Fenugreek Seeds](medicine_name) ର ଫାଇଦା
+      - [Cardamom](medicine_name) ର ସ୍ୱାସ୍ଥ୍ୟ ଉପକାରିତା
+      - [Clove](medicine_name) ତେଲ ର ବ୍ୟବହାର
+      - [Black Pepper](medicine_name) ର ଫାଇଦା
+      - [Cinnamon](medicine_name) ପାଉଡର୍ ର ବ୍ୟବହାର
+      - [Nutmeg](medicine_name) ର ଫାଇଦା
+      - [Mace](medicine_name) ମସଲା ର ବ୍ୟବହାର
+      - [Star Anise](medicine_name) ର ଫାଇଦା
+      - [Bay Leaf](medicine_name) ର ବ୍ୟବହାର
+      - [Curry Leaves](medicine_name) ର ଫାଇଦା
+      - [Mint Leaves](medicine_name) ର ବ୍ୟବହାର
+      - [Coriander Leaves](medicine_name) ର ଫାଇଦା
+      - [Spinach](medicine_name) ର ସ୍ୱାସ୍ଥ୍ୟ ଉପକାରିତା
+      - [Kale](medicine_name) ର ଫାଇଦା
+      - [Lettuce](medicine_name) ର ବ୍ୟବହାର
+      - [Cabbage](medicine_name) ର ଫାଇଦା
+      - [Cauliflower](medicine_name) ର ବ୍ୟବହାର
+      - [Broccoli](medicine_name) ର ଫାଇଦା
+      - [Carrot](medicine_name) ଜୁସ୍ ର ବ୍ୟବହାର
+      - [Beetroot](medicine_name) ଜୁସ୍ ର ଫାଇଦା
+      - [Radish](medicine_name) ର ଫାଇଦା
+      - [Turnip](medicine_name) ର ବ୍ୟବହାର
+      - [Sweet Potato](medicine_name) ର ଫାଇଦା
+      - [Potato](medicine_name) ର ବ୍ୟବହାର
+      - [Onion](medicine_name) ଜୁସ୍ କେଶ ପାଇଁ
+      - [Garlic](medicine_name) ର ଫାଇଦା
+      - [Ginger](medicine_name) ର ଫାଇଦା
+      - [Tomato](medicine_name) ର ଫାଇଦା
+      - [Cucumber](medicine_name) ର ଫାଇଦା
+      - [Pumpkin](medicine_name) ର ଫାଇଦା
+      - [Bitter Gourd](medicine_name) ମଧୁମେହ ପାଇଁ
+      - [Bottle Gourd](medicine_name) ଜୁସ୍
+      - [Ridge Gourd](medicine_name) ର ଫାଇଦା
+      - [Snake Gourd](medicine_name) ର ବ୍ୟବହାର
+      - [Ivy Gourd](medicine_name) ର ଫାଇଦା
+      - [Pointed Gourd](medicine_name) ର ବ୍ୟବହାର
+      - [Teasel Gourd](medicine_name) ର ଫାଇଦା
+      - [Ash Gourd](medicine_name) ଜୁସ୍
+      - [Drumstick](medicine_name) ପତ୍ର ର ଫାଇଦା
+      - [Plantain](medicine_name) ଫୁଲ ର ବ୍ୟବହାର
+      - [Banana Stem](medicine_name) ଜୁସ୍
+      - [Raw Banana](medicine_name) ର ଫାଇଦା
+      - [Raw Mango](medicine_name) ଡ୍ରିଙ୍କ୍
+      - [Ripe Mango](medicine_name) ର ଫାଇଦା
+      - [Apple](medicine_name) ର ଫାଇଦା
+      - [Banana](medicine_name) ର ଫାଇଦା
+      - [Orange](medicine_name) ଜୁସ୍ ର ଫାଇଦା
+      - [Grapes](medicine_name) ର ଫାଇଦା
+      - [Papaya](medicine_name) ହଜମ ପାଇଁ
+      - [Pomegranate](medicine_name) ଜୁସ୍ ରକ୍ତ ପାଇଁ
+      - [Guava](medicine_name) ର ଫାଇଦା
+      - [Watermelon](medicine_name) ର ଫାଇଦା
+      - [Muskmelon](medicine_name) ର ଫାଇଦା
+      - [Pineapple](medicine_name) ର ଫାଇଦା
+      - [Strawberry](medicine_name) ର ଫାଇଦା
+      - [Blueberry](medicine_name) ର ଫାଇଦା
+      - [Raspberry](medicine_name) ର ଫାଇଦା
+      - [Blackberry](medicine_name) ର ଫାଇଦା
+      - [Cranberry](medicine_name) ଜୁସ୍ UTI ପାଇଁ
+      - [Kiwi](medicine_name) ଡେଙ୍ଗୁ ପାଇଁ
+      - [Dragon Fruit](medicine_name) ର ଫାଇଦା
+      - [Avocado](medicine_name) ର ଫାଇଦା
+      - [Coconut Water](medicine_name) ର ଫାଇଦା
+      - [Lemon Water](medicine_name) ର ଫାଇଦା
+      - [Green Tea](medicine_name) ର ଫାଇଦା
+      - [Black Tea](medicine_name) ର ଫାଇଦା
+      - [Coffee](medicine_name) ର ଫାଇଦା
+      - [Milk](medicine_name) ର ଫାଇଦା
+      - [Curd](medicine_name) ର ଫାଇଦା
+      - [Buttermilk](medicine_name) ର ଫାଇଦା
+      - [Ghee](medicine_name) ର ଫାଇଦା
+      - [Butter](medicine_name) ର ଫାଇଦା
+      - [Cheese](medicine_name) ର ଫାଇଦା
+      - [Paneer](medicine_name) ର ଫାଇଦା
+      - [Tofu](medicine_name) ର ଫାଇଦା
+      - [Soya Chunks](medicine_name) ର ଫାଇଦା
+      - [Egg](medicine_name) ର ଫାଇଦା
+      - [Chicken](medicine_name) ସୁପ୍ ର ଫାଇଦା
+      - [Mutton](medicine_name) ସୁପ୍ ର ଫାଇଦା
+      - [Fish](medicine_name) ତେଲ ର ଫାଇଦା
+      - [Cod Liver Oil](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Vitamin C](medicine_name) ଟାବଲେଟ୍
+      - [Vitamin D](medicine_name) ସ୍ୟାଚେଟ୍
+      - [Vitamin E](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Vitamin B12](medicine_name) ଟାବଲେଟ୍
+      - [Calcium](medicine_name) ଟାବଲେଟ୍
+      - [Iron](medicine_name) ଟାବଲେଟ୍
+      - [Folic Acid](medicine_name) ଟାବଲେଟ୍
+      - [Multivitamin](medicine_name) ଟାବଲେଟ୍
+      - [Protein Powder](medicine_name) ର ବ୍ୟବହାର
+      - [Whey Protein](medicine_name) ର ଫାଇଦା
+      - [Creatine](medicine_name) ର ବ୍ୟବହାର
+      - [BCAA](medicine_name) ର ଫାଇଦା
+      - [Glutamine](medicine_name) ର ବ୍ୟବହାର
+      - [Fish Oil](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Flaxseed Oil](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Evening Primrose Oil](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Wheat Germ Oil](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Garlic Pearls](medicine_name) କ୍ୟାପସୁଲ୍
+      - [Spirulina](medicine_name) ଟାବଲେଟ୍
+      - [Chlorella](medicine_name) ଟାବଲେଟ୍
+      - [Moringa](medicine_name) ପାଉଡର୍
+      - [Wheatgrass](medicine_name) ପାଉଡର୍
+      - [Barley Grass](medicine_name) ପାଉଡର୍
+      - [Alfalfa](medicine_name) ପାଉଡର୍
+      - [Amla Powder](medicine_name) ର ଫାଇଦା
+      - [Triphala Powder](medicine_name) ର ଫାଇଦା
+      - [Ashwagandha Powder](medicine_name) ର ଫାଇଦା
+      - [Shatavari Powder](medicine_name) ର ଫାଇଦା
+      - [Brahmi Powder](medicine_name) ର ଫାଇଦା
+      - [Shankhpushpi](medicine_name) ସିରପ୍
+      - [Arjuna Powder](medicine_name) ର ଫାଇଦା
+      - [Gokshura Powder](medicine_name) ର ଫାଇଦା
+      - [Punarnava Powder](medicine_name) ର ଫାଇଦା
+      - [Kaunch Beej](medicine_name) ପାଉଡର୍
+      - [Safed Musli](medicine_name) ପାଉଡର୍
+      - [Vidarikand](medicine_name) ପାଉଡର୍
+      - [Akarkara](medicine_name) ରୁଟ୍
+      - [Jatamansi](medicine_name) ରୁଟ୍
+      - [Tagar](medicine_name) ରୁଟ୍
+      - [Vacha](medicine_name) ରୁଟ୍
+      - [Kutki](medicine_name) ରୁଟ୍
+      - [Chirata](medicine_name) ହାର୍ବ
+      - [Kalmegh](medicine_name) ହାର୍ବ
+      - [Bhringraj](medicine_name) ତେଲ
+      - [Amla Oil](medicine_name) ର ଫାଇଦା
+      - [Coconut Oil](medicine_name) ର ଫାଇଦା
+      - [Almond Oil](medicine_name) ର ଫାଇଦା
+      - [Olive Oil](medicine_name) ର ଫାଇଦା
+      - [Sesame Oil](medicine_name) ର ଫାଇଦା
+      - [Mustard Oil](medicine_name) ର ଫାଇଦା
+      - [Castor Oil](medicine_name) ର ଫାଇଦା
+      - [Neem Oil](medicine_name) ର ଫାଇଦା
+      - [Tea Tree Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Lavender Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Peppermint Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Eucalyptus Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Lemon Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Orange Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Rosemary Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Thyme Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Oregano Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Basil Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Lemongrass Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Citronella Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Geranium Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Ylang Ylang Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Sandalwood Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Frankincense Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Myrrh Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Patchouli Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Cedarwood Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Bergamot Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Grapefruit Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Clary Sage Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Jasmine Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Rose Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Chamomile Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Cinnamon Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Clove Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Ginger Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Black Pepper Oil](medicine_name) ର ବ୍ୟବହାର
+      - [Turmeric Oil](medicine_name) ର ବ୍ୟବାହାର

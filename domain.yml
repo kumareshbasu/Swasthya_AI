@@ -19,12 +19,14 @@ intents:
   - non_health_query
   - gibberish_query
   - check_disease
+  - check_medicine
 
 
 entities:
   - disease
   - image_url
   - patient_details
+  - medicine_name
 
 slots:
   lang:
@@ -54,6 +56,12 @@ slots:
     mappings:
       - type: from_entity
         entity: patient_details
+  
+  medicine_name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: medicine_name
 
 responses:
   # --- Base (fallback / default) utterances (English) ---
@@ -185,6 +193,7 @@ actions:
   - action_handle_non_health_query
   - action_handle_gibberish
   - action_check_disease_gemini
+  - action_check_medicine_gemini
 
 session_config:
   session_expiration_time: 60

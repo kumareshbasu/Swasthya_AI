@@ -1,3 +1,4 @@
+#actions.py
 import google.generativeai as genai
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
@@ -290,5 +291,80 @@ class ActionCheckDiseaseGemini(Action):
         except Exception as e:
             logger.error(f"Disease Checker Error: {e}")
             dispatcher.utter_message(text="Error processing diagnosis.")
+        
+        return []
+    
+# --- NEW ACTION: MEDICINE CHECKER ---
+class ActionCheckMedicineGemini(Action):
+    def name(self) -> Text:
+        return "action_check_medicine_gemini"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # 1. Extract Intent and Entities
+        intent = tracker.latest_message['intent'].get('name')
+        entities = tracker.latest_message.get('entities', [])
+        
+        # 2. Get Medicine Name
+        medicine = tracker.get_slot('medicine_name')
+        if not medicine:
+            for entity in entities:
+                if entity.get('entity') == 'medicine_name':
+                    medicine = entity.get('value')
+                    break
+
+        # 3. Get User Language
+        user_lang = tracker.get_slot('lang') 
+        if not user_lang: 
+            user_lang = tracker.latest_message.get('metadata', {}).get('lang', 'en')
+            if not user_lang: user_lang = 'en'
+        
+        # --- CLEANING STEP (The Fix) ---
+        # Sometimes Rasa extracts "Prolavir benefits" as the name. We clean it here.
+        if medicine:
+            ignore_words = ["benefits", "benefit", "uses", "use", "side effects", "dosage", "price", "info", "details", "about", "of"]
+            for word in ignore_words:
+                # Case-insensitive replacement
+                medicine = medicine.lower().replace(word, "").strip()
+
+        logger.info(f"DEBUG ACTIONS: Intent: {intent}, Cleaned Medicine: {medicine}, Lang: {user_lang}")
+
+        if not medicine:
+            dispatcher.utter_message(text="Error: No medicine name provided.")
+            return []
+
+        # 4. Prompt Construction
+        lang_instruction = "Respond in English."
+        if user_lang == 'hi': lang_instruction = "उत्तर हिंदी में दें।"
+        elif user_lang == 'bn': lang_instruction = "বাংলায় উত্তর দিন।"
+        elif user_lang == 'or': lang_instruction = "ଓଡିଆରେ ଉତ୍ତର ଦିଅନ୍ତୁ |"
+
+        system_prompt = f"""
+        Act as a professional pharmacist. 
+        Medicine Name: "{medicine}"
+
+        Please provide the following details clearly:
+        1. Uses (What is it for?)
+        2. Side Effects (Common risks)
+        3. Dosage/Usage (General instructions)
+        4. Warnings (Who should avoid it?)
+
+        MANDATORY DISCLAIMER: "This is AI-generated information. Consult a doctor before taking any medication."
+        
+        {lang_instruction}
+        """
+
+        try:
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-1.5-pro")
+            response = model.generate_content(system_prompt)
+            
+            if response and response.text:
+                dispatcher.utter_message(text=response.text)
+            else:
+                dispatcher.utter_message(text="I couldn't find details for this medicine.")
+
+        except Exception as e:
+            logger.error(f"Medicine Check Error: {e}")
+            dispatcher.utter_message(text="Sorry, I encountered an error checking the medicine.")
         
         return []
