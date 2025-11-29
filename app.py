@@ -9,6 +9,9 @@ import google.generativeai as genai
 from datetime import datetime, timezone
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import whisper
+from gtts import gTTS
+import subprocess
 
 load_dotenv()
 DetectorFactory.seed = 0 
@@ -26,6 +29,8 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+WHISPER_MODEL = os.getenv("WHISPER_MODEL", "small")
 
 try:
     supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -108,6 +113,23 @@ MULTILINGUAL_AI_CLOSING = {
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# load whisper
+try:
+    logger.info(f"Loading Whisper model '{WHISPER_MODEL}'... (this may take a while)")
+    whisper_model = whisper.load_model(WHISPER_MODEL)
+    logger.info("Whisper loaded.")
+except Exception as e:
+    logger.exception("Failed to load Whisper model: %s", e)
+    whisper_model = None
+
+# language -> gTTS code mapping (gTTS supports 'or' for Odia)
+LANG_TO_GTTS = {
+    "hi": "hi",
+    "bn": "bn",
+    "or": "or",
+    "en": "en",
+}
+
 # --- HELPERS ---
 def insert_message(phone_num, sender, text=None, media=None, language="en"):
     if not supabase: return
@@ -141,7 +163,166 @@ def get_media_url_from_id(media_id):
         return r.json().get("url")
     except: return None
 
-# --- LOGIC ---
+def get_last_5_messages(phone_num):
+    try:
+        res = supabase.table("user_chat_media").select("*").eq("phone_num", str(phone_num)).order("time_stamp", desc=True).limit(5).execute()
+        if not res or not res.data: return []
+        messages = []
+        for row in reversed(res.data):
+            if row.get("user_message"): messages.append({"sender": "user", "text": row.get("user_message")})
+            if row.get("bot_message"): messages.append({"sender": "bot", "text": row.get("bot_message")})
+        return messages
+    except: return []
+
+def download_media(media_url, local_basename):
+    local_path = os.path.join("/tmp", local_basename)
+    try:
+        r = requests.get(media_url, headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}"}, stream=True, timeout=30)
+        r.raise_for_status()
+        with open(local_path, "wb") as f:
+            for chunk in r.iter_content(8192):
+                if chunk:
+                    f.write(chunk)
+        return local_path
+    except Exception as e:
+        logger.exception("Failed to download media: %s", e)
+        return None
+
+def convert_to_wav(input_path):
+    wav_path = input_path + ".wav"
+    try:
+        # convert to 16k mono wav for whisper
+        subprocess.run(["ffmpeg", "-y", "-i", input_path, "-ar", "16000", "-ac", "1", wav_path],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return wav_path
+    except Exception as e:
+        logger.exception("ffmpeg convert_to_wav failed: %s", e)
+        return None
+
+# gTTS -> MP3 then convert MP3 -> OGG/OPUS for WhatsApp
+def text_to_speech_gtts_to_ogg(text, lang_code):
+    try:
+        gtts_lang = LANG_TO_GTTS.get(lang_code, "en")
+        mp3_path = os.path.join("/tmp", f"tts_{int(datetime.now(timezone.utc).timestamp())}.mp3")
+        tts = gTTS(text=text, lang=gtts_lang)
+        tts.save(mp3_path)
+
+        # convert mp3 -> ogg (opus) for WhatsApp voice note
+        ogg_path = mp3_path.replace(".mp3", ".ogg")
+        subprocess.run(["ffmpeg", "-y", "-i", mp3_path, "-c:a", "libopus", "-b:a", "64k", ogg_path],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # cleanup mp3 (optional)
+        try:
+            os.remove(mp3_path)
+        except:
+            pass
+        return ogg_path
+    except Exception as e:
+        logger.exception("TTS generation failed: %s", e)
+        return None
+
+# --- REPLACEMENT FUNCTION ---
+def upload_media_and_send_audio(to_number, file_path):
+    url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/media"
+    headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}"}
+    
+    try:
+        # 1. Upload Media
+        # We use a simpler method that lets requests handle the multipart form data correctly.
+        with open(file_path, "rb") as f:
+            files = {
+                'file': (os.path.basename(file_path), f, 'audio/ogg'),
+                'messaging_product': (None, 'whatsapp') # This part is crucial
+            }
+            r = requests.post(url, headers=headers, files=files)
+            r.raise_for_status() # Raise an exception for 4xx/5xx errors
+            media_id = r.json().get("id")
+        
+        # 2. Send Media Message
+        if media_id:
+            payload = {
+                "messaging_product": "whatsapp",
+                "to": to_number,
+                "type": "audio",
+                "audio": {"id": media_id}
+            }
+            r2 = requests.post(META_API_URL, headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}", "Content-Type": "application/json"}, json=payload)
+            r2.raise_for_status()
+            # Log bot audio to DB
+            insert_message(to_number, "bot", text="[Audio Message]", media=[{"id": media_id}], language="en")
+            return True
+        else:
+            logger.error(f"Upload failed. No media ID returned. Response: {r.text}")
+
+    except requests.exceptions.HTTPError as e:
+        logger.error(f"Audio Upload/Send HTTP Error: {e.response.text}")
+    except Exception as e:
+        logger.error(f"Audio Send Error: {e}")
+        
+    return False
+
+
+def transcribe_with_whisper(wav_path):
+    if not whisper_model:
+        logger.error("Whisper model not loaded.")
+        return "", "en"
+    try:
+        res = whisper_model.transcribe(wav_path)
+        text = res.get("text", "").strip()
+        lang = res.get("language") or "en"
+        # reduce to 2-letter percent if longer
+        if isinstance(lang, str) and len(lang) >= 2:
+            lang = lang[:2]
+        return text, lang
+    except Exception as e:
+        logger.exception("Whisper transcription error: %s", e)
+        return "", "en"
+
+def call_rasa(transcript, sender_id, lang_code="en"):
+    try:
+        payload = {"sender": sender_id, "message": transcript, "metadata": {"lang": lang_code}}
+        r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=15)
+        r.raise_for_status()
+        resp = r.json()
+        texts = []
+        for it in resp:
+            if it.get("text"):
+                texts.append(it.get("text"))
+        return texts
+    except Exception as e:
+        logger.exception("Rasa call failed: %s", e)
+        return []
+
+def call_gemini(context_messages, incoming_text, lang_code="en"):
+    try:
+        if not GEMINI_API_KEY:
+            logger.warning("No GEMINI_API_KEY configured; skipping Gemini.")
+            return None
+        # build system prompt language-specific
+        if lang_code == 'hi':
+            sys_p = "आप एक सहायक चिकित्सा सहायक हैं। संक्षिप्त और सहायक उत्तर दें।"
+        elif lang_code == 'bn':
+            sys_p = "আপনি একজন সহায়ক চিকিৎসা সহকারী। সংক্ষিপ্ত ও সহায়ক উত্তর দিন।"
+        elif lang_code == 'or':
+            sys_p = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ। ସଂକ୍ଷିପ୍ତ ଉତ୍ତର ଦିଅନ୍ତୁ।"
+        else:
+            sys_p = "You are a helpful medical assistant. Keep replies brief and useful."
+
+        prompt_parts = [sys_p, "\nConversation context:"]
+        for m in context_messages:
+            prompt_parts.append(f"{m['sender']}: {m['text']}")
+        prompt_parts.append(f"user: {incoming_text}")
+        prompt = "\n".join(prompt_parts)
+        model = genai.GenerativeModel("gemini-2.5-pro")
+        resp = model.generate_content([prompt])
+        return getattr(resp, "text", str(resp))
+    except Exception as e:
+        logger.exception("Gemini call failed: %s", e)
+        return None
+
+# ---------------------------------------------------------
+# 4. MAIN LOGIC
+# ---------------------------------------------------------
 def process_webhook_event(data):
     try:
         if "object" not in data or "entry" not in data: return
@@ -153,15 +334,58 @@ def process_webhook_event(data):
                     from_number = message["from"]
                     msg_type = message["type"]
 
-                    incoming_msg = ""
-                    if msg_type == "text": incoming_msg = message["text"]["body"].strip()
-                    elif msg_type == "button": incoming_msg = message["button"]["payload"].strip()
-
+                    # Init State
                     if from_number not in user_states:
                         user_states[from_number] = {'state': 'language_selection', 'lang': 'en', 'data': {}}
 
                     current_state = user_states[from_number]['state']
                     current_lang = user_states[from_number]['lang']
+
+                    # --- VOICE HANDLING ---
+                    if msg_type in ["audio", "voice"]:
+                        media_id = message.get("audio", {}).get("id") or message.get("voice", {}).get("id")
+                        if media_id:
+                            media_url = get_media_url_from_id(media_id)
+                            if media_url:
+                                local_path = download_media(media_url, f"audio_{media_id}.ogg")
+                                if local_path:
+                                    # Convert to WAV for Whisper
+                                    wav_path = convert_to_wav(local_path)
+                                    if wav_path:
+                                        # Transcribe
+                                        text, lang = transcribe_with_whisper(wav_path)
+                                        if text:
+                                            # Log to DB
+                                            insert_message(from_number, "user", text=f"[Voice] {text}", language=current_lang)
+                                            
+                                            # Get AI Response (Text) - Using Gemini directly as per your helper
+                                            # You might want to use get_last_5_messages here for context if needed
+                                            context_msgs = get_last_5_messages(from_number)
+                                            reply = call_gemini(context_msgs, text, lang_code=current_lang)
+                                            
+                                            if reply:
+                                                # Log bot reply
+                                                insert_message(from_number, "bot", text=reply, language=current_lang)
+
+                                                # Generate TTS Audio (gTTS -> OGG)
+                                                tts_file = text_to_speech_gtts_to_ogg(reply, lang_code=current_lang)
+                                                
+                                                if tts_file:
+                                                    # Upload and send audio
+                                                    upload_media_and_send_audio(from_number, tts_file)
+                                                else:
+                                                    # Fallback to text if TTS fails
+                                                    send_whatsapp_message(from_number, reply)
+                                            else:
+                                                 send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_no_response")) # Or a generic error
+                                            return
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "voice_error"))
+                        return
+
+                    # --- TEXT HANDLING ---
+                    incoming_msg = ""
+                    if msg_type == "text": incoming_msg = message["text"]["body"].strip()
+                    elif msg_type == "button": incoming_msg = message["button"]["payload"].strip()
                     normalized_msg = incoming_msg.lower()
 
                     if msg_type == "text": insert_message(from_number, "user", text=incoming_msg, language=current_lang)
@@ -207,48 +431,55 @@ def process_webhook_event(data):
                         send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(user_states[from_number]['lang']))
                         return
 
-                    # --- DISEASE CHECKER FLOW ---
+                    # --- DISEASE CHECKER FLOW (10 Steps) ---
                     if current_state == 'ask_age':
                         user_states[from_number]['data']['age'] = incoming_msg
                         user_states[from_number]['state'] = 'ask_weight'
                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_weight"))
                         return
-                    # (Shortened steps 2-9 for brevity, logic remains identical to previous)
-                    if current_state == 'ask_weight': 
-                         user_states[from_number]['data']['weight'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_gender'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_gender"))
-                         return
-                    if current_state == 'ask_gender': 
-                         user_states[from_number]['data']['gender'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_reports'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_reports"))
-                         return
-                    if current_state == 'ask_reports': 
-                         user_states[from_number]['data']['reports'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_eating'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_eating"))
-                         return
-                    if current_state == 'ask_eating': 
-                         user_states[from_number]['data']['eating'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_meds'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_meds"))
-                         return
-                    if current_state == 'ask_meds': 
-                         user_states[from_number]['data']['meds'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_habits'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_habits"))
-                         return
-                    if current_state == 'ask_habits': 
-                         user_states[from_number]['data']['habits'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_disability'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_disability"))
-                         return
-                    if current_state == 'ask_disability': 
-                         user_states[from_number]['data']['disability'] = incoming_msg
-                         user_states[from_number]['state'] = 'ask_history'
-                         send_whatsapp_message(from_number, get_localized_message(from_number, "ask_history"))
-                         return
+
+                    if current_state == 'ask_weight':
+                        user_states[from_number]['data']['weight'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_gender'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_gender"))
+                        return
+
+                    if current_state == 'ask_gender':
+                        user_states[from_number]['data']['gender'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_reports'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_reports"))
+                        return
+
+                    if current_state == 'ask_reports':
+                        user_states[from_number]['data']['reports'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_eating'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_eating"))
+                        return
+
+                    if current_state == 'ask_eating':
+                        user_states[from_number]['data']['eating'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_meds'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_meds"))
+                        return
+
+                    if current_state == 'ask_meds':
+                        user_states[from_number]['data']['meds'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_habits'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_habits"))
+                        return
+
+                    if current_state == 'ask_habits':
+                        user_states[from_number]['data']['habits'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_disability'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_disability"))
+                        return
+
+                    if current_state == 'ask_disability':
+                        user_states[from_number]['data']['disability'] = incoming_msg
+                        user_states[from_number]['state'] = 'ask_history'
+                        send_whatsapp_message(from_number, get_localized_message(from_number, "ask_history"))
+                        return
+
                     if current_state == 'ask_history':
                         user_states[from_number]['data']['history'] = incoming_msg
                         user_states[from_number]['state'] = 'ask_current_symptoms'
@@ -264,9 +495,10 @@ def process_webhook_event(data):
                         
                         rasa_payload = f'/check_disease{{"patient_details": "{data_str}"}}'
                         try:
-                            r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}})
-                            for bot_msg in r.json():
-                                if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
+                            # Using call_rasa helper
+                            bot_msgs = call_rasa(rasa_payload, from_number, lang_code=current_lang)
+                            for msg_text in bot_msgs:
+                                send_whatsapp_message(from_number, msg_text)
                             
                             closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
                             send_whatsapp_message(from_number, closing)
@@ -274,19 +506,18 @@ def process_webhook_event(data):
                         except: pass
                         return
 
-                    # --- MEDICINE INFO FLOW (NEW) ---
+                    # --- MEDICINE INFO FLOW ---
                     if current_state == 'ask_medicine_name':
                         medicine_name = incoming_msg
                         send_whatsapp_message(from_number, get_localized_message(from_number, "processing_medicine"))
                         
-                        # Trigger Rasa Action
                         rasa_payload = f'/check_medicine{{"medicine_name": "{medicine_name}"}}'
                         try:
-                            r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}})
-                            for bot_msg in r.json():
-                                if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
+                            # Using call_rasa helper
+                            bot_msgs = call_rasa(rasa_payload, from_number, lang_code=current_lang)
+                            for msg_text in bot_msgs:
+                                send_whatsapp_message(from_number, msg_text)
                             
-                            # Send closing
                             closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
                             send_whatsapp_message(from_number, closing)
                             user_states[from_number]['state'] = 'awaiting_ai_choice'
@@ -312,11 +543,11 @@ def process_webhook_event(data):
                             send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
                             return
                         try:
-                            r = requests.post(RASA_WEBHOOK_URL, json={"sender": from_number, "message": incoming_msg, "metadata": {"lang": current_lang}})
-                            data = r.json()
-                            if data:
-                                for bot_msg in data:
-                                    if bot_msg.get("text"): send_whatsapp_message(from_number, bot_msg.get("text"))
+                            # Using call_rasa helper
+                            bot_msgs = call_rasa(incoming_msg, from_number, lang_code=current_lang)
+                            if bot_msgs:
+                                for msg_text in bot_msgs:
+                                    send_whatsapp_message(from_number, msg_text)
                                 closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
                                 send_whatsapp_message(from_number, closing)
                                 user_states[from_number]['state'] = 'awaiting_ai_choice'
@@ -336,12 +567,9 @@ def process_webhook_event(data):
                             user_states[from_number]['state'] = 'ask_age'
                             user_states[from_number]['data'] = {} 
                             send_whatsapp_message(from_number, get_localized_message(from_number, "ask_age"))
-                        
-                        # --- NEW OPTION 4: MEDICINE INFO ---
-                        elif normalized_msg == '4': 
+                        elif normalized_msg == '4': # MEDICINE INFO
                             user_states[from_number]['state'] = 'ask_medicine_name'
                             send_whatsapp_message(from_number, get_localized_message(from_number, "ask_medicine_name"))
-
                         elif normalized_msg == '5': # CENTER
                             send_whatsapp_message(from_number, get_localized_message(from_number, "health_center_selected"))
                         elif normalized_msg == '6': # ABOUT
