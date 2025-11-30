@@ -359,6 +359,7 @@ def transcribe_with_whisper(wav_path):
     try:
         res = whisper_model.transcribe(wav_path)
         text = res.get("text", "").strip()
+        print(text)
         lang = res.get("language") or "en"
         # reduce to 2-letter percent if longer
         if isinstance(lang, str) and len(lang) >= 2:
@@ -371,7 +372,7 @@ def transcribe_with_whisper(wav_path):
 def call_rasa(transcript, sender_id, lang_code="en"):
     try:
         payload = {"sender": sender_id, "message": transcript, "metadata": {"lang": lang_code}}
-        r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=15)
+        r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=180)
         r.raise_for_status()
         resp = r.json()
         texts = []
