@@ -235,9 +235,9 @@ def insert_message(phone_num, sender, text=None, media=None, language="en"):
     except Exception as e: logger.error(f"DB Error: {e}")
 
 def get_localized_message(from_number, key):
-    lang = user_states.get(from_number, {}).get('lang', 'en')
-    msgs = MULTILINGUAL_STATIC_MESSAGES.get('en') 
-    return msgs.get(key, "")
+    user_data = user_states.get(from_number, {})
+    lang = user_data.get('lang', 'en') # Default to English
+    return MULTILINGUAL_STATIC_MESSAGES.get(lang, {}).get(key, MULTILINGUAL_STATIC_MESSAGES['en'][key])
 
 def send_whatsapp_message(to_number, message_body):
     headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}", "Content-Type": "application/json"}
