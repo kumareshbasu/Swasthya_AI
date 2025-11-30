@@ -269,6 +269,15 @@ nlu:
       - I need details about [allergy](disease).
       - Can you tell me about [migraine](disease)?
       - What is [eczema](disease)?
+      - Tell me about [Bombay Blood Group](disease).
+      - Information on [AB Negative Blood Group](disease).
+      - What is [A Positive Blood Group](disease)?
+      - Explain [O Negative Blood Group](disease).
+      - [Rh Negative Blood Group](disease) info.
+      - I need details about [Type 1 Diabetes](disease).
+      - Can you tell me about [Type 2 Diabetes](disease)?
+      - What is [cancer](disease)?
+      - What is [gout](disease)?
       - Give me information on [insomnia](disease).
       - What do I need to know about [obesity](disease)?
       - Tell me about [osteoporosis](disease).
@@ -278,6 +287,15 @@ nlu:
       - [bronchitis](disease) info.
       - I need details about [cancer](disease).
       - Can you tell me about [dementia](disease)?
+      - What is [fibromyalgia](disease)?
+      - Give me information on [cardiologist](disease).
+      - What can you tell me about [gynecologist](disease)?
+      - Tell me about [neurologist](disease).
+      - What is [pneumonia](disease)?
+      - Information on [sinusitis](disease).
+      - What is [tinnitus](disease)?
+      - What do I need to know about [lupus](disease)?
+
 
   - intent: general_health_info_option
     examples: |
