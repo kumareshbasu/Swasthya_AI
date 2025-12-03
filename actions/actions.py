@@ -37,7 +37,17 @@ class ActionAskGemini(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        # Rasa NLU will now identify intent and entities directly
+        # 1. CHECK METADATA FOR 'DETAILED' FLAG (From Code 2)
+        metadata = tracker.latest_message.get('metadata', {})
+        is_detailed = metadata.get('detailed_response', False)
+
+        # Set length instruction based on the flag
+        if is_detailed:
+            length_instruction = "Provide a VERY DETAILED, comprehensive explanation with examples."
+        else:
+            length_instruction = "Keep the response SHORT, CONCISE, and under 150-200 words."
+
+        # 2. EXTRACT INTENT AND ENTITIES (From Code 1)
         intent = tracker.latest_message['intent'].get('name')
         entities = tracker.latest_message.get('entities', [])
         disease = None
@@ -46,68 +56,62 @@ class ActionAskGemini(Action):
                 disease = entity.get('value')
                 break 
 
-        # Get the language from tracker metadata or slot
-        user_lang = tracker.get_slot('lang') # This slot should be set by ActionSetLanguageSlot
+        # 3. GET USER LANGUAGE (From Code 1)
+        user_lang = tracker.get_slot('lang') 
         if not user_lang: 
             user_lang = tracker.latest_message.get('metadata', {}).get('lang', 'en')
             if not user_lang: 
                 user_lang = 'en'
         
-        logger.info(f"DEBUG ACTIONS: Intent: {intent}, Disease Entity: {disease}, User Language: {user_lang}")
+        logger.info(f"DEBUG ACTIONS: Intent: {intent}, Disease: {disease}, Lang: {user_lang}, Detailed: {is_detailed}")
 
         if not disease:
-            logger.warning("No disease entity extracted for Gemini query. Asking for clarification.")
-            # This response should also be localized
+            logger.warning("No disease entity extracted for Gemini query.")
             dispatcher.utter_message(text=f"I can help with that. Which disease or symptom are you interested in? (Lang: {user_lang})")
             return []
         
-        # --- Multilingual Prompts for Gemini (Simplified, as per your idea) ---
-        # The key is to instruct Gemini to respond in the detected 'user_lang'
-        prompt = ""
-        
-        # Determine the base prompt structure
+        # 4. CONSTRUCT BASE PROMPT (From Code 1)
+        base_prompt = ""
         if intent == "ask_symptoms":
-            base_prompt = f"As a public health expert, explain the common symptoms of '{disease}' in simple, easy-to-understand terms for a rural audience."
+            base_prompt = f"As a public health expert, explain the common symptoms of '{disease}' in simple terms for a rural audience."
         elif intent == "ask_preventive_measures":
             base_prompt = f"As a public health expert, describe simple, actionable preventive measures for '{disease}' for a rural audience."
-        else: # Covers general_health_query and any other intent that leads here
-            base_prompt = f"As a public health expert, provide a detailed overview of '{disease}' for a rural audience."
+        else: 
+            base_prompt = f"As a public health expert, provide an overview of '{disease}' for a rural audience."
 
-        # Append the language instruction to the base prompt
-        # We'll map the 'lang' code to a more natural language name for Gemini
+        # 5. LANGUAGE MAPPING (From Code 1)
         lang_names = {
             'en': 'English',
             'hi': 'Hindi',
             'bn': 'Bengali',
             'or': 'Odia'
         }
-        lang_name_for_gemini = lang_names.get(user_lang, 'English') # Default to English if unknown
+        lang_name_for_gemini = lang_names.get(user_lang, 'English')
 
-        prompt = f"{base_prompt} Respond in details and ONLY in {lang_name_for_gemini}."
+        # 6. FINAL PROMPT ASSEMBLY (Merged)
+        # We combine the base prompt + length instruction + language instruction
+        prompt = f"{base_prompt} {length_instruction} Respond ONLY in {lang_name_for_gemini}."
 
-        logger.info(f"DEBUG ACTIONS: Gemini prompt prepared (lang:{user_lang}): '{prompt[:200]}...'")
+        logger.info(f"DEBUG ACTIONS: Prompt: '{prompt}...'")
 
+        # 7. CALL GEMINI API (From Code 1)
         try:
             model = global_gemini_model_instance
             if not model: 
                 logger.warning("Falling back to local Gemini model initialization.")
                 model = genai.GenerativeModel(global_gemini_model_name) 
 
-            logger.info(f"DEBUG ACTIONS: Attempting to generate content from Gemini model '{global_gemini_model_name}' for language '{user_lang}'...")
             response = model.generate_content(prompt)
             
             if response and hasattr(response, 'text') and response.text:
                 final_text_to_dispatch = response.text 
-                
-                logger.info(f"DEBUG ACTIONS: RAW Gemini response (lang:{user_lang}, first 200 chars - for dispatch): {final_text_to_dispatch[:200]}...") 
                 dispatcher.utter_message(text=final_text_to_dispatch) 
-                logger.info("DEBUG ACTIONS: Dispatched Gemini response successfully.")
             else:
-                logger.warning(f"Gemini API returned an empty or unreadable 'text' field for {user_lang}. Full response object: {response}")
-                dispatcher.utter_message(response="utter_default_fallback") # Fallback utterance
+                logger.warning(f"Gemini API returned an empty response.")
+                dispatcher.utter_message(response="utter_default_fallback") 
         except Exception as e: 
-            logger.error(f"General Error during Gemini API call or response processing for {user_lang}: {e}", exc_info=True) 
-            dispatcher.utter_message(response="utter_default_fallback") # Fallback utterance
+            logger.error(f"General Error during Gemini API call: {e}", exc_info=True) 
+            dispatcher.utter_message(response="utter_default_fallback")
 
         return []
 

@@ -186,7 +186,7 @@ MULTILINGUAL_STATIC_MESSAGES = {
 }
 
 LANGUAGE_MENU = """
-Select Language / भाषा चुनें:
+Select Language / भाषा चुनें / ভাষা নির্বাচন করুন / ଭାଷା ଚୟନ କରନ୍ତୁ:
 1. English
 2. हिंदी (Hindi)
 3. বাংলা (Bengali)
@@ -194,10 +194,10 @@ Select Language / भाषा चुनें:
 """
 
 MULTILINGUAL_AI_CLOSING = {
-    'en': "This response is completed.\nSelect any one option:\n1. Do you want to ask anything more about this or something else?\n2. Would you like to go back to main menu?",
-    'hi': "उत्तर पूरा हो गया है।\nकृपया एक विकल्प चुनें:\n1. क्या आप इसके बारे में या किसी अन्य विषय पर और पूछना चाहते हैं?\n2. क्या आप मुख्य मेनू पर वापस जाना चाहते हैं?",
-    'bn': "উত্তর সম্পূর্ণ হয়েছে।\nএকটি বিকল্প নির্বাচন করুন:\n1. আপনি কি এ সম্পর্কে বা অন্য কিছু সম্পর্কে আরও জানতে চান?\n2. আপনি কি প্রধান মেনুতে ফিরে যেতে চান?",
-    'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n1. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n2. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?"
+    'en': "This response is completed.\nSelect any one option:\n1. Do you want to ask anything more about something else?\n2. Would you like to go back to main menu?\n3. Get more detailed information about this.",
+    'hi': "उत्तर पूरा हो गया है।\nकृपया एक विकल्प चुनें:\n1. क्या आप इसके बारे में या किसी अन्य विषय पर और पूछना चाहते हैं?\n2. क्या आप मुख्य मेनू पर वापस जाना चाहते हैं?\n3. इस बारे में अधिक विस्तृत जानकारी प्राप्त करें।",
+    'bn': "উত্তর সম্পূর্ণ হয়েছে।\nএকটি বিকল্প নির্বাচন করুন:\n1. আপনি কি এ সম্পর্কে বা অন্য কিছু সম্পর্কে আরও জানতে চান?\n2. আপনি কি প্রধান মেনুতে ফিরে যেতে চান?\n3. এর সম্পর্কে আরও বিস্তারিত তথ্য পান।",
+    'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n1. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n2. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?\n3. ଏହା ବିଷୟରେ ଅଧିକ ବିସ୍ତୃତ ସୂଚନା ପାଇଁ।"
 }
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -253,9 +253,9 @@ def get_media_url_from_id(media_id):
         return r.json().get("url")
     except: return None
 
-def get_last_5_messages(phone_num):
+def get_last_20_messages(phone_num):
     try:
-        res = supabase.table("user_chat_media").select("*").eq("phone_num", str(phone_num)).order("time_stamp", desc=True).limit(5).execute()
+        res = supabase.table("user_chat_media").select("*").eq("phone_num", str(phone_num)).order("time_stamp", desc=True).limit(20).execute()
         if not res or not res.data: return []
         messages = []
         for row in reversed(res.data):
@@ -369,9 +369,9 @@ def transcribe_with_whisper(wav_path):
         logger.exception("Whisper transcription error: %s", e)
         return "", "en"
 
-def call_rasa(transcript, sender_id, lang_code="en"):
+def call_rasa(transcript, sender_id, lang_code="en", detailed=False):
     try:
-        payload = {"sender": sender_id, "message": transcript, "metadata": {"lang": lang_code}}
+        payload = {"sender": sender_id, "message": transcript, "metadata": {"lang": lang_code, "detailed_response": detailed}}
         r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=180)
         r.raise_for_status()
         resp = r.json()
@@ -384,32 +384,52 @@ def call_rasa(transcript, sender_id, lang_code="en"):
         logger.exception("Rasa call failed: %s", e)
         return []
 
-def call_gemini(context_messages, incoming_text, lang_code="en"):
+def call_gemini(context_messages, incoming_text, lang_code="en", detailed=False):
     try:
         if not GEMINI_API_KEY:
             logger.warning("No GEMINI_API_KEY configured; skipping Gemini.")
             return None
-        # build system prompt language-specific
-        if lang_code == 'hi':
-            sys_p = "आप एक सहायक चिकित्सा सहायक हैं। संक्षिप्त और सहायक उत्तर दें।"
-        elif lang_code == 'bn':
-            sys_p = "আপনি একজন সহায়ক চিকিৎসা সহকারী। সংক্ষিপ্ত ও সহায়ক উত্তর দিন।"
-        elif lang_code == 'or':
-            sys_p = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ। ସଂକ୍ଷିପ୍ତ ଉତ୍ତର ଦିଅନ୍ତୁ।"
-        else:
-            sys_p = "You are a helpful medical assistant. Keep replies brief and useful."
 
+        # 1. Build System Prompt based on Language
+        if lang_code == 'hi':
+            sys_p = "आप एक सहायक चिकित्सा सहायक हैं। "
+        elif lang_code == 'bn':
+            sys_p = "আপনি একজন সহায়ক চিকিৎসা সহকারী। "
+        elif lang_code == 'or':
+            sys_p = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ। "
+        else:
+            sys_p = "You are a helpful medical assistant."
+
+        # 2. Add Length Instruction
+        if detailed:
+            sys_p += "Provide a DETAILED and comprehensive explanation."
+        else:
+            sys_p += "Keep replies VERY SHORT and concise (Around 150-200 words)."
+        
+        # Add mandatory disclaimer
+        sys_p += " Always add: 'Medical advice disclaimer required'."
+
+        # 3. Build Conversation Context
         prompt_parts = [sys_p, "\nConversation context:"]
+        
+        # This loop ensures previous messages are formatted correctly for Gemini
         for m in context_messages:
             prompt_parts.append(f"{m['sender']}: {m['text']}")
+        
+        # Add the current user message
         prompt_parts.append(f"user: {incoming_text}")
+        
         prompt = "\n".join(prompt_parts)
+
+        # 4. Call Model
         model = genai.GenerativeModel("gemini-2.5-pro")
         resp = model.generate_content([prompt])
+        
         return getattr(resp, "text", str(resp))
+
     except Exception as e:
         logger.exception("Gemini call failed: %s", e)
-        return None
+        return "Sorry, I'm unable to respond right now."
 
 # ---------------------------------------------------------
 # 4. MAIN LOGIC
@@ -451,7 +471,7 @@ def process_webhook_event(data):
                                             
                                             # Get AI Response (Text) - Using Gemini directly as per your helper
                                             # You might want to use get_last_5_messages here for context if needed
-                                            context_msgs = get_last_5_messages(from_number)
+                                            context_msgs = get_last_20_messages(from_number)
                                             reply = call_gemini(context_msgs, text, lang_code=current_lang)
                                             
                                             if reply:
@@ -623,6 +643,37 @@ def process_webhook_event(data):
                         elif normalized_msg == '2':
                             user_states[from_number]['state'] = 'main_menu'
                             send_whatsapp_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']))
+                        elif normalized_msg == '3':
+                            send_whatsapp_message(from_number, "Generating detailed explanation...")
+                            
+                            # 1. Fetch conversation history to find the actual previous question
+                            # get_last_20_messages returns [Oldest, ..., Newest]
+                            history = get_last_20_messages(from_number)
+                            
+                            last_real_query = "Explain the topic in detail." # Default fallback
+                            
+                            # 2. Iterate backwards (Newest -> Oldest) to find the last user text
+                            # We skip the current message "3"
+                            for msg in reversed(history):
+                                if msg['sender'] == 'user':
+                                    content = msg['text'].strip()
+                                    if content != '3':
+                                        last_real_query = content # Found the question (e.g. "What is TB?")
+                                    else:
+                                        continue # Skip the current navigation input
+                                    break
+                            print(f"Found last real query for detailed response: {last_real_query}")
+                            try:
+                                # 3. Call Rasa with the FOUND query + detailed flag
+                                bot_msgs = call_rasa(last_real_query, from_number, lang_code=current_lang, detailed=True)
+                                for msg_text in bot_msgs:
+                                    send_whatsapp_message(from_number, msg_text)
+                                
+                                # Show menu again
+                                closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
+                                send_whatsapp_message(from_number, closing)
+                            except:
+                                send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_no_response"))
                         else:
                             send_whatsapp_message(from_number, MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en']))
                         return
