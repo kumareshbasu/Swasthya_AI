@@ -1,20 +1,29 @@
 # app.py
-from email.mime import message
-from charset_normalizer import detect
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, Response
 import requests
 import os
 import logging
 import threading
-from langdetect import DetectorFactory 
+import tempfile
+import io
+import math
+import datetime
+from datetime import timezone, timedelta
+import pandas as pd
+
+# --- AI & Media Imports ---
+from langdetect import detect, DetectorFactory 
 import google.generativeai as genai
-from datetime import datetime, timezone
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import whisper
 from gtts import gTTS
 import subprocess
-import math
+
+# --- MATPLOTLIB SETUP (For Server-Side Charts) ---
+import matplotlib
+matplotlib.use('Agg') # Required for server (no screen)
+import matplotlib.pyplot as plt
 
 load_dotenv()
 DetectorFactory.seed = 0 
@@ -813,6 +822,85 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
     except Exception as e:
         logger.error(f"Core Logic Error: {e}")
 
+@app.route("/dashboard")
+def dashboard():
+    # Fetch Data for HTML Counters
+    try:
+        response = supabase.table("user_chat_media").select("*").execute()
+        df = pd.DataFrame(response.data)
+        if df.empty: return "No data yet."
+        
+        df['time_stamp'] = pd.to_datetime(df['time_stamp'])
+        total_users = df['phone_num'].nunique()
+        total_messages = len(df)
+        
+        last_24h = datetime.datetime.now(timezone.utc) - datetime.timedelta(hours=24)
+        last_24h = last_24h.replace(tzinfo=None) 
+        df['time_stamp_naive'] = df['time_stamp'].dt.tz_localize(None)
+        active_24h = df[df['time_stamp_naive'] > last_24h]['phone_num'].nunique()
+
+        # Keyword Analysis
+        keywords = ["fever", "dengue", "malaria", "typhoid", "covid", "cough"]
+        disease_data = {}
+        user_msgs = df[df['phone_num'].notnull()]['user_message'].dropna().str.lower()
+        for word in keywords:
+            count = user_msgs.str.contains(word).sum()
+            if count > 0: disease_data[word.capitalize()] = int(count)
+
+        return render_template("dashboard.html", total_users=total_users, active_24h=active_24h, total_messages=total_messages, disease_data=disease_data)
+    except Exception as e: return f"Dashboard Error: {e}"
+
+@app.route("/api/piechart")
+def piechart():
+    try:
+        response = supabase.table("user_chat_media").select("user_message").execute()
+        data = response.data
+        if not data: return "No Data", 404
+        
+        keywords = ["fever", "dengue", "malaria", "typhoid", "covid", "flu"]
+        counts = {}
+        for row in data:
+            msg = str(row.get('user_message', '')).lower()
+            for word in keywords:
+                if word in msg: counts[word] = counts.get(word, 0) + 1
+        
+        if not counts: return "No Disease Data", 404
+        
+        plt.figure(figsize=(6, 6))
+        plt.pie(counts.values(), labels=counts.keys(), autopct="%1.1f%%")
+        plt.title("Disease Trends")
+        
+        buf = io.BytesIO()
+        plt.savefig(buf, format="png")
+        buf.seek(0)
+        plt.close()
+        return Response(buf.getvalue(), mimetype="image/png")
+    except: return "Error", 500
+
+@app.route("/api/city-bar")
+def city_bar():
+    # Using User Phone as 'City' proxy for demo
+    try:
+        response = supabase.table("user_chat_media").select("phone_num").execute()
+        data = response.data
+        if not data: return "No Data", 404
+        
+        counts = {}
+        for row in data:
+            u = row.get('phone_num', 'Unknown')
+            counts[u] = counts.get(u, 0) + 1
+            
+        plt.figure(figsize=(8, 5))
+        plt.bar(list(counts.keys())[:5], list(counts.values())[:5])
+        plt.title("Top Active Users")
+        
+        buf = io.BytesIO()
+        plt.savefig(buf, format="png")
+        buf.seek(0)
+        plt.close()
+        return Response(buf.getvalue(), mimetype="image/png")
+    except: return "Error", 500
+
 @app.route("/whatsapp", methods=['POST'])
 def whatsapp_reply():
     data = request.get_json()
@@ -907,4 +995,4 @@ def verify():
     return "Invalid", 403
 
 if __name__ == "__main__":
-    app.run(port=6000, debug=True)
+    app.run(port=5000, debug=True)
