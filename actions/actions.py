@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
-global_gemini_model_name = "gemini-2.5-pro" # Ensure this is 'gemini-2.5-pro'
+global_gemini_model_name = "gemini-2.5-flash" # Ensure this is 'gemini-2.5-flash'
 try:
     global_gemini_model_instance = genai.GenerativeModel(global_gemini_model_name)
     logger.info(f"Globally initialized Gemini model: {global_gemini_model_name}")
@@ -164,7 +164,7 @@ class ActionAnalyzeImageGemini(Action):
 
         # 3. Prepare Gemini
         try:
-            model = genai.GenerativeModel('gemini-2.5-pro')
+            model = genai.GenerativeModel('gemini-2.5-flash')
             img = Image.open(io.BytesIO(image_bytes))
 
             # 4. Construct Prompt
@@ -282,7 +282,7 @@ class ActionCheckDiseaseGemini(Action):
         """
 
         try:
-            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-pro")
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-flash")
             response = model.generate_content(system_prompt)
             
             if response and response.text:
@@ -357,7 +357,7 @@ class ActionCheckMedicineGemini(Action):
         """
 
         try:
-            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-pro")
+            model = global_gemini_model_instance or genai.GenerativeModel("gemini-2.5-flash")
             response = model.generate_content(system_prompt)
             
             if response and response.text:
