@@ -1,4 +1,5 @@
 # app.py
+from email.mime import message
 from charset_normalizer import detect
 from flask import Flask, request, jsonify
 import requests
@@ -13,6 +14,7 @@ from dotenv import load_dotenv
 import whisper
 from gtts import gTTS
 import subprocess
+import math
 
 load_dotenv()
 DetectorFactory.seed = 0 
@@ -56,10 +58,13 @@ Welcome to Swasthya AI!
 6. About Us
 7. Change Language / भाषा बदलें / ভাষা পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ
 8. Exit Chat
+
+Type the option number to proceed.
+Type 'SOS' for emergency assistance.
 """,
-    'hi': "\n1. सामान्य स्वास्थ्य\n2. टीकाकरण\n3. बीमारी जांच\n4. दवा की जानकारी 💊\n5. स्वास्थ्य केंद्र\n6. हमारे बारे में\n7. Change Language / भाषा बदलें / ভাষা পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ\n8. बाहर निकलें",
-    'bn': "\n1. সাধারণ স্বাস্থ্য\n2. টিকা\n3. রোগ পরীক্ষক\n4. ওষুধের তথ্য 💊\n5. স্বাস্থ্য কেন্দ্র\n6. আমাদের সম্পর্কে\n7. Change Language / भाषा बदलें / ভাষা পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ\n8. প্রস্থান",
-    'or': "\n1. ସାଧାରଣ ସ୍ୱାସ୍ଥ୍ୟ\n2. ଟୀକାକରଣ\n3. ରୋଗ ଯାଞ୍ଚ\n4. ଔଷଧ ସୂଚନା 💊\n5. ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର\n6. ଆମ ବିଷୟରେ\n7. Change Language / भाषा बदलें / ভাষা পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ\n8. ବାହାରନ୍ତୁ"
+    'hi': "\n1. सामान्य स्वास्थ्य\n2. टीकाकरण\n3. बीमारी जांच\n4. दवा की जानकारी 💊\n5. स्वास्थ्य केंद्र\n6. हमारे बारे में\n7. Change Language / भाषा बदलें / भाषा परिवर्तन / ଭାଷା ପରିବର୍ତ୍ତନ\n8. बाहर निकलें\n\nआगे बढ़ने के लिए विकल्प संख्या टाइप करें।\nआपातकालीन सहायता के लिए 'SOS' टाइप करें।",
+    'bn': "\n1. সাধারণ স্বাস্থ্য\n2. টিকা\n3. রোগ পরীক্ষক\n4. ওষুধের তথ্য 💊\n5. স্বাস্থ্য কেন্দ্র\n6. আমাদের সম্পর্কে\n7. Change Language / भाषा बदलें / भाषा পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ\n8. প্রস্থান\n\nঅগ্রসর হতে বিকল্প নম্বর টাইপ করুন।\nজরুরি সহায়তার জন্য 'SOS' টাইপ করুন।",
+    'or': "\n1. ସାଧାରଣ ସ୍ୱାସ୍ଥ୍ୟ\n2. ଟୀକାକରଣ\n3. ରୋଗ ଯାଞ୍ଚ\n4. ଔଷଧ ସୂଚନା 💊\n5. ସ୍ୱାସ୍ଥ୍ୟ କେନ୍ଦ୍ର\n6. ଆମ ବିଷୟରେ\n7. Change Language / भाषा बदलें / ভাষা পরিবর্তন / ଭାଷା ପରିବର୍ତ୍ତନ\n8. ବାହାରନ୍ତୁ\n\nଆଗକୁ ବଢିବା ପାଇଁ ବିକଳ୍ପ ନମ୍ବର ଟାଇପ୍ କରନ୍ତୁ।\nଜରୁରୀକାଳୀନ ସହାୟତା ପାଇଁ 'SOS' ଟାଇପ୍ କରନ୍ତୁ।"
 }
 
 MULTILINGUAL_STATIC_MESSAGES = {
@@ -447,7 +452,7 @@ def call_gemini(context_messages, incoming_text, lang_code="en", detailed=False)
         prompt = "\n".join(prompt_parts)
 
         # 4. Call Model
-        model = genai.GenerativeModel("gemini-2.5-pro")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         resp = model.generate_content([prompt])
         
         return getattr(resp, "text", str(resp))
@@ -456,12 +461,60 @@ def call_gemini(context_messages, incoming_text, lang_code="en", detailed=False)
         logger.exception("Gemini call failed: %s", e)
         return "Sorry, I'm unable to respond right now."
 
+def calculate_distance(lat1, lon1, lat2, lon2):
+    R = 6371  # Earth radius in km
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) * math.sin(dlat / 2) + \
+        math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * \
+        math.sin(dlon / 2) * math.sin(dlon / 2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
+def find_nearest_hospital(user_lat, user_lon):
+    nearest = None
+    min_dist = float('inf')
+    
+    try:
+        # 1. Fetch all hospitals from Supabase
+        # .select("*") grabs all columns. You can specify "name, latitude, longitude, phone" if you prefer.
+        response = supabase.table("hospitals").select("*").execute()
+        
+        # Supabase returns data in response.data
+        hospitals_db = response.data if response and response.data else []
+
+        if not hospitals_db:
+            # Fallback if DB is empty or connection fails
+            logging.warning("No hospitals found in database.")
+            return None, 0.0
+
+        # 2. Iterate through the DB results
+        for h in hospitals_db:
+            # Ensure latitude/longitude exist and are valid numbers
+            try:
+                h_lat = float(h.get("latitude"))
+                h_lon = float(h.get("longitude"))
+            except (ValueError, TypeError):
+                continue # Skip invalid records
+
+            dist = calculate_distance(user_lat, user_lon, h_lat, h_lon)
+            
+            if dist < min_dist:
+                min_dist = dist
+                nearest = h
+                
+    except Exception as e:
+        logging.error(f"Error fetching hospitals from Supabase: {e}")
+        return None, 0.0
+            
+    return nearest, min_dist
+
 # ---------------------------------------------------------
 # 4. MAIN LOGIC
 # ---------------------------------------------------------
 # CORE LOGIC (SHARED BY WHATSAPP & SMS)
 # ---------------------------------------------------------
-def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=None):
+def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=None, location_data=None):
     try:
         # 1. State Init
         if from_number not in user_states:
@@ -477,6 +530,8 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
         elif msg_type == 'audio' or msg_type == 'image':
             # We log media after processing usually, or here with a tag
             insert_message(from_number, "user", media=[{"url": media_url}], language=current_lang)
+        elif msg_type == 'location':
+            insert_message(from_number, "user", text=f"Location: {location_data}", language=current_lang)
 
         # 3. VOICE HANDLING (For both SMS & WhatsApp)
         if msg_type in ["audio", "voice"] and media_url:
@@ -515,7 +570,63 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 send_unified_message(from_number, "Image analysis failed.", channel=channel)
             return
 
-        # 5. NAVIGATION COMMANDS
+        # 5. SOS TEXT TRIGGER
+        if normalized_msg == "sos":
+            user_states[from_number]['state'] = 'awaiting_sos_location'
+            alert_msg = (
+                "🚨 *EMERGENCY MODE ACTIVATED* 🚨\n\n"
+                "I cannot see your location automatically.\n"
+                "Please tap the *Attachment Icon* (📎 or +) \n"
+                "Select *Location* -> *Send Your Current Location*."
+            )
+            send_unified_message(from_number, alert_msg, channel=channel)
+            return
+
+        # 6. LOCATION MESSAGE HANDLER
+        # This handles the location response regardless of the previous state
+        if msg_type == "location" and location_data:
+            latitude = location_data.get("latitude")
+            longitude = location_data.get("longitude")
+            logger.info(f"📍 DEBUG: Location Received! Data: {location_data}")
+
+            if current_state == 'awaiting_sos_location':
+                hospital, dist = find_nearest_hospital(latitude, longitude)
+                
+                if hospital:
+                    map_url = f"https://www.google.com/maps/dir/?api=1&destination={hospital['latitude']},{hospital['longitude']}"
+                    user_map_url = f"https://www.google.com/maps/dir/?api=1&destination={latitude},{longitude}"
+                    
+                    reply_to_user = (f"🚑 *SOS ALERT: HELP IS COMING* 🚑\n\n"
+                                     f"We have alerted: *{hospital['hospital_name']}*\n"
+                                     f"Distance: {dist:.2f} km\n"
+                                     f"Phone: {hospital['contact_no']}\n\n"
+                                     f"📍 *Directions:* {map_url}")
+                    send_unified_message(from_number, reply_to_user, channel=channel)
+                    
+                    # Alert the Hospital (WhatsApp Only)
+                    if channel == 'whatsapp':
+                        alert_body = (
+                            f"🚨 *EMERGENCY ALERT* 🚨\n"
+                            f"Patient SOS nearby.\n"
+                            f"Phone: +{from_number}\n"
+                            f"Dist: {dist:.2f} km\n"
+                            f"📍 *Loc:* {user_map_url}"
+                        )
+                        if hospital.get('contact_no'):
+                            send_whatsapp_message(hospital['contact_no'], alert_body)
+                else:
+                    send_unified_message(from_number, "No registered hospitals found nearby. Please call 112.", channel=channel)
+                
+                # Reset to Main Menu after SOS
+                user_states[from_number]['state'] = 'main_menu'
+                send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
+                return
+            else:
+                # Handle random location sharing if not in SOS mode
+                send_unified_message(from_number, "Location received. To find a health center, please use the Main Menu.", channel=channel)
+                return
+
+        # 7. NAVIGATION COMMANDS
         if normalized_msg in MENU_ENTRY_TRIGGER:
             if current_state == 'language_selection':
                 send_unified_message(from_number, LANGUAGE_MENU, channel=channel)
@@ -717,13 +828,24 @@ def whatsapp_reply():
             m_type = msg["type"]
             text = ""
             media_url = None
+            location_data = None # New variable for coordinates
             
-            if m_type == "text": text = msg["text"]["body"]
-            elif m_type == "button": text = msg["button"]["payload"]
+            if m_type == "text": 
+                text = msg["text"]["body"]
+            elif m_type == "button": 
+                text = msg["button"]["payload"]
+            
+            # --- NEW: Location Handling ---
+            elif m_type == "location":
+                loc = msg.get("location", {})
+                location_data = {
+                    "latitude": loc.get("latitude"),
+                    "longitude": loc.get("longitude")
+                }
+            # ------------------------------
+
             elif m_type in ["audio", "voice"]:
                 media_id = msg.get(m_type, {}).get("id")
-                # WhatsApp media URL requires helper to fetch real URL via ID
-                # We fetch it here or pass ID to helper. Helper logic above updated.
                 try:
                     r = requests.get(f"https://graph.facebook.com/v19.0/{media_id}", headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}"})
                     media_url = r.json().get("url")
@@ -735,14 +857,21 @@ def whatsapp_reply():
                     media_url = r.json().get("url")
                 except: media_url = None
 
+            # Pass 'location_data' to the thread
             threading.Thread(target=process_core_logic, 
-                             kwargs={'from_number': sender, 'incoming_msg': text, 'msg_type': m_type, 'channel': 'whatsapp', 'media_url': media_url}).start()
+                             kwargs={
+                                 'from_number': sender, 
+                                 'incoming_msg': text, 
+                                 'msg_type': m_type, 
+                                 'channel': 'whatsapp', 
+                                 'media_url': media_url,
+                                 'location_data': location_data  # Passing coordinates
+                             }).start()
 
     return jsonify({"status": "ok"}), 200
 
 @app.route("/sms", methods=["POST"])
 def sms_webhook():
-    # Twilio sends form data
     try:
         sender = request.values.get('From', '')
         text = request.values.get('Body', '')
@@ -766,7 +895,7 @@ def sms_webhook():
         threading.Thread(target=process_core_logic, 
                          kwargs={'from_number': sender, 'incoming_msg': text, 'msg_type': msg_type, 'channel': 'sms', 'media_url': media_url}).start()
 
-        return str(""), 200 # Return empty string XML for Twilio to stop waiting
+        return str(""), 200
     except Exception as e:
         logger.error(f"SMS Webhook Error: {e}")
         return "Error", 500
