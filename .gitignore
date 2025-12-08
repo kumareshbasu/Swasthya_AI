@@ -5,3 +5,4 @@ actions/__pycache__/
 .rasa/
 
 .env
+templates/
