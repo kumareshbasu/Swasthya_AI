@@ -7,8 +7,8 @@ import threading
 import tempfile
 import io
 import math
-import datetime
-from datetime import timezone, timedelta
+# --- FIXED DATETIME IMPORTS ---
+from datetime import datetime, timedelta, timezone 
 import pandas as pd
 
 # --- AI & Media Imports ---
@@ -16,13 +16,14 @@ from langdetect import detect, DetectorFactory
 import google.generativeai as genai
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import re
 import whisper
 from gtts import gTTS
 import subprocess
 
-# --- MATPLOTLIB SETUP (For Server-Side Charts) ---
+# --- MATPLOTLIB SETUP ---
 import matplotlib
-matplotlib.use('Agg') # Required for server (no screen)
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 load_dotenv()
@@ -52,8 +53,55 @@ except Exception as e:
 
 user_states = {} 
 
-MENU_ENTRY_TRIGGER = ['hi', 'hello', 'menu', 'start'] 
-MENU_RETURN_TRIGGER = ['back', 'main menu', 'Back', 'Return', 'return', 'Exit', 'exit']
+# --- Menu Entry Triggers (Multilingual) ---
+MENU_ENTRY_TRIGGER = [
+    # English
+    "hi", "hello", "hey", "menu", "start", "begin", "restart",
+    "hi!", "hello!", "hey!", "hii", "hiii", "start again",
+
+    # Hindi (Devanagari)
+    "नमस्ते", "हैलो", "स्टार्ट", "मेन्यू", "शुरू", "शुरू करें", "दोबारा शुरू",
+
+    # Hindi (Translated English words)
+    "namaste", "hindi hello", "namaskar", "shuru", "menu dikhaye",
+
+    # Bengali (বাংলা)
+    "হাই", "হ্যালো", "মেনু", "শুরু", "স্টার্ট", "হাই!", "হ্যালো!", "মেনু দিন",
+    "hi bolo", "ami menu chai",
+
+    # Odia (ଓଡ଼ିଆ)
+    "ହାଇ", "ହେଲୋ", "ମେନୁ", "ଆରମ୍ଭ", "ସ୍ଟାର୍ଟ", "ମେନୁ ଦିଅ",
+    "ନମସ୍କାର", "ନମସ୍ତେ",
+
+    # Spelling mistakes or short variations
+    "helo", "heloo", "heyy", "menoo", "starrt", "menue",
+    "mnue", "main menu", "begin chat", "chat start",
+]
+
+# --- Menu Return Triggers (Multilingual) ---
+MENU_RETURN_TRIGGER = [
+    # English
+    "back", "go back", "return", "main menu", "menu", "exit", "quit",
+    "b", "bk", "back!", "go to menu", "back to menu",
+
+    # Hindi (Devanagari)
+    "वापस", "पीछे", "मुख्य मेन्यू", "मेन्यू", "बैक", "निकास", "बाहर",
+    "मेन्यू दिखाओ", "मेन्‍यू पर जाओ",
+
+    # Hindi (English transliteration)
+    "wapas", "peeche", "main menu", "nikas", "bahar jao",
+
+    # Bengali (বাংলা)
+    "ফিরে যাও", "ব্যাক", "মেনু", "মেইন মেনু", "বের হও", "রিটার্ন",
+    "ফিরে আস", "মেনুতে ফিরে যাও",
+
+    # Odia (ଓଡ଼ିଆ)
+    "ପଛକୁ", "ବ୍ୟାକ୍", "ମେନୁ", "ମୁଖ୍ୟ ମେନୁ", "ପଛକୁ ଯାଅ",
+    "ଫେରନ୍ତୁ", "ବାହାରିବାକୁ",
+
+    # Mistakes / slang / shortcuts
+    "bak", "retun", "mn", "mm", "mainmenu", "manu", "exit chat", "close",
+]
 
 # --- MENUS (Updated with Option 4) ---
 MULTILINGUAL_MENUS = {
@@ -215,6 +263,30 @@ MULTILINGUAL_AI_CLOSING = {
     'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n1. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n2. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?\n3. ଏହା ବିଷୟରେ ଅଧିକ ବିସ୍ତୃତ ସୂଚନା ପାଇଁ।"
 }
 
+# Vaccination Menu
+vacc_menu = {
+    "en": "Vaccination Menu:\n1. Standard Vaccination Schedule\n2. My Child’s Upcoming Vaccines\n3. Govt. Vaccination Campaigns (Coming Soon)\n(Type 'menu' to go back)",
+    "hi": "टीकाकरण मेनू:\n1. मानक टीकाकरण अनुसूची\n2. मेरे बच्चे के आने वाले टीके\n3. सरकारी टीकाकरण अभियान (जल्द आने वाला)\n('menu' टाइप करके वापस जाएँ)",
+    "bn": "টিকাদান মেনু:\n1. স্ট্যান্ডার্ড টিকাদান সূচি\n2. আমার শিশুর আগামী টিকা\n3. সরকারি টিকাদান অভিযান (শীঘ্রই)\n('menu' টাইপ করুন ফিরে যেতে)",
+    "or": "ଟୀକାକରଣ ମେନୁ:\n1. ସାଧାରଣ ଟୀକା ସୂଚୀ\n2. ମୋ ଶିଶୁଙ୍କ ଆସନ୍ତା ଟୀକାଗୁଡିକ\n3. ସରକାରୀ ଟୀକାକରଣ ଅଭିଯାନ (ଶୀଘ୍ର ଆସୁଛି)\n('menu' ଟାଇପ୍ କରନ୍ତୁ ଫେରିବା ପାଇଁ)"
+}
+
+# Ask Date of Birth Prompt
+askdob = {
+    "en": "Please enter the child’s date of birth in YYYY-MM-DD format:",
+    "hi": "कृपया बच्चे की जन्म तिथि YYYY-MM-DD में दर्ज करें:",
+    "bn": "শিশুর জন্মতারিখ YYYY-MM-DD ফরম্যাটে লিখুন:",
+    "or": "ଶିଶୁର ଜନ୍ମତାରିଖ YYYY-MM-DD ରେ ଲେଖନ୍ତୁ:"
+}
+
+# 
+coming = {
+    "en": "Govt. Vaccination Campaign info will be added soon. Please check later.",
+    "hi": "सरकारी टीकाकरण अभियान की जानकारी जल्द ही जोड़ी जाएगी।",
+    "bn": "সরকারি টিকাদান অভিযানের তথ্য শীঘ্রই যোগ করা হবে।",
+    "or": "ସରକାରୀ ଟୀକାକରଣ ଅଭିଯାନ ଶୀଘ୍ର ଯୋଡାଯିବ।"
+}
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -306,7 +378,7 @@ def get_last_20_messages(phone_num):
 def download_media(media_url, local_basename):
     local_path = os.path.join("/tmp", local_basename)
     try:
-        r = requests.get(media_url, headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}"}, stream=True, timeout=30)
+        r = requests.get(media_url, headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}"}, stream=True, timeout=3000)
         r.raise_for_status()
         with open(local_path, "wb") as f:
             for chunk in r.iter_content(8192):
@@ -411,7 +483,7 @@ def transcribe_with_whisper(wav_path):
 def call_rasa(transcript, sender_id, lang_code="en", detailed=False):
     try:
         payload = {"sender": sender_id, "message": transcript, "metadata": {"lang": lang_code, "detailed_response": detailed}}
-        r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=180)
+        r = requests.post(RASA_WEBHOOK_URL, json=payload, timeout=3000)
         r.raise_for_status()
         resp = r.json()
         texts = []
@@ -518,6 +590,85 @@ def find_nearest_hospital(user_lat, user_lon):
             
     return nearest, min_dist
 
+# --- Modified Insert: Returns the new ID ---
+def insert_disease_record(city=None, disease=None):
+    if not supabase: return None
+    try:
+        payload = {"city": city, "disease": disease}
+        response = supabase.table("disease_count").insert(payload).execute()
+        
+        # Return the ID of the newly created row
+        if response.data and len(response.data) > 0:
+            return response.data[0]['id']
+            
+    except Exception as e:
+        logger.error(f"Insert Error: {e}")
+    return None
+
+# --- NEW Function: Updates an existing row ---
+def update_disease_record(row_id, disease):
+    if not supabase or not row_id: return False
+    try:
+        # Update the specific row ID with the new disease
+        supabase.table("disease_count").update({"disease": disease}).eq("id", row_id).execute()
+        logger.info(f"Updated Row {row_id} with disease: {disease}")
+        return True
+    except Exception as e:
+        logger.error(f"Update Error: {e}")
+        return False
+
+# --- Fetch last 24 hours rows from disease_count ---
+def get_last_24h_diseases():
+    try:
+        now = datetime.datetime.now(timezone.utc)
+        last_24h = now - datetime.timedelta(hours=24)
+
+        response = (
+            supabase
+            .table("disease_count")
+            .select("*")
+            .gte("log_time", last_24h.isoformat())
+            .execute()
+        )
+
+        return response.data if response and response.data else []
+    except Exception as e:
+        logger.error(f"Last 24h fetch error: {e}")
+        return []
+
+# --- Disease counts per city (last 24 hours only) ---
+def get_disease_counts_last24h():
+    rows = get_last_24h_diseases()
+    result = {}
+
+    for row in rows:
+        city = row.get("city") or "Unknown"
+        disease = row.get("disease")
+        if not disease:
+            continue
+
+        if city not in result:
+            result[city] = {}
+
+        result[city][disease] = result[city].get(disease, 0) + 1
+
+    return result
+
+# --- Total disease counts for pie chart (last 24 hours only) ---
+def get_total_disease_counts_last24h():
+    rows = get_last_24h_diseases()
+    result = {}
+
+    for row in rows:
+        disease = row.get("disease")
+        if not disease:
+            continue
+
+        disease = disease.lower().strip()
+        result[disease] = result.get(disease, 0) + 1
+
+    return result
+
 # ---------------------------------------------------------
 # 4. MAIN LOGIC
 # ---------------------------------------------------------
@@ -527,11 +678,41 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
     try:
         # 1. State Init
         if from_number not in user_states:
-            user_states[from_number] = {'state': 'language_selection', 'lang': 'en', 'data': {}}
+            # Initialize with 'ask_city' state to force location capture first
+            user_states[from_number] = {
+                'state': 'ask_city', 
+                'lang': 'en', 
+                'city': 'Unknown', 
+                'data': {}
+            }
+            send_unified_message(from_number, "Welcome to Swasthya AI! 🏥\nTo start, please type your **City Name**:", channel=channel)
+            return
         
         current_state = user_states[from_number]['state']
         current_lang = user_states[from_number]['lang']
         normalized_msg = incoming_msg.lower().strip() if incoming_msg else ""
+
+        # --- HANDLE CITY INPUT ---
+        if current_state == 'ask_city':
+            city_input = incoming_msg.strip().title()
+            
+            # Basic validation
+            if len(city_input) < 3:
+                send_unified_message(from_number, "Please enter a valid City name:", channel=channel)
+                return
+            
+            # Save City to State
+            user_states[from_number]['city'] = city_input
+            user_states[from_number]['state'] = 'language_selection' # Move to next step
+
+            row_id = insert_disease_record(city=city_input, disease=None)
+
+            if row_id:
+                user_states[from_number]['current_db_id'] = row_id
+            
+            send_unified_message(from_number, f"Thank you! Location set to {city_input}.", channel=channel)
+            send_unified_message(from_number, LANGUAGE_MENU, channel=channel)
+            return
 
         # 2. Log User Message
         if msg_type == 'text':
@@ -648,6 +829,26 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
         # STATE MACHINE (Same logic for SMS & WhatsApp)
         # -----------------------------------------
         
+        if current_state == 'ask_city':
+            city_name = (incoming_msg or "").strip()
+            if not city_name:
+                send_unified_message(from_number, "I didn't catch your city. Please type the name of your City (e.g., Mumbai):", channel=channel)
+                return
+
+            # Save in memory
+            user_states[from_number]['city'] = city_name
+
+            # Insert a record into disease_count with city only (disease NULL)
+            try:
+                insert_disease_record(city=city_name, disease=None)
+            except Exception as e:
+                logger.error(f"Failed to insert city into disease_count: {e}")
+
+            # Move to language selection
+            user_states[from_number]['state'] = 'language_selection'
+            send_unified_message(from_number, LANGUAGE_MENU, channel=channel)
+            return
+
         # --- LANGUAGE SELECTION ---
         if current_state == 'language_selection':
             if normalized_msg == '1': user_states[from_number]['lang'] = 'en'
@@ -660,6 +861,106 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
             user_states[from_number]['state'] = 'main_menu'
             send_unified_message(from_number, MULTILINGUAL_MENUS.get(user_states[from_number]['lang']), channel=channel)
             return
+    
+        # --- CHILD DOB FOR VACCINATION --- 
+        if current_state == 'ask_child_dob':
+            dob = incoming_msg.strip()
+
+            if not re.match(r'^\d{4}-\d{2}-\d{2}$', dob):
+                send_whatsapp_message(from_number, askdob.get(current_lang) + "\nInvalid DOB format. Use YYYY-MM-DD.")
+                return
+
+            # 1) Set language slot
+            lang_set_payload = '/set_language'
+            requests.post(
+                RASA_WEBHOOK_URL,
+                json={
+                    "sender": from_number,
+                    "message": lang_set_payload,
+                    "metadata": {"lang": current_lang}
+                }
+            )
+
+            # 2) Now call vaccine_child
+            rasa_payload = f'/vaccine_child{{"dob":"{dob}"}}'
+
+            try:
+                r = requests.post(
+                    RASA_WEBHOOK_URL,
+                    json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}},
+                    timeout=300
+                )
+
+                for bot_msg in r.json():
+                    if bot_msg.get("text"):
+                        send_whatsapp_message(from_number, bot_msg["text"])
+
+                closing = MULTILINGUAL_AI_CLOSING.get(current_lang) or MULTILINGUAL_AI_CLOSING['en']
+                send_whatsapp_message(from_number, closing)
+
+                user_states[from_number]['state'] = 'awaiting_ai_choice'
+            except Exception as e:
+                logger.error(f"Error calling Rasa for vaccine_child: {e}", exc_info=True)
+                send_whatsapp_message(from_number, "Error. Try again.")
+            return
+
+                    
+        # --- VACCINATION MENU LOGIC ---
+        if current_state == 'vaccination_menu':
+            # Option 1 — Standard Schedule (send intent message to Rasa)
+            if normalized_msg == '1':
+                # 1) Set language slot first
+                lang_set_payload = '/set_language'
+                requests.post(
+                    RASA_WEBHOOK_URL,
+                    json={
+                        "sender": from_number,
+                        "message": lang_set_payload,
+                        "metadata": {"lang": current_lang}
+                    }
+                )
+
+                # 2) Now call vaccine_standard
+                rasa_payload = '/vaccine_standard'
+                try:
+                    r = requests.post(
+                        RASA_WEBHOOK_URL,
+                        json={
+                            "sender": from_number,
+                            "message": rasa_payload,
+                            "metadata": {"lang": current_lang}
+                        },
+                        timeout=300
+                    )
+
+                    for bot_msg in r.json():
+                        if bot_msg.get("text"):
+                            send_whatsapp_message(from_number, bot_msg["text"])
+
+                    closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
+                    send_whatsapp_message(from_number, closing)
+                    user_states[from_number]['state'] = 'awaiting_ai_choice'
+                except Exception as e:
+                    logger.error(f"Error calling Rasa for vaccine_standard: {e}", exc_info=True)
+                    send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_connection_error"))
+                return
+
+
+
+
+            # Option 2 — Ask DOB
+            if normalized_msg == '2':
+                user_states[from_number]['state'] = 'ask_child_dob'
+
+                send_whatsapp_message(from_number, askdob.get(current_lang))
+                return
+
+            # Option 3 — Coming Soon
+            if normalized_msg == '3':
+                            
+                send_whatsapp_message(from_number, coming.get(current_lang))
+                return
+
 
         # --- MAIN MENU ---
         if current_state == 'main_menu':
@@ -667,7 +968,10 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 user_states[from_number]['state'] = 'in_rasa_conversation'
                 send_unified_message(from_number, get_localized_message(from_number, "entering_ai_assistant"), channel=channel)
             elif normalized_msg == '2':
-                send_unified_message(from_number, get_localized_message(from_number, "vaccination_selected"), channel=channel)
+                user_states[from_number]['state'] = 'vaccination_menu'
+                lang = current_lang
+                send_whatsapp_message(from_number, vacc_menu.get(lang, vacc_menu['en']))
+                return
             elif normalized_msg == '3': # Disease Checker
                 user_states[from_number]['state'] = 'ask_age'
                 user_states[from_number]['data'] = {}
@@ -676,7 +980,8 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 user_states[from_number]['state'] = 'ask_medicine_name'
                 send_unified_message(from_number, get_localized_message(from_number, "ask_medicine_name"), channel=channel)
             elif normalized_msg == '5': # Center
-                send_unified_message(from_number, get_localized_message(from_number, "health_center_selected"), channel=channel)
+                user_states[from_number]['state'] = 'ask_pincode'
+                send_unified_message(from_number, "Please enter your pincode:", channel=channel)
             elif normalized_msg == '6': # About
                 send_unified_message(from_number, get_localized_message(from_number, "about_us_selected"), channel=channel)
             elif normalized_msg == '7': # Lang
@@ -688,6 +993,63 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
             else:
                 send_unified_message(from_number, get_localized_message(from_number, "invalid_option"), channel=channel)
                 send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
+            return
+
+        # --- HOSPITAL SEARCH BY PINCODE (NEW) ---
+        if current_state == 'ask_pincode':
+            pincode = incoming_msg.strip()
+            if not pincode:
+                send_unified_message(from_number, "Please enter a valid pincode (digits only).", channel=channel)
+                return
+            # Query Supabase hospitals table by pin_code
+            try:
+                res = supabase.table("hospitals").select("*").eq("pin_code", pincode).execute()
+                data_rows = getattr(res, "data", None)
+                if not data_rows:
+                    send_unified_message(from_number, f"No hospitals found for pincode {pincode}.", channel=channel)
+                    # return to main menu
+                    user_states[from_number]['state'] = 'main_menu'
+                    send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
+                    return
+
+                # Build reply
+                reply_lines = [f"🏥 Hospitals for pincode {pincode}:\n"]
+                for h in data_rows:
+                    # use multiple possible keys to be robust with your table naming
+                    hosp_name = h.get("hospital_name") or h.get("hospital") or h.get("name") or "N/A"
+                    address = h.get("address", "N/A")
+                    category = h.get("category", "N/A")
+                    # some tables may store 'specializations' or 'specalizations' etc.
+                    specializations = h.get("specializations") or h.get("specalizations") or h.get("discipline_sys") or "N/A"
+                    pin = h.get("pin_code", "N/A")
+                    contact = h.get("contact_no") or h.get("contact") or "N/A"
+                    ambulance = h.get("ambulance_no") or h.get("ambulance") or "N/A"
+                    bloodbank = h.get("bloodbank_no") or h.get("blood_bank") or "N/A"
+                    website = h.get("hospital_website") or h.get("hospital_webs") or h.get("website") or "N/A"
+                    beds = h.get("beds_available") or h.get("beds") or "N/A"
+
+                    reply_lines.append(
+                        f"🏥 {hosp_name}\n"
+                        f"📍 Address: {address}\n"
+                        f"🏷 Category: {category}\n"
+                        f"🩺 Specializations: {specializations}\n"
+                        f"📞 Contact: {contact}\n"
+                        f"🚑 Ambulance: {ambulance}\n"
+                        f"🩸 Blood Bank: {bloodbank}\n"
+                        f"🌐 Website: {website}\n"
+                        f"🛏 Beds Available: {beds}\n"
+                        "-----------------------------------\n"
+                    )
+
+                send_unified_message(from_number, "\n".join(reply_lines), channel=channel)
+
+                # Go back to main menu
+                user_states[from_number]['state'] = 'main_menu'
+                send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
+
+            except Exception as e:
+                logger.error(f"Hospital Lookup Error: {e}")
+                send_unified_message(from_number, "Error fetching hospital details. Try again later.", channel=channel)
             return
 
         # --- DISEASE CHECKER FLOW (10 Steps) ---
@@ -743,8 +1105,23 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
 
         if current_state == 'ask_current_symptoms':
             user_states[from_number]['data']['current_symptoms'] = incoming_msg
+
+            current_db_id = user_states[from_number].get('current_db_id')
+            user_city = user_states[from_number].get('city', 'Unknown')
+            
+            if current_db_id:
+                # Update the existing row (id: 1)
+                update_disease_record(current_db_id, incoming_msg)
+                
+                # OPTIONAL: Clear the ID so the *next* search creates a new row
+                # (Remove this line if you want to keep overwriting the same row for this session)
+                user_states[from_number].pop('current_db_id', None) 
+            else:
+                # Fallback: If session is lost/old, insert a new row (id: 2)
+                insert_disease_record(city=user_city, disease=incoming_msg)
+
             d = user_states[from_number]['data']
-            data_str = f"Age: {d.get('age')}, Weight: {d.get('weight')}, Gender: {d.get('gender')}, History: {d.get('history')}, Symptoms: {incoming_msg}"
+            data_str = f"Age: {d.get('age')}, Weight: {d.get('weight')}, Gender: {d.get('gender')}, City: {user_city}, History: {d.get('history')}, Symptoms: {incoming_msg}"
             
             send_unified_message(from_number, get_localized_message(from_number, "processing_diagnosis"), channel=channel)
             
@@ -762,6 +1139,7 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
         # --- MEDICINE INFO ---
         if current_state == 'ask_medicine_name':
             medicine_name = incoming_msg
+
             send_unified_message(from_number, get_localized_message(from_number, "processing_medicine"), channel=channel)
             
             rasa_payload = f'/check_medicine{{"medicine_name": "{medicine_name}"}}'
@@ -802,10 +1180,23 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
 
         # --- GENERAL CHAT (RASA) ---
         if current_state == 'in_rasa_conversation':
-            if normalized_msg in MENU_RETURN_TRIGGER:
+            if normalized_msg in MENU_RETURN_TRIGGER or normalized_msg in MENU_ENTRY_TRIGGER:
                 user_states[from_number]['state'] = 'main_menu'
                 send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
                 return
+
+            # 2. LOGGING LOGIC (New)
+            # Only log if it looks like a real query (longer than 3 chars)
+            if len(incoming_msg) > 3:
+                current_db_id = user_states[from_number].get('current_db_id')
+                user_city = user_states[from_number].get('city', 'Unknown')
+                
+                # Update existing row (id: 1) or Insert new row (id: 2)
+                if current_db_id:
+                    update_disease_record(current_db_id, incoming_msg)
+                else:
+                    # Fallback insert
+                    insert_disease_record(city=user_city, disease=incoming_msg)
             try:
                 bot_msgs = call_rasa(incoming_msg, from_number, lang_code=current_lang, detailed=False)
                 if bot_msgs:
@@ -822,84 +1213,221 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
     except Exception as e:
         logger.error(f"Core Logic Error: {e}")
 
+# --- DASHBOARD ROUTE ---
 @app.route("/dashboard")
 def dashboard():
-    # Fetch Data for HTML Counters
     try:
-        response = supabase.table("user_chat_media").select("*").execute()
+        # 1. Fetch from 'disease_count' instead of 'user_chat_media'
+        response = supabase.table("disease_count").select("*").execute()
         df = pd.DataFrame(response.data)
-        if df.empty: return "No data yet."
         
-        df['time_stamp'] = pd.to_datetime(df['time_stamp'])
-        total_users = df['phone_num'].nunique()
-        total_messages = len(df)
-        
-        last_24h = datetime.datetime.now(timezone.utc) - datetime.timedelta(hours=24)
-        last_24h = last_24h.replace(tzinfo=None) 
-        df['time_stamp_naive'] = df['time_stamp'].dt.tz_localize(None)
-        active_24h = df[df['time_stamp_naive'] > last_24h]['phone_num'].nunique()
+        if df.empty:
+            return "No data yet."
 
-        # Keyword Analysis
+        # 2. Calculate Metrics based on your Hardcoded SQL Data
+        # Since 'disease_count' doesn't have phone numbers, we estimate users
+        # For this demo, let's assume 1 row = 1 unique interaction
+        total_messages = len(df)
+        total_users = df['city'].nunique() # Proxy: counting unique cities as users for demo
+        active_24h = total_messages # Showing all 50 messages as active
+
+        # 3. Keyword Analysis for the HTML List
         keywords = ["fever", "dengue", "malaria", "typhoid", "covid", "cough"]
         disease_data = {}
-        user_msgs = df[df['phone_num'].notnull()]['user_message'].dropna().str.lower()
-        for word in keywords:
-            count = user_msgs.str.contains(word).sum()
-            if count > 0: disease_data[word.capitalize()] = int(count)
+        
+        if 'disease' in df.columns:
+            # Count directly from the 'disease' column
+            for disease in df['disease'].dropna():
+                d_lower = disease.lower()
+                for k in keywords:
+                    if k in d_lower:
+                        disease_data[k.capitalize()] = disease_data.get(k.capitalize(), 0) + 1
 
-        return render_template("dashboard.html", total_users=total_users, active_24h=active_24h, total_messages=total_messages, disease_data=disease_data)
-    except Exception as e: return f"Dashboard Error: {e}"
+        return render_template("dashboard.html", 
+                               total_users=total_users, 
+                               active_24h=active_24h, 
+                               total_messages=total_messages, 
+                               disease_data=disease_data)
+
+    except Exception as e:
+        return f"Dashboard Error: {e}"
+
+# --- API: Total disease count (last 24 hours) for pie chart ---
+@app.route("/api/disease-pie-24h")
+def disease_pie_24h():
+    try:
+        counts = get_total_disease_counts_last24h()
+        return jsonify(counts), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# --- API: City-wise disease count (last 24 hours) ---
+@app.route("/api/disease-city-24h")
+def disease_city_24h():
+    try:
+        counts = get_disease_counts_last24h()
+        return jsonify(counts), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/api/piechart")
 def piechart():
     try:
-        response = supabase.table("user_chat_media").select("user_message").execute()
+        # 1. Query the 'disease_count' table (where your hardcoded data is)
+        # We REMOVED the .gte() time filter so it fetches ALL data
+        response = supabase.table("disease_count").select("disease").execute()
         data = response.data
-        if not data: return "No Data", 404
         
-        keywords = ["fever", "dengue", "malaria", "typhoid", "covid", "flu"]
+        if not data:
+            # Fallback image if table is truly empty
+            plt.figure(figsize=(6, 6))
+            plt.text(0.5, 0.5, "No Data in DB", ha="center", va="center")
+            buf = io.BytesIO()
+            plt.savefig(buf, format="png")
+            buf.seek(0)
+            plt.close()
+            return Response(buf.getvalue(), mimetype="image/png")
+        
+        # 2. Count Diseases
         counts = {}
         for row in data:
-            msg = str(row.get('user_message', '')).lower()
-            for word in keywords:
-                if word in msg: counts[word] = counts.get(word, 0) + 1
+            disease = row.get("disease")
+            if disease:
+                # Normalize text (e.g., "Fever" vs "fever")
+                d_name = disease.strip().title()
+                counts[d_name] = counts.get(d_name, 0) + 1
         
-        if not counts: return "No Disease Data", 404
+        # 3. Sort & Filter Top 10
+        sorted_counts = dict(sorted(counts.items(), key=lambda item: item[1], reverse=True)[:10])
         
-        plt.figure(figsize=(6, 6))
-        plt.pie(counts.values(), labels=counts.keys(), autopct="%1.1f%%")
-        plt.title("Disease Trends")
+        # 4. Generate Pie Chart
+        plt.figure(figsize=(7, 7))
+        # Using a colorful palette
+        colors = plt.cm.Paired.colors 
+        plt.pie(
+            sorted_counts.values(), 
+            labels=sorted_counts.keys(), 
+            autopct="%1.1f%%", 
+            startangle=140, 
+            colors=colors
+        )
+        plt.title("Disease Distribution (All Data)")
         
+        # 5. Output Image
         buf = io.BytesIO()
-        plt.savefig(buf, format="png")
+        plt.savefig(buf, format="png", bbox_inches='tight')
         buf.seek(0)
         plt.close()
         return Response(buf.getvalue(), mimetype="image/png")
-    except: return "Error", 500
+
+    except Exception as e:
+        logger.error(f"Pie Chart Error: {e}")
+        return "Error", 500
 
 @app.route("/api/city-bar")
 def city_bar():
-    # Using User Phone as 'City' proxy for demo
     try:
-        response = supabase.table("user_chat_media").select("phone_num").execute()
+        # 1. Query 'disease_count' (Fetching ALL records)
+        response = supabase.table("disease_count").select("city").execute()
         data = response.data
-        if not data: return "No Data", 404
         
+        if not data:
+            return "No Data", 404
+        
+        # 2. Count Cities
         counts = {}
         for row in data:
-            u = row.get('phone_num', 'Unknown')
-            counts[u] = counts.get(u, 0) + 1
+            city = row.get("city")
+            if city:
+                # Clean up city name (e.g., "Govindpur, Odisha" -> "Govindpur")
+                city_name = city.split(',')[0].strip().title()
+                counts[city_name] = counts.get(city_name, 0) + 1
             
-        plt.figure(figsize=(8, 5))
-        plt.bar(list(counts.keys())[:5], list(counts.values())[:5])
-        plt.title("Top Active Users")
+        # 3. Sort Top 10
+        sorted_cities = sorted(counts.items(), key=lambda x: x[1], reverse=True)[:10]
+        cities = [x[0] for x in sorted_cities]
+        vals = [x[1] for x in sorted_cities]
+
+        # 4. Generate Bar Chart
+        plt.figure(figsize=(10, 6))
+        # Use Red color to highlight "Hotspots"
+        bars = plt.bar(cities, vals, color='#d62728') 
+        
+        # Add numbers on top of bars
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2., height,
+                     f'{int(height)}',
+                     ha='center', va='bottom')
+
+        plt.xticks(rotation=45, ha="right")
+        plt.title("Most Affected Cities (All Data)")
+        plt.tight_layout()
         
         buf = io.BytesIO()
         plt.savefig(buf, format="png")
         buf.seek(0)
         plt.close()
         return Response(buf.getvalue(), mimetype="image/png")
-    except: return "Error", 500
+
+    except Exception as e:
+        logger.error(f"Bar Chart Error: {e}")
+        return "Error", 500
+    
+@app.route("/api/ai-insight")
+def ai_insight():
+    """
+    Uses Gemini to analyze ALL data in the disease_count table.
+    """
+    try:
+        # 1. Fetch ALL data (Removed time filter)
+        response = supabase.table("disease_count").select("*").execute()
+        rows = response.data
+        
+        if not rows:
+            return jsonify({"insight": "No data available to generate insights."})
+
+        # 2. aggregate data for AI (City -> Disease -> Count)
+        city_disease_map = {}
+        for row in rows:
+            city = row.get("city", "Unknown")
+            if city:
+                city = city.split(',')[0].strip().title() # Clean "Govindpur, Odisha"
+            
+            disease = row.get("disease", "Unknown")
+            if disease:
+                disease = disease.strip().title()
+
+            if city not in city_disease_map:
+                city_disease_map[city] = {}
+            
+            city_disease_map[city][disease] = city_disease_map[city].get(disease, 0) + 1
+
+        # 3. Prepare prompt for Gemini
+        data_summary = str(city_disease_map)
+        
+        prompt = (
+            f"Analyze this health data: {data_summary}. "
+            "Identify if there are any outbreaks (high frequency of a specific disease in a specific city). "
+            "Ignore minor counts (less than 3). "
+            "Return a short, urgent summary for a dashboard. "
+            "Format: '⚠️ **Possible Outbreak:** [Details]'. If normal, say '✅ Status Normal'."
+        )
+
+        # 4. Call Gemini
+        if not GEMINI_API_KEY:
+            return jsonify({"insight": "⚠️ Gemini API Key Missing in .env"})
+
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        response = model.generate_content(prompt)
+        insight_text = response.text if response else "AI Analysis Unavailable."
+        
+        return jsonify({"insight": insight_text})
+
+    except Exception as e:
+        logger.error(f"AI Insight Error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/whatsapp", methods=['POST'])
 def whatsapp_reply():

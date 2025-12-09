@@ -78,6 +78,16 @@ rules:
       - action: action_handle_gibberish
       - action: action_listen
 
+  - rule: Standard Vaccine # Standard vaccine information
+    steps:
+      - intent: vaccine_standard
+      - action: action_vaccine_standard
+
+  - rule: Child Vaccine # Child vaccine information
+    steps:
+      - intent: vaccine_child
+      - action: action_vaccine_child
+
   - rule: Run Disease Checker
     steps:
       - intent: check_disease

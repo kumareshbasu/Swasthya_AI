@@ -2633,3 +2633,38 @@ nlu:
       - [Ginger Oil](medicine_name) ର ବ୍ୟବହାର
       - [Black Pepper Oil](medicine_name) ର ବ୍ୟବହାର
       - [Turmeric Oil](medicine_name) ର ବ୍ୟବାହାର
+
+## Vaccination — Multilingual
+  - intent: vaccine_standard
+    examples: |
+      - standard vaccination schedule
+      - standard schedule
+      - show full vaccination
+      - option 1
+      - मानक टीकाकरण अनुसूची
+      - पूरा टीकाकरण शेड्यूल
+      - অপশন ১
+      - স্ট্যান্ডার্ড টিকাদান সূচি
+      - ପ୍ରଥମ ବିକଳ୍ପ
+      - ସାଧାରଣ ଟୀକା ସୂଚୀ
+
+  - intent: vaccine_child
+    examples: |
+      - my child's upcoming vaccines
+      - upcoming vaccines for my child
+      - option 2
+      - मेरे बच्चे के आगामी टीके
+      - बच्चे की टीकाकरण सूची
+      - অপশন ২
+      - আমার শিশুর আসন্ন টিকা
+      - ପ୍ରସ୍ତୁତ ଟୀକା ସୂଚୀ
+      - ମୋ ଶିଶୁଙ୍କ ଆଗାମୀ ଟୀକା
+
+  - intent: give_dob
+    examples: |
+      - 2023-05-11
+      - 2020-02-01
+      - DOB is 2021-12-09
+      - जन्म तिथि 2020-01-05
+      - জন্মতারিখ 2022-10-03
+      - ଜନ୍ମତାରିଖ 2021-07-14

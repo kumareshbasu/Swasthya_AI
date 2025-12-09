@@ -1,5 +1,7 @@
 #actions.py
+from pyexpat.errors import messages
 import google.generativeai as genai
+import os
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -8,7 +10,8 @@ import logging
 import requests
 from PIL import Image
 import io
-import os
+from supabase import create_client, Client
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,6 +30,16 @@ except Exception as e:
     logger.error(f"Failed to initialize Gemini model globally: {e}. Will try initializing in run() method.", exc_info=True)
     global_gemini_model_instance = None
 
+
+# --- SUPABASE CLIENT SETUP ---
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+try:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    logger.info("Supabase client initialized successfully.")
+except Exception as e:
+    logger.error(f"Supabase connection failed: {e}")
+    supabase = None
 
 # --- ActionAskGemini (MODIFIED) ---
 class ActionAskGemini(Action):
@@ -369,4 +382,244 @@ class ActionCheckMedicineGemini(Action):
             logger.error(f"Medicine Check Error: {e}")
             dispatcher.utter_message(text="Sorry, I encountered an error checking the medicine.")
         
+        return []
+    
+# --- NEW ACTION FOR NON-HEALTH QUERIES ---
+class ActionHandleNonHealthQuery(Action):
+    def name(self) -> Text:
+        return "action_handle_non_health_query"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        user_lang = tracker.get_slot("lang") or "en"
+
+        replies = {
+            "en": "Sorry, I am a Health Chatbot. Please ask health-related questions.",
+            "hi": "क्षमा करें, मैं एक स्वास्थ्य चैटबोट हूँ। कृपया स्वास्थ्य संबंधी प्रश्न पूछें।",
+            "bn": "দুঃখিত, আমি একটি স্বাস্থ্য চ্যাটবট। অনুগ্রহ করে স্বাস্থ্য সম্পর্কিত প্রশ্ন করুন।",
+            "or": "ଦୁଃଖିତ, ମୁଁ ଏକ ସ୍ୱାସ୍ଥ୍ୟ ଚାଟବଟ୍। ଦୟାକରି ସ୍ୱାସ୍ଥ୍ୟ ସମ୍ୱନ୍ଧୀୟ ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ।"
+        }
+
+        dispatcher.utter_message(text=replies.get(user_lang, replies["en"]))
+        return []
+
+# --- NEW ACTION FOR GIBBERISH QUERIES --- 
+class ActionHandleGibberish(Action):
+    def name(self) -> Text:
+        return "action_handle_gibberish"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        user_lang = tracker.get_slot("lang") or "en"
+
+        replies = {
+            "en": "I couldn't understand that. Please send a valid health-related question.",
+            "hi": "मैं समझ नहीं पाया। कृपया कोई सही स्वास्थ्य संबंधी प्रश्न भेजें।",
+            "bn": "আমি বুঝতে পারিনি। অনুগ্রহ করে একটি সঠিক স্বাস্থ্য সম্পর্কিত প্রশ্ন পাঠান।",
+            "or": "ମୁଁ ଏହା ବୁଝିପାରିଲି ନାହିଁ। ଦୟାକରି ଏକ ସଠିକ୍ ସ୍ୱାସ୍ଥ୍ୟ ସମ୍ୱନ୍ଧୀୟ ପ୍ରଶ୍ନ ପଠାନ୍ତୁ।"
+        }
+
+        dispatcher.utter_message(text=replies.get(user_lang, replies["en"]))
+        return []
+    
+# NEW ACTION FOR VACCINE STANDARD SCHEDULE ---
+# actions.py
+
+class ActionVaccineStandard(Action):
+    def name(self):
+        return "action_vaccine_standard"
+
+    def run(self, dispatcher, tracker, domain):
+        # FIX: Check metadata (from Flask) FIRST, then Slot, then default to English
+        lang = tracker.latest_message.get('metadata', {}).get('lang') or tracker.get_slot("lang") or "en"
+        
+        print(f"🔍 [VACCINE] Fetching full vaccination schedule for language: {lang}")
+
+        try:
+            result = (
+                supabase.table("vaccine_schedule")
+                .select("*")
+                .eq("language", lang)
+                .order("recommended_age_weeks", desc=False)
+                .execute()
+            )
+            rows = result.data
+        except Exception as e:
+            print("❌ [DB ERROR] =>", e)
+            dispatcher.utter_message(text="Database error.")
+            return []
+
+        if not rows:
+            dispatcher.utter_message(text=f"No vaccine data found for language: {lang}")
+            return []
+
+        reply = ""
+        for r in rows:
+            reply += (
+                f"💉 *{r['vaccine_name']}* ({r['dose_name']})\n"
+                f"👶 {r['age_group']}\n"
+                f"ℹ️ {r['description']}\n\n"
+            )
+
+        dispatcher.utter_message(text=reply)
+        return []
+
+
+# NEW ACTION FOR VACCINE SCHEDULE BASED ON CHILD'S DOB ---  
+class ActionVaccineChild(Action):
+    def name(self):
+        return "action_vaccine_child"
+
+    def run(self, dispatcher, tracker, domain):
+
+        # 1. Get Inputs safely
+        dob = tracker.get_slot("dob")
+        
+        # Get language from metadata first (Flask), then slot (Rasa), default to 'en'
+        metadata = tracker.latest_message.get('metadata', {}) or {}
+        lang = metadata.get('lang') or tracker.get_slot("lang") or "en"
+
+        # 2. Define Messages Dictionary (Moved inside for safety)
+        messages = {
+            "en": {
+                "child_age": "🧒 Child's Age:",
+                "weeks": "weeks",
+                "months": "months",
+                "years": "years",
+                "adult_fallback": "⚠️ Vaccination schedule applies only up to 16 years. No further vaccines required.",
+                "dob_missing": "Date of birth is missing.",
+                "invalid_dob": "Invalid DOB format. Use YYYY-MM-DD.",
+                "no_upcoming": "🎉 No upcoming vaccines required.",
+                "db_error": "Database error while fetching vaccines."
+            },
+            "hi": {
+                "child_age": "🧒 बच्चे की उम्र:",
+                "weeks": "सप्ताह",
+                "months": "महीने",
+                "years": "साल",
+                "adult_fallback": "⚠️ टीकाकरण अनुसूची 16 वर्ष तक ही लागू होती है।",
+                "dob_missing": "जन्म तिथि उपलब्ध नहीं है।",
+                "invalid_dob": "अमान्य प्रारूप। कृपया YYYY-MM-DD उपयोग करें।",
+                "no_upcoming": "🎉 आगे कोई टीका आवश्यक नहीं है।",
+                "db_error": "टीके प्राप्त करते समय डेटाबेस त्रुटि।"
+            },
+            "bn": {
+                "child_age": "🧒 শিশুর বয়স:",
+                "weeks": "সপ্তাহ",
+                "months": "মাস",
+                "years": "বছর",
+                "adult_fallback": "⚠️ টিকাদান সূচি শুধুমাত্র ১৬ বছর পর্যন্ত।",
+                "dob_missing": "জন্মতারিখ অনুপস্থিত।",
+                "invalid_dob": "ভুল ফরম্যাট। দয়া করে YYYY-MM-DD ব্যবহার করুন।",
+                "no_upcoming": "🎉 আর কোনো টিকা প্রয়োজন নেই।",
+                "db_error": "ডেটাবেস ত্রুটি।"
+            },
+            "or": {
+                "child_age": "🧒 ଶିଶୁର ବୟସ୍:",
+                "weeks": "ସପ୍ତାହ",
+                "months": "ମାସ",
+                "years": "ବର୍ଷ",
+                "adult_fallback": "⚠️ ଟୀକା ସୂଚୀ କେବଳ 16 ବର୍ଷ ପର୍ଯ୍ୟନ୍ତ ଲାଗୁହୁଏ।",
+                "dob_missing": "ଜନ୍ମତାରିଖ ମିଳିଲା ନାହିଁ।",
+                "invalid_dob": "ଭୁଲ ଫର୍ମାଟ୍। YYYY-MM-DD ରେ ଲେଖନ୍ତୁ।",
+                "no_upcoming": "🎉 ଆଗାମୀ ଟୀକା କିଛି ନାହିଁ।",
+                "db_error": "ଡାଟାବେସ୍ ତ୍ରୁଟି।"
+            }
+        }
+
+        # 3. Safe Language Fallback
+        # This ensures 'msg' is never None
+        msg = messages.get(lang, messages["en"])
+
+        # 4. Validation
+        if not dob:
+            dispatcher.utter_message(text=msg["dob_missing"])
+            return []
+
+        try:
+            dob_dt = datetime.strptime(dob, "%Y-%m-%d")
+        except ValueError:
+            dispatcher.utter_message(text=msg["invalid_dob"])
+            return []
+
+        # 5. Age Calculation
+        today = datetime.today()
+        age_days = (today - dob_dt).days
+        
+        # Basic validation for future dates
+        if age_days < 0:
+             dispatcher.utter_message(text="Date of birth cannot be in the future.")
+             return []
+
+        age_weeks = age_days // 7
+        age_months = age_days // 30
+        age_years = age_days // 365
+
+        # 6. Age Response
+        age_msg = f"{msg['child_age']}\n• {age_weeks} {msg['weeks']}\n"
+        if age_months > 0:
+            age_msg += f"• {age_months} {msg['months']}\n"
+        if age_years > 0:
+            age_msg += f"• {age_years} {msg['years']}\n"
+
+        dispatcher.utter_message(text=age_msg)
+
+        # 7. Adult Fallback
+        if age_weeks > 900:  # approx 16 years
+            dispatcher.utter_message(text=msg["adult_fallback"])
+            return []
+
+        # 8. Database Fetch
+        try:
+            # First try requested language
+            data = (
+                supabase.table("vaccine_schedule")
+                .select("*")
+                .eq("language", lang)
+                .gte("recommended_age_weeks", age_weeks)
+                .order("recommended_age_weeks")
+                .execute()
+            )
+            rows = data.data
+            
+            # Fallback to English if no rows found in requested language
+            if not rows and lang != 'en':
+                 data = (
+                    supabase.table("vaccine_schedule")
+                    .select("*")
+                    .eq("language", "en")
+                    .gte("recommended_age_weeks", age_weeks)
+                    .order("recommended_age_weeks")
+                    .execute()
+                )
+                 rows = data.data
+                 
+        except Exception as e:
+            print(f"Action Vaccine DB Error: {e}")
+            dispatcher.utter_message(text=msg["db_error"])
+            return []
+
+        if not rows:
+            dispatcher.utter_message(text=msg["no_upcoming"])
+            return []
+
+        # 9. Build Response
+        reply = ""
+        # Limit to next 3 vaccines to avoid cluttering chat
+        for row in rows[:5]: 
+            due_weeks = row["recommended_age_weeks"]
+            due_date = dob_dt + timedelta(weeks=due_weeks)
+
+            reply += (
+                f"💉 *{row['vaccine_name']}* ({row['dose_name']})\n"
+                f"📅 {row['age_group']}\n"
+                f"📌 {due_date.strftime('%d %b %Y')}\n"
+                f"ℹ️ {row['description']}\n\n"
+            )
+
+        dispatcher.utter_message(text=reply)
         return []

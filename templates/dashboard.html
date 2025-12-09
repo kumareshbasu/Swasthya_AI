@@ -3,113 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swasthya AI Admin</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Swasthya AI Command Center</title>
     <style>
         :root {
-            --bg-color: #0d1117;
+            --bg-color: #0f1117;
             --card-bg: #161b22;
-            --text-color: #c9d1d9;
-            --accent: #238636;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-green: #238636;
+            --accent-red: #da3633;
             --border: #30363d;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
             margin: 0;
             padding: 20px;
         }
-        
-        /* Layout Grid */
-        .dashboard-grid {
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
         }
 
-        /* Header */
+        /* --- HEADER --- */
         .header {
             grid-column: span 12;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
             margin-bottom: 10px;
         }
-        .header h1 { margin: 0; font-size: 1.5rem; color: #fff; }
+        .header h1 { margin: 0; font-size: 1.8rem; }
         .refresh-btn {
             background-color: var(--card-bg);
+            color: var(--accent-green);
             border: 1px solid var(--border);
-            color: var(--accent);
             padding: 8px 16px;
-            text-decoration: none;
             border-radius: 6px;
+            text-decoration: none;
             font-weight: 600;
             transition: 0.2s;
         }
         .refresh-btn:hover { background-color: #21262d; }
 
-        /* KPI Cards */
+        /* --- KPI CARDS --- */
         .kpi-card {
             grid-column: span 4;
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 20px;
             text-align: center;
         }
-        .kpi-card h3 { margin: 0 0 10px; font-size: 0.9rem; color: #8b949e; text-transform: uppercase; }
-        .kpi-card p { margin: 0; font-size: 2.5rem; font-weight: 700; color: #fff; }
+        .kpi-card h3 { color: var(--text-muted); font-size: 0.9rem; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .kpi-card p { font-size: 2.5rem; font-weight: 700; margin: 10px 0 0 0; }
 
-        /* Chart Containers */
+        /* --- AI INSIGHT CARD (The "Magic" Section) --- */
+        .ai-card {
+            grid-column: span 12;
+            background: linear-gradient(145deg, #1f2937, #161b22);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-card h2 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .ai-status { font-size: 0.9rem; background: #238636; padding: 2px 8px; border-radius: 12px; }
+        #ai-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d1d5db;
+            white-space: pre-wrap; /* Keeps formatting */
+        }
+        .loading-pulse {
+            display: inline-block;
+            width: 10px; height: 10px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* --- CHART CONTAINERS --- */
         .chart-card {
+            grid-column: span 6;
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
-        
-        /* Interactive Chart spans full width */
-        .full-width { grid-column: span 12; height: 400px; }
-        
-        /* Image Charts span half width */
-        .half-width { grid-column: span 6; min-height: 400px; }
-
-        .chart-card h4 {
-            align-self: flex-start;
-            margin: 0 0 15px 0;
-            color: #fff;
-        }
-
-        /* The Embedded Images */
-        .generated-chart {
+        .chart-card h4 { align-self: flex-start; margin-top: 0; color: var(--text-muted); }
+        .chart-img {
             max-width: 100%;
-            max-height: 350px;
+            height: auto;
+            max-height: 450px;
             border-radius: 4px;
-            /* Optional: Invert colors if your matplotlib chart is white background */
-            /* filter: invert(0.9) hue-rotate(180deg); */ 
         }
 
-        /* Mobile Responsiveness */
+        /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
-            .kpi-card, .half-width { grid-column: span 12; }
+            .kpi-card { grid-column: span 12; }
+            .chart-card { grid-column: span 12; }
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-grid">
+    <div class="container">
         <div class="header">
-            <h1>🏥 Swasthya AI Dashboard</h1>
-            <a href="/dashboard" class="refresh-btn">🔄 Refresh Data</a>
+            <h1>🏥 Swasthya AI Command Center</h1>
+            <a href="/dashboard" class="refresh-btn">🔄 Refresh Dashboard</a>
         </div>
 
         <div class="kpi-card">
@@ -117,74 +132,64 @@
             <p>{{ total_users }}</p>
         </div>
         <div class="kpi-card">
-            <h3>Active (24h)</h3>
-            <p>{{ active_24h }}</p>
+            <h3>Active Today</h3>
+            <p style="color: var(--accent-green);">{{ active_24h }}</p>
         </div>
         <div class="kpi-card">
             <h3>Total Messages</h3>
             <p>{{ total_messages }}</p>
         </div>
 
-        <div class="chart-card full-width">
-            <h4>Live Search Trends (Interactive)</h4>
-            <div style="width: 100%; height: 100%; position: relative;">
-                <canvas id="jsChart"></canvas>
+        <div class="ai-card">
+            <h2>✨ Outbreak Analysis <span class="ai-status">Live</span></h2>
+            <div id="ai-loading">
+                <p>Analyzing recent health data for anomalies... <span class="loading-pulse"></span></p>
+            </div>
+            <div id="ai-content" style="display: none;">
+                <p id="ai-text"></p>
             </div>
         </div>
 
-        <div class="chart-card half-width">
-            <h4>Disease Distribution (Generated by Python)</h4>
-            <img src="/api/piechart?top=10" class="generated-chart" alt="Loading Pie Chart...">
+        <div class="chart-card">
+            <h4>Disease Distribution (Last 24h)</h4>
+            <img src="/api/piechart?t={{ total_messages }}" class="chart-img" alt="Loading Disease Pie Chart...">
         </div>
 
-        <div class="chart-card half-width">
-            <h4>Top Active Users (Generated by Python)</h4>
-            <img src="/api/city-bar?limit=10" class="generated-chart" alt="Loading Bar Chart...">
+        <div class="chart-card">
+            <h4>Affected Cities (Last 24h)</h4>
+            <img src="/api/city-bar?t={{ total_messages }}" class="chart-img" alt="Loading City Bar Graph...">
         </div>
     </div>
 
-    <script id="disease-data" type="application/json">{{ disease_data | tojson }}</script>
-
     <script>
-        // Data passed from Flask (parsed from embedded JSON)
-        const diseaseData = JSON.parse(document.getElementById('disease-data').textContent || '{}');
-        const labels = Object.keys(diseaseData);
-        const values = Object.values(diseaseData);
-
-        const ctx = document.getElementById('jsChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line', // Changed to Line for variety, or keep 'bar'
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Search Frequency',
-                    data: values,
-                    backgroundColor: 'rgba(35, 134, 54, 0.2)',
-                    borderColor: '#238636',
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { color: '#30363d' },
-                        ticks: { color: '#8b949e' } 
-                    },
-                    x: { 
-                        grid: { display: false },
-                        ticks: { color: '#8b949e' } 
-                    }
-                }
-            }
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchAIInsights();
         });
+
+        async function fetchAIInsights() {
+            try {
+                const response = await fetch('/api/ai-insight');
+                const data = await response.json();
+                
+                // Hide loading, show content
+                document.getElementById('ai-loading').style.display = 'none';
+                document.getElementById('ai-content').style.display = 'block';
+                
+                // Typewriter effect or just text
+                const textField = document.getElementById('ai-text');
+                textField.innerText = data.insight || "No insights available.";
+                
+                // Optional: Alert style if outbreak detected
+                if (data.insight.includes("Outbreak") || data.insight.includes("⚠️")) {
+                    textField.style.color = "#ff7b72"; // Red for danger
+                    textField.style.fontWeight = "bold";
+                }
+
+            } catch (error) {
+                console.error("Error fetching AI insight:", error);
+                document.getElementById('ai-loading').innerText = "⚠️ AI Analysis Failed to Load.";
+            }
+        }
     </script>
 
 </body>

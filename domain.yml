@@ -20,6 +20,9 @@ intents:
   - gibberish_query
   - check_disease
   - check_medicine
+  - vaccine_standard
+  - vaccine_child
+  - give_dob
 
 
 entities:
@@ -27,6 +30,7 @@ entities:
   - image_url
   - patient_details
   - medicine_name
+  - dob
 
 slots:
   lang:
@@ -57,6 +61,13 @@ slots:
       - type: from_entity
         entity: patient_details
   
+  dob:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: dob
+
   medicine_name:
     type: text
     mappings:
@@ -194,6 +205,8 @@ actions:
   - action_handle_gibberish
   - action_check_disease_gemini
   - action_check_medicine_gemini
+  - action_vaccine_standard
+  - action_vaccine_child
 
 session_config:
   session_expiration_time: 60
