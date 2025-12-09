@@ -256,18 +256,18 @@ Select Language / भाषा चुनें / ভাষা নির্বা
 """
 
 MULTILINGUAL_AI_CLOSING = {
-    'en': "This response is completed.\nSelect any one option:\n1. Do you want to ask anything more about something else?\n2. Would you like to go back to main menu?\n3. Get more detailed information about this.",
-    'hi': "उत्तर पूरा हो गया है।\nकृपया एक विकल्प चुनें:\n1. क्या आप इसके बारे में या किसी अन्य विषय पर और पूछना चाहते हैं?\n2. क्या आप मुख्य मेनू पर वापस जाना चाहते हैं?\n3. इस बारे में अधिक विस्तृत जानकारी प्राप्त करें।",
-    'bn': "উত্তর সম্পূর্ণ হয়েছে।\nএকটি বিকল্প নির্বাচন করুন:\n1. আপনি কি এ সম্পর্কে বা অন্য কিছু সম্পর্কে আরও জানতে চান?\n2. আপনি কি প্রধান মেনুতে ফিরে যেতে চান?\n3. এর সম্পর্কে আরও বিস্তারিত তথ্য পান।",
-    'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n1. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n2. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?\n3. ଏହା ବିଷୟରେ ଅଧିକ ବିସ୍ତୃତ ସୂଚନା ପାଇଁ।"
+    'en': "This response is completed.\nSelect any one option:\n1. Get more detailed information about this.\n2. Do you want to ask anything more about something else?\n3. Would you like to go back to main menu?",
+    'hi': "उत्तर पूरा हो गया है।\nकृपया एक विकल्प चुनें:\n1. इस बारे में अधिक विस्तृत जानकारी प्राप्त करें।\n2. क्या आप इसके बारे में या किसी अन्य विषय पर और पूछना चाहते हैं?\n3. क्या आप मुख्य मेनू पर वापस जाना चाहते हैं?",
+    'bn': "উত্তর সম্পূর্ণ হয়েছে।\nএকটি বিকল্প নির্বাচন করুন:\n3. এর সম্পর্কে আরও বিস্তারিত তথ্য পান।\n2. আপনি কি এ সম্পর্কে বা অন্য কিছু সম্পর্কে আরও জানতে চান?\n3. আপনি কি প্রধান মেনুতে ফিরে যেতে চান?",
+    'or': "ଉତ୍ତର ସମାପ୍ତ ହୋଇଛି।\nଦୟାକରି ଏକ ବିକଳ୍ପ ବାଛନ୍ତୁ:\n3. ଏହା ବିଷୟରେ ଅଧିକ ବିସ୍ତୃତ ସୂଚନା ପାଇଁ।\n2. ଆପଣ ଏହା ବିଷୟରେ କିମ୍ବା ଅନ୍ୟ କିଛି ବିଷୟରେ ଅଧିକ ପଚାରିବାକୁ ଚାହାନ୍ତି କି?\n3. ଆପଣ ମୁଖ୍ୟ ମେନୁକୁ ଫେରିବାକୁ ଚାହାନ୍ତି କି?"
 }
 
 # Vaccination Menu
 vacc_menu = {
-    "en": "Vaccination Menu:\n1. Standard Vaccination Schedule\n2. My Child’s Upcoming Vaccines\n3. Govt. Vaccination Campaigns (Coming Soon)\n(Type 'menu' to go back)",
-    "hi": "टीकाकरण मेनू:\n1. मानक टीकाकरण अनुसूची\n2. मेरे बच्चे के आने वाले टीके\n3. सरकारी टीकाकरण अभियान (जल्द आने वाला)\n('menu' टाइप करके वापस जाएँ)",
-    "bn": "টিকাদান মেনু:\n1. স্ট্যান্ডার্ড টিকাদান সূচি\n2. আমার শিশুর আগামী টিকা\n3. সরকারি টিকাদান অভিযান (শীঘ্রই)\n('menu' টাইপ করুন ফিরে যেতে)",
-    "or": "ଟୀକାକରଣ ମେନୁ:\n1. ସାଧାରଣ ଟୀକା ସୂଚୀ\n2. ମୋ ଶିଶୁଙ୍କ ଆସନ୍ତା ଟୀକାଗୁଡିକ\n3. ସରକାରୀ ଟୀକାକରଣ ଅଭିଯାନ (ଶୀଘ୍ର ଆସୁଛି)\n('menu' ଟାଇପ୍ କରନ୍ତୁ ଫେରିବା ପାଇଁ)"
+    "en": "Vaccination Menu:\n1. Standard Vaccination Schedule\n2. My Child’s Upcoming Vaccines\n3. Return to Main Menu",
+    "hi": "टीकाकरण मेनू:\n1. मानक टीकाकरण अनुसूची\n2. मेरे बच्चे के आने वाले टीके?\n3. मुख्य मेनू पर वापस जाएँ",
+    "bn": "টিকাদান মেনু:\n1. স্ট্যান্ডার্ড টিকাদান সূচি\n2. আমার শিশুর আগামী টিকা\n3. প্রধান মেনুতে ফিরে যান",
+    "or": "ଟୀକାକରଣ ମେନୁ:\n1. ସାଧାରଣ ଟୀକା ସୂଚୀ\n2. ମୋ ଶିଶୁଙ୍କ ଆସନ୍ତା ଟୀକାଗୁଡିକ\n3. ମୁଖ୍ୟ ମେନୁକୁ ଫେରନ୍ତୁ"
 }
 
 # Ask Date of Birth Prompt
@@ -279,12 +279,43 @@ askdob = {
 }
 
 # 
-coming = {
-    "en": "Govt. Vaccination Campaign info will be added soon. Please check later.",
-    "hi": "सरकारी टीकाकरण अभियान की जानकारी जल्द ही जोड़ी जाएगी।",
-    "bn": "সরকারি টিকাদান অভিযানের তথ্য শীঘ্রই যোগ করা হবে।",
-    "or": "ସରକାରୀ ଟୀକାକରଣ ଅଭିଯାନ ଶୀଘ୍ର ଯୋଡାଯିବ।"
+
+
+# Vaccination Closing Prompt
+MULTILINGUAL_VACC_CLOSING = {
+    'en': "Vaccination info completed.\nChoose an option:\n1. Ask details about a specific vaccine\n2. Return to Vaccination Menu",
+    
+    'hi': "टीकाकरण जानकारी पूरी हुई।\nकृपया एक विकल्प चुनें:\n1. किसी विशेष टीके के बारे में अधिक जानकारी\n2. टीकाकरण मेनू पर वापस जाएँ",
+    
+    'bn': "টিকাদানের তথ্য সম্পূর্ণ।\nএকটি বিকল্প নির্বাচন করুন:\n1. কোনও নির্দিষ্ট টিকা সম্পর্কে জানতে চান\n2. টিকাদান মেনুতে ফিরে যান",
+    
+    'or': "ଟୀକା ସୂଚନା ସମାପ୍ତ।\nଦୟାକରି ଏକ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ:\n1. ନିର୍ଦ୍ଦିଷ୍ଟ ଟୀକା ବିଷୟରେ ଅଧିକ ଜାଣନ୍ତୁ\n2. ଟୀକାକରଣ ମେନୁକୁ ଫେରନ୍ତୁ"
 }
+# Language equivalence mapping for DB matching
+LANG_EQUIVALENCE = {
+    "en": ["en", "english", "en-us", "eng"],
+    "hi": ["hi", "hindi", "hin", "hi-in"],
+    "bn": ["bn", "bengali", "ben", "bn-in"],
+    "or": ["or", "odia", "oriya", "ori", "or-in"]
+}
+
+MULTILINGUAL_MED_CLOSING = {
+    'en': "Medicine information completed.\nChoose one option:\n1. Ask details about another medicine\n2. Return to Medicine Menu",
+    
+    'hi': "दवा की जानकारी पूरी हुई।\nएक विकल्प चुनें:\n1. किसी और दवा के बारे में पूछें\n2. दवा मेनू पर वापस जाएँ",
+    
+    'bn': "ওষুধের তথ্য সম্পূর্ণ হয়েছে।\nএকটি বিকল্প বেছে নিন:\n1. অন্য কোনো ওষুধ সম্পর্কে জানতে চান\n2. ওষুধ মেনুতে ফিরে যান",
+    
+    'or': "ଔଷଧ ସୂଚନା ସମାପ୍ତ।\nଦୟାକରି ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ:\n1. ଅନ୍ୟ ଔଷଧ ବିଷୟରେ ପଚାରନ୍ତୁ\n2. ଔଷଧ ମେନୁକୁ ଫେରନ୍ତୁ"
+}
+
+med_menu = {
+    "en": "Medicine Menu:\n1. Search Medicine Information\n2. Return to Main Menu",
+    "hi": "दवा मेनू:\n1. दवा की जानकारी खोजें\n2. मुख्य मेनू पर वापस जाएँ",
+    "bn": "ওষুধ মেনু:\n1. ওষুধ সম্পর্কিত তথ্য খুঁজুন\n2. প্রধান মেনুতে ফিরে যান",
+    "or": "ଔଷଧ ମେନୁ:\n1. ଔଷଧ ସୂଚନା ଖୋଜନ୍ତୁ\n2. ମୁଖ୍ୟ ମେନୁକୁ ଫେରନ୍ତୁ"
+}
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -865,11 +896,12 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
         if current_state == 'ask_child_dob':
             dob = incoming_msg.strip()
 
+            # Validate date format
             if not re.match(r'^\d{4}-\d{2}-\d{2}$', dob):
                 send_whatsapp_message(from_number, askdob.get(current_lang) + "\nInvalid DOB format. Use YYYY-MM-DD.")
                 return
 
-            # 1) Set language slot
+            # Set language into Rasa
             lang_set_payload = '/set_language'
             requests.post(
                 RASA_WEBHOOK_URL,
@@ -880,55 +912,72 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 }
             )
 
-            # 2) Now call vaccine_child
+            # Trigger Rasa Action for child vaccination
             rasa_payload = f'/vaccine_child{{"dob":"{dob}"}}'
 
             try:
                 r = requests.post(
                     RASA_WEBHOOK_URL,
-                    json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}},
+                    json={
+                        "sender": from_number,
+                        "message": rasa_payload,
+                        "metadata": {"lang": current_lang}
+                    },
                     timeout=300
                 )
 
+                # Send all Rasa messages
                 for bot_msg in r.json():
                     if bot_msg.get("text"):
                         send_whatsapp_message(from_number, bot_msg["text"])
 
-                closing = MULTILINGUAL_AI_CLOSING.get(current_lang) or MULTILINGUAL_AI_CLOSING['en']
-                send_whatsapp_message(from_number, closing)
+                # ⬇️ NEW → Show vaccination closing prompt (Option 1 & 2 only)
+                send_whatsapp_message(from_number, MULTILINGUAL_VACC_CLOSING.get(current_lang))
 
-                user_states[from_number]['state'] = 'awaiting_ai_choice'
+                # Move to vaccination choice state
+                user_states[from_number]['state'] = 'awaiting_vacc_choice'
+
             except Exception as e:
                 logger.error(f"Error calling Rasa for vaccine_child: {e}", exc_info=True)
                 send_whatsapp_message(from_number, "Error. Try again.")
             return
 
+        # --- MEDICINE MENU LOGIC ---
+        if current_state == 'medicine_menu':
+
+            # Option 1 → Ask for medicine name
+            if normalized_msg == '1':
+                user_states[from_number]['state'] = 'ask_medicine_name'
+                send_unified_message(from_number, get_localized_message(from_number, "ask_medicine_name"), channel=channel)
+                return
+
+            # Option 2 → Return to Main Menu
+            if normalized_msg == '2':
+                user_states[from_number]['state'] = 'main_menu'
+                send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang), channel=channel)
+                return
+
+            send_unified_message(from_number, "Invalid option.\n" + med_menu.get(current_lang), channel=channel)
+            return
                     
         # --- VACCINATION MENU LOGIC ---
         if current_state == 'vaccination_menu':
-            # Option 1 — Standard Schedule (send intent message to Rasa)
+
+            # Option 1 — Standard Vaccination Schedule
             if normalized_msg == '1':
-                # 1) Set language slot first
+                # set language
                 lang_set_payload = '/set_language'
                 requests.post(
                     RASA_WEBHOOK_URL,
-                    json={
-                        "sender": from_number,
-                        "message": lang_set_payload,
-                        "metadata": {"lang": current_lang}
-                    }
+                    json={"sender": from_number, "message": lang_set_payload, "metadata": {"lang": current_lang}}
                 )
 
-                # 2) Now call vaccine_standard
+                # call standard schedule
                 rasa_payload = '/vaccine_standard'
                 try:
                     r = requests.post(
                         RASA_WEBHOOK_URL,
-                        json={
-                            "sender": from_number,
-                            "message": rasa_payload,
-                            "metadata": {"lang": current_lang}
-                        },
+                        json={"sender": from_number, "message": rasa_payload, "metadata": {"lang": current_lang}},
                         timeout=300
                     )
 
@@ -936,29 +985,32 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                         if bot_msg.get("text"):
                             send_whatsapp_message(from_number, bot_msg["text"])
 
-                    closing = MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en'])
-                    send_whatsapp_message(from_number, closing)
-                    user_states[from_number]['state'] = 'awaiting_ai_choice'
+                    # NEW → Show Vaccination Closing Menu (not AI closing)
+                    send_whatsapp_message(from_number, MULTILINGUAL_VACC_CLOSING.get(current_lang))
+                    user_states[from_number]['state'] = 'awaiting_vacc_choice'
                 except Exception as e:
-                    logger.error(f"Error calling Rasa for vaccine_standard: {e}", exc_info=True)
-                    send_whatsapp_message(from_number, get_localized_message(from_number, "rasa_connection_error"))
+                    logger.error(f"Error calling Rasa for vaccine_standard: {e}")
+                    send_whatsapp_message(from_number, "Error fetching vaccine info.")
                 return
 
 
-
-
-            # Option 2 — Ask DOB
+            # Option 2 — Child DOB Based Vaccination
             if normalized_msg == '2':
                 user_states[from_number]['state'] = 'ask_child_dob'
-
                 send_whatsapp_message(from_number, askdob.get(current_lang))
                 return
 
-            # Option 3 — Coming Soon
+
+            # NEW Option 3 — Return to Main Menu
             if normalized_msg == '3':
-                            
-                send_whatsapp_message(from_number, coming.get(current_lang))
+                user_states[from_number]['state'] = 'main_menu'
+                send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang), channel=channel)
                 return
+
+
+            # Invalid Input
+            send_unified_message(from_number, "Invalid option.\n" + vacc_menu.get(current_lang), channel=channel)
+            return
 
 
         # --- MAIN MENU ---
@@ -975,12 +1027,10 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 user_states[from_number]['state'] = 'ask_age'
                 user_states[from_number]['data'] = {}
                 send_unified_message(from_number, get_localized_message(from_number, "ask_age"), channel=channel)
-            elif normalized_msg == '4': # Medicine Info
-                user_states[from_number]['state'] = 'ask_medicine_name'
-                send_unified_message(from_number, get_localized_message(from_number, "ask_medicine_name"), channel=channel)
-            elif normalized_msg == '5': # Center
-                user_states[from_number]['state'] = 'ask_pincode'
-                send_unified_message(from_number, "Please enter your pincode:", channel=channel)
+            elif normalized_msg == '4':  # Medicine Info
+                user_states[from_number]['state'] = 'medicine_menu'
+                send_unified_message(from_number, med_menu.get(current_lang), channel=channel)
+
             elif normalized_msg == '6': # About
                 send_unified_message(from_number, get_localized_message(from_number, "about_us_selected"), channel=channel)
             elif normalized_msg == '7': # Lang
@@ -1136,31 +1186,57 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
             return
 
         # --- MEDICINE INFO ---
+        # --- MEDICINE INFO BLOCK ---
         if current_state == 'ask_medicine_name':
-            medicine_name = incoming_msg
+            medicine_name = incoming_msg.strip()
 
             send_unified_message(from_number, get_localized_message(from_number, "processing_medicine"), channel=channel)
-            
+
             rasa_payload = f'/check_medicine{{"medicine_name": "{medicine_name}"}}'
             try:
                 bot_msgs = call_rasa(rasa_payload, from_number, lang_code=current_lang)
                 for txt in bot_msgs:
                     send_unified_message(from_number, txt, channel=channel)
-                
-                send_unified_message(from_number, MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en']), channel=channel)
-                user_states[from_number]['state'] = 'awaiting_ai_choice'
-            except: pass
+
+                # NEW → Show Medicine Closing Menu
+                send_unified_message(from_number, MULTILINGUAL_MED_CLOSING.get(current_lang), channel=channel)
+
+                # Switch to medicine-choice state
+                user_states[from_number]['state'] = 'awaiting_med_choice'
+
+            except:
+                send_unified_message(from_number, "Error occurred. Try again.", channel=channel)
+            return
+
+
+        # --- MEDICINE CLOSING OPTIONS ---
+        if current_state == 'awaiting_med_choice':
+
+            # Option 1 → Ask about another medicine
+            if normalized_msg == '1':
+                user_states[from_number]['state'] = 'ask_medicine_name'
+                send_unified_message(from_number, get_localized_message(from_number, "ask_medicine_name"), channel=channel)
+                return
+
+            # Option 2 → Return to Medicine Menu
+            if normalized_msg == '2':
+                user_states[from_number]['state'] = 'medicine_menu'
+                send_unified_message(from_number, med_menu.get(current_lang, med_menu['en']), channel=channel)
+                return
+
+            # Handle invalid input
+            send_unified_message(from_number, "Invalid option.\n" + MULTILINGUAL_MED_CLOSING.get(current_lang), channel=channel)
             return
 
         # --- AI CHOICE ---
         if current_state == 'awaiting_ai_choice':
-            if normalized_msg == '1':
+            if normalized_msg == '2':
                 user_states[from_number]['state'] = 'in_rasa_conversation'
                 send_unified_message(from_number, get_localized_message(from_number, "entering_ai_assistant"), channel=channel)
-            elif normalized_msg == '2':
+            elif normalized_msg == '3':
                 user_states[from_number]['state'] = 'main_menu'
                 send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
-            elif normalized_msg == '3': # Detailed Info Logic
+            elif normalized_msg == '1': # Detailed Info Logic
                 send_unified_message(from_number, "Generating detailed explanation...", channel=channel)
                 history = get_last_20_messages(from_number)
                 last_query = "Explain details."
@@ -1176,13 +1252,160 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                     send_unified_message(from_number, MULTILINGUAL_AI_CLOSING.get(current_lang, MULTILINGUAL_AI_CLOSING['en']), channel=channel)
                 except: pass
             return
+        
+        # --- VACCINE SPECIFIC CHOICE ---
+        if current_state == 'awaiting_vacc_choice':
+    
+            if normalized_msg == '1':   # Ask details about specific vaccine
+                user_states[from_number]['state'] = 'ask_specific_vaccine'
+                send_unified_message(from_number, "Please type the vaccine name you want details about:", channel=channel)
+                return
+
+            if normalized_msg == '2':   # Return to vaccination menu
+                user_states[from_number]['state'] = 'vaccination_menu'
+                send_whatsapp_message(from_number, vacc_menu.get(current_lang, vacc_menu['en']))
+                return
+
+            
+        # --- HANDLE SPECIFIC VACCINE DETAIL REQUEST ---
+        if current_state == 'ask_specific_vaccine':
+            vaccine_name = incoming_msg.strip()
+
+            # Query Supabase for vaccine details in user language
+            try:
+                result = (
+                    supabase.table("vaccine_schedule")
+                    .select("*")
+                    .ilike("vaccine_name", f"%{vaccine_name}%")
+                    .eq("language", current_lang)
+                    .execute()
+                )
+
+                rows = result.data
+
+                # If no result found in user's language → fallback to English
+                if not rows:
+                    result = (
+                        supabase.table("vaccine_schedule")
+                        .select("*")
+                        .ilike("vaccine_name", f"%{vaccine_name}%")
+                        .eq("language", "en")
+                        .execute()
+                    )
+                    rows = result.data
+
+                if not rows:
+                    send_unified_message(from_number, "No such vaccine found. Try another name.", channel=channel)
+                    send_unified_message(from_number, MULTILINGUAL_VACC_CLOSING.get(current_lang), channel=channel)
+                    user_states[from_number]['state'] = 'awaiting_vacc_choice'
+                    return
+
+                reply = ""
+                for row in rows:
+                    reply += (
+                        f"💉 *{row['vaccine_name']}* ({row['dose_name']})\n"
+                        f"{row['details']}\n\n"
+                    )
+
+                send_unified_message(from_number, reply, channel=channel)
+
+            except Exception as e:
+                print(f"[VACCINE DETAIL ERROR]: {e}")
+                send_unified_message(from_number, "Database error. Try again later.", channel=channel)
+
+            # Return to vaccination closing menu
+            send_unified_message(from_number, MULTILINGUAL_VACC_CLOSING.get(current_lang), channel=channel)
+            user_states[from_number]['state'] = 'awaiting_vacc_choice'
+            return
+        
+        
+        # ================================
+        # SPECIFIC VACCINE DETAILS (MULTILINGUAL)
+        # ================================
+
+        if current_state == 'ask_specific_vaccine':
+            vaccine_name = incoming_msg.strip()
+
+            # Build language list for DB query
+            lang_list = LANG_EQUIVALENCE.get(current_lang, ["en"])
+
+            try:
+                # 1️⃣ Try matching vaccine in user's language (multiple variants supported)
+                result = (
+                    supabase.table("vaccine_schedule")
+                    .select("*")
+                    .ilike("vaccine_name", f"%{vaccine_name}%")
+                    .in_("language", lang_list)
+                    .execute()
+                )
+                rows = result.data
+
+                # 2️⃣ If not found → fallback to English
+                if not rows:
+                    result = (
+                        supabase.table("vaccine_schedule")
+                        .select("*")
+                        .ilike("vaccine_name", f"%{vaccine_name}%")
+                        .in_("language", ["en", "english"])
+                        .execute()
+                    )
+                    rows = result.data
+
+                # 3️⃣ If still nothing found
+                if not rows:
+                    send_unified_message(
+                        from_number,
+                        "No such vaccine found. Try another vaccine name.",
+                        channel=channel
+                    )
+                    send_unified_message(
+                        from_number,
+                        MULTILINGUAL_VACC_CLOSING.get(current_lang),
+                        channel=channel
+                    )
+                    user_states[from_number]['state'] = 'awaiting_vacc_choice'
+                    return
+
+                # 4️⃣ Build reply including DETAILS column (not description)
+                reply = ""
+                for row in rows:
+                    reply += (
+                        f"💉 *{row['vaccine_name']}* ({row['dose_name']})\n"
+                        f"{row['details']}\n\n"
+                    )
+
+                send_unified_message(from_number, reply, channel=channel)
+
+            except Exception as e:
+                print(f"[VACCINE DETAIL ERROR]: {e}")
+                send_unified_message(
+                    from_number,
+                    "Database error while fetching vaccine details.",
+                    channel=channel
+                )
+
+            # 5️⃣ Show the vaccination closing menu (options 1 & 2 only)
+            send_unified_message(
+                from_number,
+                MULTILINGUAL_VACC_CLOSING.get(current_lang),
+                channel=channel
+            )
+
+            # Go back to vaccine closing state
+            user_states[from_number]['state'] = 'awaiting_vacc_choice'
+            return
+
+
 
         # --- GENERAL CHAT (RASA) ---
         if current_state == 'in_rasa_conversation':
-            if normalized_msg in MENU_RETURN_TRIGGER or normalized_msg in MENU_ENTRY_TRIGGER:
-                user_states[from_number]['state'] = 'main_menu'
-                send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang, MULTILINGUAL_MENUS['en']), channel=channel)
-                return
+            # prevent 1/2/3 from triggering menu return
+            if normalized_msg not in ['1', '2', '3']:
+                if normalized_msg in MENU_RETURN_TRIGGER or normalized_msg in MENU_ENTRY_TRIGGER:
+                    user_states[from_number]['state'] = 'main_menu'
+                    send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang), channel=channel)
+                    return
+
 
             # 2. LOGGING LOGIC (New)
             # Only log if it looks like a real query (longer than 3 chars)

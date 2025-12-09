@@ -5,3 +5,8 @@ actions/__pycache__/
 .rasa/
 
 .env
+.vscode
+sih_ai_venv
+data_seed_index.doc
+
+db.doc
