@@ -57,7 +57,7 @@ class ActionAskGemini(Action):
         if is_detailed:
             length_instruction = "Provide a VERY DETAILED, comprehensive explanation with examples."
         else:
-            length_instruction = "Keep the response SHORT, CONCISE, and under 150-200 words."
+            length_instruction = "Keep the response SHORT, CONCISE, and under 150-200 words. Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols. You can use simple paragraphs or numerical points."
 
         # 2. EXTRACT INTENT AND ENTITIES (From Code 1)
         intent = tracker.latest_message['intent'].get('name')
@@ -85,12 +85,11 @@ class ActionAskGemini(Action):
         # 4. CONSTRUCT BASE PROMPT (From Code 1)
         base_prompt = ""
         if intent == "ask_symptoms":
-            base_prompt = f"As a public health expert, explain the common symptoms of '{disease}' in simple terms for a rural audience."
+            base_prompt = f"As a public health expert, explain the common symptoms of '{disease}' in simple terms for a rural audience. Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
         elif intent == "ask_preventive_measures":
-            base_prompt = f"As a public health expert, describe simple, actionable preventive measures for '{disease}' for a rural audience."
+            base_prompt = f"As a public health expert, describe simple, actionable preventive measures for '{disease}' for a rural audience. Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
         else: 
-            base_prompt = f"As a public health expert, provide an overview of '{disease}' for a rural audience."
-
+            base_prompt = f"As a public health expert, provide an overview of '{disease}' for a rural audience. Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
         # 5. LANGUAGE MAPPING (From Code 1)
         lang_names = {
             'en': 'English',
@@ -181,13 +180,13 @@ class ActionAnalyzeImageGemini(Action):
 
             # 4. Construct Prompt
             if user_lang == 'hi':
-                system_prompt = "आप एक सहायक चिकित्सा सहायक हैं। इस छवि का विश्लेषण करें और सुझाव दें। हमेशा सलाह दें कि 'कृपया डॉक्टर से मिलें'।"
+                system_prompt = "आप एक सहायक चिकित्सा सहायक हैं। इस छवि का विश्लेषण करें और सुझाव दें। हमेशा सलाह दें कि 'कृपया डॉक्टर से मिलें'। इस उत्तर में कोई तारांकन, हाइफ़न, बुलेट पॉइंट, मार्कडाउन, सूची, इमोजी, या कोई फॉर्मेटिंग प्रतीक शामिल न करें।"
             elif user_lang == 'bn':
-                system_prompt = "আপনি একজন সহায়ক চিকিৎসা সহকারী। এই চিত্রটি বিশ্লেষণ করুন এবং পরামর্শ দিন। সর্বদা পরামর্শ দিন 'দয়া করে একজন ডাক্তারের সাথে দেখা করুন'।"
+                system_prompt = "আপনি একজন সহায়ক চিকিৎসা সহকারী। এই চিত্রটি বিশ্লেষণ করুন এবং পরামর্শ দিন। সর্বদা পরামর্শ দিন 'দয়া করে একজন ডাক্তারের সাথে দেখা করুন'। এই উত্তরে কোনও তারকা, হাইফেন, বুলেট পয়েন্ট, মার্কডাউন, তালিকা, ইমোজি, বা কোনও ফরম্যাটিং চিহ্ন ব্যবহার করবেন না।"
             elif user_lang == 'or':
-                system_prompt = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ ଅଟନ୍ତି। ଏହି ଚିତ୍ରକୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ ଏବଂ ପରାମର୍ଶ ଦିଅନ୍ତୁ। ସର୍ବଦା ପରାମର୍ଶ ଦିଅନ୍ତୁ 'ଦୟାକରି ଡାକ୍ତରଙ୍କୁ ଦେଖା କରନ୍ତୁ'।"
+                system_prompt = "ଆପଣ ଜଣେ ସହାୟକ ଚିକିତ୍ସା ସହାୟକ ଅଟନ୍ତି। ଏହି ଚିତ୍ରକୁ ବିଶ୍ଳେଷଣ କରନ୍ତୁ ଏବଂ ପରାମର୍ଶ ଦିଅନ୍ତୁ। ସର୍ବଦା ପରାମର୍ଶ ଦିଅନ୍ତୁ 'ଦୟାକରି ଡାକ୍ତରଙ୍କୁ ଦେଖା କରନ୍ତୁ'। ଏହି ଉତ୍ତରରେ କୌଣସି ତାରା, ହାଇଫେନ୍, ବୁଲେଟ୍ ପଏଣ୍ଟ, ମାର୍କଡାଉନ୍, ତାଲିକା, ଇମୋଜି, କିମ୍ବା କୌଣସି ଫର୍ମାଟିଂ ସଙ୍କେତ ବ୍ୟବହାର କରିବେ ନାହିଁ।"
             else:
-                system_prompt = "You are a helpful medical assistant. Analyze this image (wound/symptom) and suggest what it might be and home remedies. Add disclaimer: 'Consult a doctor'."
+                system_prompt = "You are a helpful medical assistant. Analyze this image (wound/symptom) and suggest what it might be and home remedies. Add disclaimer: 'Consult a doctor'. Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
 
             # 5. Generate
             logger.info("DEBUG ACTIONS: Sending image to Gemini...")
@@ -288,7 +287,9 @@ class ActionCheckDiseaseGemini(Action):
         2. Suggest immediate home care steps.
         3. Recommend which specialist (e.g., Cardiologist, Dermatologist) to visit.
 
-        MANDATORY DISCLAIMER: "This is AI advice, NOT a medical diagnosis. Please consult a doctor."
+        MANDATORY DISCLAIMER: "This is AI advice, NOT a medical diagnosis. Please consult a doctor.
+        
+        Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
         
         {lang_instruction}
         """
@@ -363,7 +364,9 @@ class ActionCheckMedicineGemini(Action):
         3. Dosage/Usage (General instructions)
         4. Warnings (Who should avoid it?)
 
-        MANDATORY DISCLAIMER: "This is AI-generated information. Consult a doctor before taking any medication."
+        MANDATORY DISCLAIMER: "This is AI-generated information. Consult a doctor before taking any medication.
+        
+        Do not use asterisks, hyphens, bullet points, markdown, lists, emojis, or any formatting symbols."
         
         {lang_instruction}
         """

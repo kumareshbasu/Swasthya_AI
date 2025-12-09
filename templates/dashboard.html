@@ -141,7 +141,14 @@
         </div>
 
         <div class="ai-card">
-            <h2>✨ Outbreak Analysis <span class="ai-status">Live</span></h2>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h2>✨ AI Outbreak Analysis <span class="ai-status">Live</span></h2>
+                
+                <button id="broadcastBtn" onclick="broadcastAlert()" style="display:none; background: #da3633; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                    📢 Broadcast Alert
+                </button>
+            </div>
+
             <div id="ai-loading">
                 <p>Analyzing recent health data for anomalies... <span class="loading-pulse"></span></p>
             </div>
@@ -188,6 +195,50 @@
             } catch (error) {
                 console.error("Error fetching AI insight:", error);
                 document.getElementById('ai-loading').innerText = "⚠️ AI Analysis Failed to Load.";
+            }
+        }
+
+        async function fetchAIInsights() {
+            try {
+                const response = await fetch('/api/ai-insight');
+                const data = await response.json();
+                
+                document.getElementById('ai-loading').style.display = 'none';
+                document.getElementById('ai-content').style.display = 'block';
+                
+                const textField = document.getElementById('ai-text');
+                textField.innerText = data.insight || "No insights available.";
+                
+                // Show Broadcast Button ONLY if there is an outbreak
+                if (data.insight.includes("Outbreak") || data.insight.includes("⚠️")) {
+                    textField.style.color = "#ff7b72"; 
+                    textField.style.fontWeight = "bold";
+                    document.getElementById('broadcastBtn').style.display = 'block'; // Show button
+                } else {
+                    document.getElementById('broadcastBtn').style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        async function broadcastAlert() {
+            if(!confirm("⚠️ Are you sure you want to send this ALERT to ALL users?")) return;
+            
+            const btn = document.getElementById('broadcastBtn');
+            btn.disabled = true;
+            btn.innerText = "Sending...";
+            
+            try {
+                const response = await fetch('/api/broadcast-alert', { method: 'POST' });
+                const res = await response.json();
+                alert(res.message);
+                btn.innerText = "📢 Broadcast Sent";
+            } catch (error) {
+                alert("Failed to send broadcast.");
+                btn.disabled = false;
+                btn.innerText = "📢 Broadcast Alert";
             }
         }
     </script>

@@ -1,4 +1,5 @@
 # app.py
+import tempfile
 from flask import Flask, request, jsonify, render_template, Response
 import requests
 import os
@@ -137,19 +138,6 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "rasa_no_response": "No response.",
         "chat_ended_prompt_restart": "Chat ended.",
         
-        # --- Disease Checker Prompts ---
-        "ask_age": "Step 1/10: Please enter Age (e.g., 25).",
-        "ask_weight": "Step 2/10: Enter Weight (e.g., 60kg).",
-        "ask_gender": "Step 3/10: Enter Gender (Male/Female).",
-        "ask_reports": "Step 4/10: Recent Reports? (Type 'None' if not).",
-        "ask_eating": "Step 5/10: Describe diet.",
-        "ask_meds": "Step 6/10: Current medications? (Type 'None' if not).",
-        "ask_habits": "Step 7/10: Habits like smoking/alcohol? (Type 'None' if not).",
-        "ask_disability": "Step 8/10: Disabilities? (Type 'None' if not).",
-        "ask_history": "Step 9/10: Family History?",
-        "ask_current_symptoms": "Step 10/10: Describe current SYMPTOMS:",
-        "processing_diagnosis": "Analyzing symptoms... Please wait.",
-        
         # --- Medicine Info Prompt (NEW) ---
         "ask_medicine_name": "Please enter the NAME of the medicine (e.g., Paracetamol, Amoxicillin):",
         "processing_medicine": "Fetching medicine details... Please wait."
@@ -166,19 +154,6 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "अमान्य विकल्प।",
         "rasa_no_response": "कोई उत्तर नहीं।",
         "chat_ended_prompt_restart": "चैट समाप्त।",
-        
-        # --- Disease Checker Prompts ---
-        "ask_age": "चरण 1/10: कृपया आयु दर्ज करें (जैसे, 25)।",
-        "ask_weight": "चरण 2/10: वजन दर्ज करें (जैसे, 60 किग्रा)।",
-        "ask_gender": "चरण 3/10: लिंग दर्ज करें (पुरुष/महिला)।",
-        "ask_reports": "चरण 4/10: हाल की रिपोर्ट? (यदि नहीं, तो 'कोई नहीं' टाइप करें)।",
-        "ask_eating": "चरण 5/10: आहार का वर्णन करें।",
-        "ask_meds": "चरण 6/10: वर्तमान दवाएं? (यदि नहीं, तो 'कोई नहीं' टाइप करें)।",
-        "ask_habits": "चरण 7/10: धूम्रपान/शराब जैसी आदतें? (यदि नहीं, तो 'कोई नहीं' टाइप करें)।",
-        "ask_disability": "चरण 8/10: विकलांगताएं? (यदि नहीं, तो 'कोई नहीं' टाइप करें)।",
-        "ask_history": "चरण 9/10: पारिवारिक इतिहास?",
-        "ask_current_symptoms": "चरण 10/10: वर्तमान लक्षणों का वर्णन करें:",
-        "processing_diagnosis": "लक्षणों का विश्लेषण किया जा रहा है... कृपया प्रतीक्षा करें।",
 
         # --- Medicine Info Prompt (NEW) ---
         "ask_medicine_name": "कृपया दवा का नाम दर्ज करें (जैसे, पैरासिटामोल, एमोक्सिसिलिन):",
@@ -197,19 +172,6 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "rasa_no_response": "কোনো উত্তর নেই।",
         "chat_ended_prompt_restart": "চ্যাট শেষ।",
 
-        # --- Disease Checker Prompts ---
-        "ask_age": "ধাপ 1/10: দয়া করে বয়স লিখুন (যেমন, 25)।",
-        "ask_weight": "ধাপ 2/10: ওজন লিখুন (যেমন, 60 কেজি)।",
-        "ask_gender": "ধাপ 3/10: লিঙ্গ লিখুন (পুরুষ/মহিলা)।",
-        "ask_reports": "ধাপ 4/10: সাম্প্রতিক রিপোর্ট? (যদি না থাকে, 'কোনো নেই' টাইপ করুন)।",
-        "ask_eating": "ধাপ 5/10: খাদ্য বর্ণনা করুন।",
-        "ask_meds": "ধাপ 6/10: বর্তমান ওষুধ? (যদি না থাকে, 'কোনো নেই' টাইপ করুন)।",
-        "ask_habits": "ধাপ 7/10: ধূমপান/মদ্যপান এর মতো অভ্যাস? (যদি না থাকে, 'কোনো নেই' টাইপ করুন)।",
-        "ask_disability": "ধাপ 8/10: প্রতিবন্ধকতা? (যদি না থাকে, 'কোনো নেই' টাইপ করুন)।",
-        "ask_history": "ধাপ 9/10: পারিবারিক ইতিহাস?",
-        "ask_current_symptoms": "ধাপ 10/10: বর্তমান লক্ষণগুলি বর্ণনা করুন:",
-        "processing_diagnosis": "লক্ষণ বিশ্লেষণ করা হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।",
-
         # --- Medicine Info Prompt (NEW) ---
         "ask_medicine_name": "অনুগ্রহ করে ওষুধের নাম লিখুন (যেমন, প্যারাসিটামল, অ্যামোক্সিসিলিন):",
         "processing_medicine": "ওষুধের বিবরণ পাওয়া যাচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।"
@@ -227,19 +189,6 @@ MULTILINGUAL_STATIC_MESSAGES = {
         "invalid_option": "ଅବୈଧ ବିକଳ୍ପ।",
         "rasa_no_response": "କୌଣସି ପ୍ରତିକ୍ରିୟା ନାହିଁ।",
         "chat_ended_prompt_restart": "ଚାଟ୍ ସମାପ୍ତ।",
-
-        # --- Disease Checker Prompts ---
-        "ask_age": "ପଦକ୍ଷେପ 1/10: ଦୟାକରି ବୟସ୍ ଦାଖଲ କରନ୍ତୁ (ଉଦାହରଣ ସ୍ୱରୂପ, 25)।",
-        "ask_weight": "ପଦକ୍ଷେପ 2/10: ଓଜନ ଦାଖଲ କରନ୍ତୁ (ଉଦାହରଣ ସ୍ୱରୂପ, 60 କିଲୋଗ୍ରାମ୍)।",
-        "ask_gender": "ପଦକ୍ଷେପ 3/10: ଲିଙ୍ଗ ଦାଖଲ କରନ୍ତୁ (ପୁରୁଷ/ମହିଳା)।",
-        "ask_reports": "ପଦକ୍ଷେପ 4/10: ସাম্প୍ରତିକ ରିପୋର୍ଟ? (ନଥିଲେ, 'କିଛି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
-        "ask_eating": "ପଦକ୍ଷେପ 5/10: ଖାଦ୍ୟ ବର୍ଣ୍ଣନା କରନ୍ତୁ।",
-        "ask_meds": "ପଦକ୍ଷେପ 6/10: ବର୍ତ୍ତମାନ ଔଷଧ? (ନଥିଲେ, 'କିଛି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
-        "ask_habits": "ପଦକ୍ଷେପ 7/10: ଧୁମପାନ/ମଦ୍ୟପାନ ଭଳି ଅଭ୍ୟାସ? (ନଥିଲେ, 'କିଛି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
-        "ask_disability": "ପଦକ୍ଷେପ 8/10: ଅସମର୍ଥତା? (ନଥିଲେ, 'କିଛି ନାହିଁ' ଟାଇପ୍ କରନ୍ତୁ)।",
-        "ask_history": "ପଦକ୍ଷେପ 9/10: ପରିବାର ଇତିହାସ?",
-        "ask_current_symptoms": "ପଦକ୍ଷେପ 10/10: ବର୍ତ୍ତମାନର ଲକ୍ଷଣଗୁଡ଼ିକୁ ବର୍ଣ୍ଣନା କରନ୍ତୁ:",
-        "processing_diagnosis": "ଲକ୍ଷଣଗୁଡ଼ିକୁ ବିଶ୍ଳେଷଣ କରାଯାଉଛି... ଦୟାକରି ପ୍ରତୀକ୍ଷା କରନ୍ତୁ।",
 
         # --- Medicine Info Prompt (NEW) ---
         "ask_medicine_name": "ଦୟାକରି ଔଷଧର ନାମ ଦାଖଲ କରନ୍ତୁ (ଉଦାହରଣ ସ୍ୱରୂପ, ପ୍ୟାରାସିଟାମଲ୍, ଏମୋକ୍ସିସିଲିନ୍):",
@@ -278,9 +227,6 @@ askdob = {
     "or": "ଶିଶୁର ଜନ୍ମତାରିଖ YYYY-MM-DD ରେ ଲେଖନ୍ତୁ:"
 }
 
-# 
-
-
 # Vaccination Closing Prompt
 MULTILINGUAL_VACC_CLOSING = {
     'en': "Vaccination info completed.\nChoose an option:\n1. Ask details about a specific vaccine\n2. Return to Vaccination Menu",
@@ -315,7 +261,6 @@ med_menu = {
     "bn": "ওষুধ মেনু:\n1. ওষুধ সম্পর্কিত তথ্য খুঁজুন\n2. প্রধান মেনুতে ফিরে যান",
     "or": "ଔଷଧ ମେନୁ:\n1. ଔଷଧ ସୂଚନା ଖୋଜନ୍ତୁ\n2. ମୁଖ୍ୟ ମେନୁକୁ ଫେରନ୍ତୁ"
 }
-
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -434,15 +379,18 @@ def convert_to_wav(input_path):
 def text_to_speech_gtts_to_ogg(text, lang_code):
     try:
         gtts_lang = LANG_TO_GTTS.get(lang_code, "en")
-        mp3_path = os.path.join("/tmp", f"tts_{int(datetime.now(timezone.utc).timestamp())}.mp3")
+        # Use tempfile directory for cross-platform compatibility
+        mp3_path = os.path.join(tempfile.gettempdir(), f"tts_{int(datetime.now(timezone.utc).timestamp())}.mp3")
         tts = gTTS(text=text, lang=gtts_lang)
         tts.save(mp3_path)
 
-        # convert mp3 -> ogg (opus) for WhatsApp voice note
         ogg_path = mp3_path.replace(".mp3", ".ogg")
+
+        # FIX: Just use 'ffmpeg' command, assuming it is installed via brew
+        # If not in path, use full path like '/usr/local/bin/ffmpeg' or '/opt/homebrew/bin/ffmpeg'
         subprocess.run(["ffmpeg", "-y", "-i", mp3_path, "-c:a", "libopus", "-b:a", "64k", ogg_path],
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        # cleanup mp3 (optional)
+
         try:
             os.remove(mp3_path)
         except:
@@ -459,14 +407,20 @@ def upload_media_and_send_audio(to_number, file_path):
     
     try:
         # 1. Upload Media
-        # We use a simpler method that lets requests handle the multipart form data correctly.
         with open(file_path, "rb") as f:
+            # FIX: Explicitly define MIME type as audio/ogg
             files = {
                 'file': (os.path.basename(file_path), f, 'audio/ogg'),
-                'messaging_product': (None, 'whatsapp') # This part is crucial
+                'messaging_product': (None, 'whatsapp') 
             }
+            # Remove 'Content-Type' header if it exists, let requests handle multipart boundary
             r = requests.post(url, headers=headers, files=files)
-            r.raise_for_status() # Raise an exception for 4xx/5xx errors
+            
+            # Log raw response for debugging if it fails
+            if r.status_code != 200:
+                logger.error(f"Media Upload Failed: {r.status_code} - {r.text}")
+                return False
+                
             media_id = r.json().get("id")
         
         # 2. Send Media Message
@@ -478,17 +432,18 @@ def upload_media_and_send_audio(to_number, file_path):
                 "audio": {"id": media_id}
             }
             r2 = requests.post(META_API_URL, headers={"Authorization": f"Bearer {META_ACCESS_TOKEN}", "Content-Type": "application/json"}, json=payload)
-            r2.raise_for_status()
-            # Log bot audio to DB
-            insert_message(to_number, "bot", text="[Audio Message]", media=[{"id": media_id}], language="en")
-            return True
+            
+            if r2.status_code == 200:
+                # Log bot audio to DB
+                insert_message(to_number, "bot", text="[Audio Message]", media=[{"id": media_id}], language="en")
+                return True
+            else:
+                logger.error(f"Media Send Failed: {r2.text}")
         else:
-            logger.error(f"Upload failed. No media ID returned. Response: {r.text}")
+            logger.error("Upload failed. No media ID returned.")
 
-    except requests.exceptions.HTTPError as e:
-        logger.error(f"Audio Upload/Send HTTP Error: {e.response.text}")
     except Exception as e:
-        logger.error(f"Audio Send Error: {e}")
+        logger.error(f"Audio Send Exception: {e}")
         
     return False
 
@@ -566,7 +521,10 @@ def call_gemini(context_messages, incoming_text, lang_code="en", detailed=False)
         model = genai.GenerativeModel("gemini-2.5-flash")
         resp = model.generate_content([prompt])
         
-        return getattr(resp, "text", str(resp))
+        raw_text = getattr(resp, "text", str(resp))
+        clean_text = raw_text.replace("*", "").replace("#", "")
+
+        return clean_text
 
     except Exception as e:
         logger.exception("Gemini call failed: %s", e)
@@ -699,6 +657,43 @@ def get_total_disease_counts_last24h():
 
     return result
 
+# --- HELPER: Upload Image to Meta ---
+def upload_image_to_meta(file_path):
+    url = f"https://graph.facebook.com/v19.0/{PHONE_NUMBER_ID}/media"
+    headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}"}
+    
+    try:
+        with open(file_path, "rb") as f:
+            files = {
+                'file': (os.path.basename(file_path), f, 'image/png'),
+                'messaging_product': (None, 'whatsapp')
+            }
+            r = requests.post(url, headers=headers, files=files)
+            if r.status_code == 200:
+                return r.json().get("id")
+            else:
+                logger.error(f"Image Upload Failed: {r.text}")
+    except Exception as e:
+        logger.error(f"Image Upload Error: {e}")
+    return None
+
+# --- HELPER: Send Image Message ---
+def send_whatsapp_image(to_number, media_id, caption=None):
+    headers = {"Authorization": f"Bearer {META_ACCESS_TOKEN}", "Content-Type": "application/json"}
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": to_number,
+        "type": "image",
+        "image": {"id": media_id}
+    }
+    if caption:
+        payload["image"]["caption"] = caption
+        
+    try:
+        requests.post(META_API_URL, headers=headers, json=payload)
+    except Exception as e:
+        logger.error(f"Send Image Error: {e}")
+
 # ---------------------------------------------------------
 # 4. MAIN LOGIC
 # ---------------------------------------------------------
@@ -768,8 +763,24 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                         context = get_last_20_messages(from_number)
                         reply = call_gemini(context, text, lang_code=current_lang)
                         
-                        # Send Reply (Text for SMS, Audio for WhatsApp if possible)
-                        send_unified_message(from_number, reply, channel=channel)
+                        # --- START NEW TTS LOGIC ---
+                        # Generate TTS Audio (gTTS -> OGG)
+                        tts_file = text_to_speech_gtts_to_ogg(reply, lang_code=current_lang)
+                        
+                        audio_sent = False
+                        if tts_file:
+                            # Upload and send audio
+                            audio_sent = upload_media_and_send_audio(from_number, tts_file)
+                            
+                            # Cleanup OGG file
+                            try: os.remove(tts_file)
+                            except: pass
+                        
+                        # Fallback to text if audio failed
+                        if not audio_sent:
+                            send_unified_message(from_number, reply, channel=channel)
+                        # --- END NEW TTS LOGIC ---
+                        
                         return
             
             send_unified_message(from_number, get_localized_message(from_number, "voice_error"), channel=channel)
@@ -993,24 +1004,17 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                     send_whatsapp_message(from_number, "Error fetching vaccine info.")
                 return
 
-
-            # Option 2 — Child DOB Based Vaccination
+            # Option 2 — Ask DOB
             if normalized_msg == '2':
                 user_states[from_number]['state'] = 'ask_child_dob'
                 send_whatsapp_message(from_number, askdob.get(current_lang))
                 return
-
 
             # NEW Option 3 — Return to Main Menu
             if normalized_msg == '3':
                 user_states[from_number]['state'] = 'main_menu'
                 send_unified_message(from_number, MULTILINGUAL_MENUS.get(current_lang), channel=channel)
                 return
-
-
-            # Invalid Input
-            send_unified_message(from_number, "Invalid option.\n" + vacc_menu.get(current_lang), channel=channel)
-            return
 
 
         # --- MAIN MENU ---
@@ -1023,14 +1027,25 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
                 lang = current_lang
                 send_whatsapp_message(from_number, vacc_menu.get(lang, vacc_menu['en']))
                 return
-            elif normalized_msg == '3': # Disease Checker
-                user_states[from_number]['state'] = 'ask_age'
-                user_states[from_number]['data'] = {}
-                send_unified_message(from_number, get_localized_message(from_number, "ask_age"), channel=channel)
+            elif normalized_msg == '3': # SMART DISEASE CHECKER (Replaces old 10-step flow)
+                user_states[from_number]['state'] = 'ask_complete_details'
+                
+                msg = (
+                    "🩺 **Smart Symptom Checker**\n"
+                    "I can analyze your health based on local trends in your city.\n\n"
+                    "Please tell me your **Age, Gender, and Symptoms** in one message.\n"
+                    "📝 *Example:* 'I am 24 male from Govindpur. High fever and body pain since yesterday.'"
+                )
+                send_unified_message(from_number, msg, channel=channel)
+                return
+            
             elif normalized_msg == '4':  # Medicine Info
                 user_states[from_number]['state'] = 'medicine_menu'
                 send_unified_message(from_number, med_menu.get(current_lang), channel=channel)
-
+                
+            elif normalized_msg == '5': # Center
+                user_states[from_number]['state'] = 'ask_pincode'
+                send_unified_message(from_number, "Please enter your pincode:", channel=channel)
             elif normalized_msg == '6': # About
                 send_unified_message(from_number, get_localized_message(from_number, "about_us_selected"), channel=channel)
             elif normalized_msg == '7': # Lang
@@ -1102,79 +1117,47 @@ def process_core_logic(from_number, incoming_msg, msg_type, channel, media_url=N
             return
 
         # --- DISEASE CHECKER FLOW (10 Steps) ---
-        if current_state == 'ask_age':
-            user_states[from_number]['data']['age'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_weight'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_weight"), channel=channel)
-            return
-        
-        # ... (Abbreviating intermediate steps for brevity, functionality is identical) ...
-        # If you need steps 2-9 explicitly, copy from your WhatsApp logic, just change send_whatsapp_message -> send_unified_message
-        
-        if current_state == 'ask_weight':
-            user_states[from_number]['data']['weight'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_gender'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_gender"), channel=channel)
-            return
-        if current_state == 'ask_gender':
-            user_states[from_number]['data']['gender'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_reports'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_reports"), channel=channel)
-            return
-        if current_state == 'ask_reports':
-            user_states[from_number]['data']['reports'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_eating'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_eating"), channel=channel)
-            return
-        if current_state == 'ask_eating':
-            user_states[from_number]['data']['eating'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_meds'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_meds"), channel=channel)
-            return
-        if current_state == 'ask_meds':
-            user_states[from_number]['data']['meds'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_habits'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_habits"), channel=channel)
-            return
-        if current_state == 'ask_habits':
-            user_states[from_number]['data']['habits'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_disability'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_disability"), channel=channel)
-            return
-        if current_state == 'ask_disability':
-            user_states[from_number]['data']['disability'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_history'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_history"), channel=channel)
-            return
-        if current_state == 'ask_history':
-            user_states[from_number]['data']['history'] = incoming_msg
-            user_states[from_number]['state'] = 'ask_current_symptoms'
-            send_unified_message(from_number, get_localized_message(from_number, "ask_current_symptoms"), channel=channel)
-            return
-
-        if current_state == 'ask_current_symptoms':
-            user_states[from_number]['data']['current_symptoms'] = incoming_msg
-
+        # --- NEW: SMART ONE-SHOT DIAGNOSIS WITH HYPER-LOCAL CONTEXT ---
+        if current_state == 'ask_complete_details':
+            
+            # 1. Log the query to Database (So it counts towards future stats)
             current_db_id = user_states[from_number].get('current_db_id')
             user_city = user_states[from_number].get('city', 'Unknown')
             
-            if current_db_id:
-                # Update the existing row (id: 1)
-                update_disease_record(current_db_id, incoming_msg)
-                
-                # OPTIONAL: Clear the ID so the *next* search creates a new row
-                # (Remove this line if you want to keep overwriting the same row for this session)
-                user_states[from_number].pop('current_db_id', None) 
-            else:
-                # Fallback: If session is lost/old, insert a new row (id: 2)
-                insert_disease_record(city=user_city, disease=incoming_msg)
+            if len(incoming_msg) > 3:
+                 if current_db_id: update_disease_record(current_db_id, incoming_msg)
+                 else: insert_disease_record(city=user_city, disease=incoming_msg)
 
-            d = user_states[from_number]['data']
-            data_str = f"Age: {d.get('age')}, Weight: {d.get('weight')}, Gender: {d.get('gender')}, City: {user_city}, History: {d.get('history')}, Symptoms: {incoming_msg}"
+            # 2. THE KILLER FEATURE: Fetch Local Outbreak Context
+            # We check your database to see what's trending in THIS specific city right now.
+            outbreak_alert = ""
+            try:
+                # Use your existing helper to get stats
+                all_city_counts = get_disease_counts_last24h() 
+                my_city_stats = all_city_counts.get(user_city, {})
+                
+                if my_city_stats:
+                    # Find the most common disease in this city today
+                    top_disease = max(my_city_stats, key=my_city_stats.get)
+                    count = my_city_stats[top_disease]
+                    
+                    # If we have significant data (e.g., >2 cases), flag it for the AI
+                    if count > 2: 
+                        outbreak_alert = f"[SYSTEM ALERT: High cases of '{top_disease}' detected in {user_city} today. Check if patient symptoms match this outbreak.]"
+                        logger.info(f"Outbreak Context Injected: {outbreak_alert}")
+            except Exception as e:
+                logger.error(f"Outbreak context error: {e}")
+
+            send_unified_message(from_number, "🔍 Analyzing your symptoms against local health trends...", channel=channel)
             
-            send_unified_message(from_number, get_localized_message(from_number, "processing_diagnosis"), channel=channel)
+            # 3. Inject Context into the AI Prompt
+            # The User sees: "I have fever"
+            # The AI sees: "I have fever [SYSTEM ALERT: High cases of 'Dengue' detected in Govindpur...]"
+            final_input = f"{incoming_msg} {outbreak_alert}"
             
-            rasa_payload = f'/check_disease{{"patient_details": "{data_str}"}}'
+            # 4. Call Rasa Action (Reuse existing intent structure)
+            rasa_payload = f'/check_disease{{"patient_details": "{final_input}"}}'
+            
             try:
                 bot_msgs = call_rasa(rasa_payload, from_number, lang_code=current_lang)
                 for txt in bot_msgs:
@@ -1707,6 +1690,68 @@ def whatsapp_reply():
                              }).start()
 
     return jsonify({"status": "ok"}), 200
+
+# --- API: BROADCAST ALERT TO ALL USERS ---
+@app.route("/api/broadcast-alert", methods=['POST'])
+def broadcast_alert():
+    try:
+        # 1. Get the AI Insight Text (from the frontend or regenerate it)
+        # For safety, let's regenerate the latest insight
+        insight_response = ai_insight() # Calls your existing function
+        insight_text = insight_response.json.get("insight", "Health Alert")
+        
+        if "Normal" in insight_text:
+            return jsonify({"status": "aborted", "message": "Status is Normal. No alert sent."})
+
+        # 2. Generate Charts to Temp Files
+        # -- Pie Chart --
+        pie_path = os.path.join(tempfile.gettempdir(), "alert_pie.png")
+        # (Reuse your piechart logic here to save to file instead of returning bytes)
+        # For brevity, I'm calling the existing route logic abstractly, 
+        # but in production, you should refactor the plotting code into a reusable function.
+        # ... [Imagine plotting code here saving to pie_path] ...
+        # ... Let's assume you copy-paste the matplotlib logic from 'piechart' route here ...
+        # ... and use plt.savefig(pie_path) ...
+        
+        # -- Bar Chart --
+        bar_path = os.path.join(tempfile.gettempdir(), "alert_bar.png")
+        # ... [Imagine plotting code here saving to bar_path] ...
+
+        # 3. Upload Images to Meta
+        # (Since we can't refactor your whole code in one go, 
+        #  Use this quick hack: Call your own local APIs to get the bytes!)
+        pie_bytes = requests.get("http://localhost:5000/api/piechart").content
+        with open(pie_path, "wb") as f: f.write(pie_bytes)
+        
+        bar_bytes = requests.get("http://localhost:5000/api/city-bar").content
+        with open(bar_path, "wb") as f: f.write(bar_bytes)
+
+        pie_media_id = upload_image_to_meta(pie_path)
+        bar_media_id = upload_image_to_meta(bar_path)
+
+        # 4. Fetch All Users (Unique Phone Numbers)
+        response = supabase.table("user_chat_media").select("phone_num").execute()
+        users = list(set([row['phone_num'] for row in response.data])) # Unique numbers
+
+        # 5. Send Broadcast Loop
+        count = 0
+        for user_phone in users:
+            # Send Text Warning
+            send_whatsapp_message(user_phone, f"🚨 *PUBLIC HEALTH ALERT* 🚨\n\n{insight_text}")
+            
+            # Send Charts
+            if pie_media_id:
+                send_whatsapp_image(user_phone, pie_media_id, caption="Current Disease Spread")
+            if bar_media_id:
+                send_whatsapp_image(user_phone, bar_media_id, caption="Affected Locations")
+            
+            count += 1
+            
+        return jsonify({"status": "success", "message": f"Alert sent to {count} users."})
+
+    except Exception as e:
+        logger.error(f"Broadcast Error: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/sms", methods=["POST"])
 def sms_webhook():
