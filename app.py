@@ -4,15 +4,14 @@ import requests
 import os
 import logging
 import threading
-import tempfile
 import io
 import math
 # --- FIXED DATETIME IMPORTS ---
-from datetime import datetime, timedelta, timezone 
+from datetime import datetime, timezone 
 import pandas as pd
 
 # --- AI & Media Imports ---
-from langdetect import detect, DetectorFactory 
+from langdetect import DetectorFactory 
 import google.generativeai as genai
 from supabase import create_client, Client
 from dotenv import load_dotenv
