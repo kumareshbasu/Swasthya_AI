@@ -6,7 +6,8 @@ actions/__pycache__/
 
 .env
 .vscode
-sih_ai_venv
-data_seed_index.doc
 
-db.doc
+qr_code.py
+__pycache__/
+
+whatsapp_qr.png
