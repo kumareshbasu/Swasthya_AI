@@ -54,19 +54,32 @@
         }
         .refresh-btn:hover { background-color: #21262d; }
 
-        /* --- KPI CARDS --- */
+        /* --- KPI CARDS (Modified for 4 Columns) --- */
         .kpi-card {
-            grid-column: span 4;
+            grid-column: span 3; /* Fits 4 items in row (3x4=12) */
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .kpi-card h3 { color: var(--text-muted); font-size: 0.9rem; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
         .kpi-card p { font-size: 2.5rem; font-weight: 700; margin: 10px 0 0 0; }
 
-        /* --- AI INSIGHT CARD (The "Magic" Section) --- */
+        /* QR Specific */
+        .qr-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid white;
+            margin-top: 10px;
+        }
+
+        /* --- AI INSIGHT CARD --- */
         .ai-card {
             grid-column: span 12;
             background: linear-gradient(145deg, #1f2937, #161b22);
@@ -82,7 +95,7 @@
             font-size: 1.1rem;
             line-height: 1.6;
             color: #d1d5db;
-            white-space: pre-wrap; /* Keeps formatting */
+            white-space: pre-wrap; 
         }
         .loading-pulse {
             display: inline-block;
@@ -114,8 +127,11 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
-            .kpi-card { grid-column: span 12; }
+            .kpi-card { grid-column: span 6; }
             .chart-card { grid-column: span 12; }
+        }
+        @media (max-width: 600px) {
+            .kpi-card { grid-column: span 12; }
         }
     </style>
 </head>
@@ -138,6 +154,12 @@
         <div class="kpi-card">
             <h3>Total Messages</h3>
             <p>{{ total_messages }}</p>
+        </div>
+        
+        <div class="kpi-card">
+            <h3>Scan to Start</h3>
+            <img src="/static/whatsapp_qr.png" class="qr-img" alt="WhatsApp QR">
+            <span style="font-size: 0.75rem; color: #8b949e; margin-top:5px;">Code: SWASTHYA-AI</span>
         </div>
 
         <div class="ai-card">
@@ -178,31 +200,6 @@
                 const response = await fetch('/api/ai-insight');
                 const data = await response.json();
                 
-                // Hide loading, show content
-                document.getElementById('ai-loading').style.display = 'none';
-                document.getElementById('ai-content').style.display = 'block';
-                
-                // Typewriter effect or just text
-                const textField = document.getElementById('ai-text');
-                textField.innerText = data.insight || "No insights available.";
-                
-                // Optional: Alert style if outbreak detected
-                if (data.insight.includes("Outbreak") || data.insight.includes("⚠️")) {
-                    textField.style.color = "#ff7b72"; // Red for danger
-                    textField.style.fontWeight = "bold";
-                }
-
-            } catch (error) {
-                console.error("Error fetching AI insight:", error);
-                document.getElementById('ai-loading').innerText = "⚠️ AI Analysis Failed to Load.";
-            }
-        }
-
-        async function fetchAIInsights() {
-            try {
-                const response = await fetch('/api/ai-insight');
-                const data = await response.json();
-                
                 document.getElementById('ai-loading').style.display = 'none';
                 document.getElementById('ai-content').style.display = 'block';
                 
@@ -213,13 +210,14 @@
                 if (data.insight.includes("Outbreak") || data.insight.includes("⚠️")) {
                     textField.style.color = "#ff7b72"; 
                     textField.style.fontWeight = "bold";
-                    document.getElementById('broadcastBtn').style.display = 'block'; // Show button
+                    document.getElementById('broadcastBtn').style.display = 'block'; 
                 } else {
                     document.getElementById('broadcastBtn').style.display = 'none';
                 }
 
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error fetching AI insight:", error);
+                document.getElementById('ai-loading').innerText = "⚠️ AI Analysis Failed to Load.";
             }
         }
 
