@@ -58,6 +58,7 @@ gotrue==2.12.4
 grpcio==1.76.0
 grpcio-status==1.62.3
 gTTS==2.5.4
+gunicorn
 h11==0.16.0
 h2==4.3.0
 h5py==3.15.1
