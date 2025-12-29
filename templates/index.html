@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <img src="/static/SwasthyaAI.png" alt="" srcset="">
+        </div>
+        <ul class="nav-links magnet">
+            <li><a href="/templates/index.html">Home</a></li>
+            <li><a href="/templates/dashboard.html">Analytics</a></li>
+        </ul>
+        <div class="btns">
+            <button class="btn magnet" id="chatBtn">Click Here To Chat</button>
+        </div>
+    </nav>
+
+    <div class="popup-overlay" id="qrPopup">
+        <div class="qr-container">
+            <span class="close-icon">&times;</span>
+
+            <img src="/static/whatsapp_qr.png" alt="QR Code"/>
+            <p class="qr-title">Your 24/7 Health Assistant</p>
+            <p class="qr-description">Scan the QR code to start a secure conversation and get immediate answers to your health queries.</p>
+        </div>
+    </div>
+
+    <div id="featured">
+        <div class="fheading">
+            <h1>featured in</h1>
+            <h1>the project</h1>
+        </div>
+        <div id="fimages">
+            <div id="fleft">
+                <div class="fleftelm">
+                    <h3>WHATSAPP & SMS</h3>
+                    <h1>Accessible healthcare on your favorite apps.</h1>
+                    <h4>Instant Access, No Installation, 24/7 Support</h4>
+                </div>
+                <div class="fleftelm">
+                    <h3>MULTI-MEDIA</h3>
+                    <h1>Send voice notes or photos of symptoms.</h1>
+                    <h4>Speech-to-Speech, AI Vision Analysis, Frictionless Input</h4>
+                </div>
+                <div class="fleftelm">
+                    <h3>NEAREST HEALTH CENTERS AND VACCINATION</h3>
+                    <h1>Find local hospitals and track child immunization.</h1>
+                    <h4>Geolocation Services, Resource Finder, Schedule Tracking</h4>
+                </div>
+                <div class="fleftelm last">
+                    <h3>REAL-TIME ALERTS</h3>
+                    <h1>Stay ahead of disease outbreaks in your city.</h1>
+                    <h4>Predictive Analytics, Hyper-Local Data, Community Safety</h4>
+                </div>
+            </div>
+            <div id="fright">
+                <div class="images">
+                    <img src="https://images.unsplash.com/photo-1692343814412-cbe23ff32765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=767&q=80"
+                        alt="">
+                    <img src="https://images.unsplash.com/photo-1609428079875-ae186c562aff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=689&q=80"
+                        alt="">
+                    <img src="https://images.unsplash.com/photo-1614633833026-0820552978b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                        alt="">
+                    <img src="https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                        alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="fheading">
+            <h1>some</h1>
+            <h1>statistics</h1>
+        </div>
+
+        <div class="counters">
+            <div class="counter-wrapper">
+                <span class="counter-icon">🧑‍🧑‍🧒</span>
+                <div class="counter-info">
+                    <h1 class="counter" data-count="1500000000">0</h1>
+                    <p>Patients Reached</p>
+                </div>
+            </div>
+            <div class="counter-wrapper">
+                <span class="counter-icon">🏥</span>
+                <div class="counter-info">
+                    <h1 class="counter" data-count="500000">0</h1>
+                    <p>Total Health Centers</p>
+                </div>
+            </div>
+            <div class="counter-wrapper">
+                <span class="counter-icon">⁉️</span>
+                <div class="counter-info">
+                    <h1 class="counter" data-count="3000000000">0</h1>
+                    <p>Queries Solved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline hide-line">
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/1.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-map-marked-alt"></i></span> Localized Main Menu
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/2.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-filter"></i></span> AI Prevention Guide
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/3.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-user"></i></span> Voice Interaction Support
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/4.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-phone-alt"></i></span> Image Analysis
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/5.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-heart"></i></span> Vaccination Schedule
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/6.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-phone-alt"></i></span> Detailed Vaccine Info
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/7.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-heart"></i></span> Child Vaccination Tracker
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/8.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-phone-alt"></i></span> Medicine Info Search
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/9.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-heart"></i></span> Smart Symptom Checker
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/10.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-phone-alt"></i></span> Nearby Hospital Finder
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/11.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-heart"></i></span> Emergency SOS Response
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container right">
+            <img src="/static/Screenshots/12.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-phone-alt"></i></span> Multilingual Analysis
+                </div>
+            </a>
+        </div>
+        <div class="timeline-container left">
+            <img src="/static/Screenshots/13.jpeg" alt="Mobile Screenshot" class="screen-overlay">
+            <a href="#" class="content-link">
+                <div class="content">
+                    <span class="icon"><i class="fas fa-heart"></i></span> Outbreak Data Visualization
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+
+    <!--  Gsap is needed for Basic Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Scroll Trigger is needed for Scroll Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Three.js is needed for 3d Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
+
+    <!-- ControlKit is needed for Debug Panel -->
+    <script src="https://cdn.jsdelivr.net/gh/automat/controlkit.js@master/bin/controlKit.min.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/sheryjs/dist/Shery.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
