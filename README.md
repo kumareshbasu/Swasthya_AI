@@ -28,7 +28,6 @@ Full architectural derivations and detailed explanations are provided in the doc
 
 - Meta & Postman APIs
 - Python & Flask Backend
-- Azure Cloud Infrastructure
 - OpenAI Whisper Transcription
 - Gemini Multimodal Model
 - Rasa NLU Dialogue Management
