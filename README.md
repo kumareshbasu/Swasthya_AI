@@ -70,3 +70,11 @@ Full architectural derivations and detailed explanations are provided in the doc
 │── domain.yml
 │── endpoints.yml
 │── requirements.txt
+```
+
+## 📌 Key Results
+
+* **Accuracy:** Response accuracy rate reached **80% to 85%**.
+* **Community Engagement:** System successfully engaged **20% to 25%** of the target community.
+* **Accessibility:** Language barriers overcome via **audio transcription**.
+* **Public Health Impact:** Preventive care promotion led to a reduction in the **overall disease burden**.
