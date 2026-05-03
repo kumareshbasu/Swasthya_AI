@@ -63,6 +63,7 @@ Full architectural derivations and detailed explanations are provided in the doc
 │── .gitignore
 │── Dockerfile
 │── Procfile
+│── README.md
 │── app.py
 │── config.yml
 │── credentials.yml
